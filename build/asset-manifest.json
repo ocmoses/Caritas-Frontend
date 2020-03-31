@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/Caritas-Frontend/static/css/main.a4b2ffec.chunk.css",
+    "main.js": "/Caritas-Frontend/static/js/main.f4a3ca57.chunk.js",
+    "main.js.map": "/Caritas-Frontend/static/js/main.f4a3ca57.chunk.js.map",
+    "runtime-main.js": "/Caritas-Frontend/static/js/runtime-main.82b5b09e.js",
+    "runtime-main.js.map": "/Caritas-Frontend/static/js/runtime-main.82b5b09e.js.map",
+    "static/js/2.8fe9a7de.chunk.js": "/Caritas-Frontend/static/js/2.8fe9a7de.chunk.js",
+    "static/js/2.8fe9a7de.chunk.js.map": "/Caritas-Frontend/static/js/2.8fe9a7de.chunk.js.map",
+    "index.html": "/Caritas-Frontend/index.html",
+    "precache-manifest.1a281d042cc9913d0e6df875e4149a37.js": "/Caritas-Frontend/precache-manifest.1a281d042cc9913d0e6df875e4149a37.js",
+    "service-worker.js": "/Caritas-Frontend/service-worker.js",
+    "static/css/main.a4b2ffec.chunk.css.map": "/Caritas-Frontend/static/css/main.a4b2ffec.chunk.css.map",
+    "static/js/2.8fe9a7de.chunk.js.LICENSE.txt": "/Caritas-Frontend/static/js/2.8fe9a7de.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.82b5b09e.js",
+    "static/js/2.8fe9a7de.chunk.js",
+    "static/css/main.a4b2ffec.chunk.css",
+    "static/js/main.f4a3ca57.chunk.js"
+  ]
+}
