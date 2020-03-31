@@ -1,13 +1,56 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #fff5f4;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+.MuiToolbar-root {
+  padding-left: 0;
+  padding-right: 0;
+}
+.MuiTab-root {
+  text-decoration: none;
+}
+.MuiSlider-rail {
+  height: 8px !important;
+  border-radius: 4px !important;
+  color: #3be8b0;
+}
+.MuiSlider-track {
+  height: 8px !important;
+  border-radius: 4px !important;
+  color: #3be8b0;
+}
+
+.MuiSlider-thumb {
+  height: 30;
+  width: 30;
+  background-color: #3be8b0;
+  border: 10px solid #3be8b0;
+  margin-top: -8;
+  margin-left: -12;
+}
+.MuiSlider-thumb:focus,
+.MuiSlider-thumb:hover,
+.MuiSlider-thumb.active {
+  box-shadow: "inherit";
+}
+
+a {
+  text-decoration: none !important;
+}
+
+.MuiTextField-root {
+  border: 1px solid #a08a8b !important;
+}
+.MuiFormControl-root {
+  border: 1px solid #a08a8b !important;
 }
