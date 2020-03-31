@@ -147,16 +147,15 @@ const Signin = () => {
                     </Link>
                   </FormControl>
 
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    className={classes.loginButton}
-                    onClick={() => {
-                      window.location = "/dashboard";
-                    }}
-                  >
-                    Sign in
-                  </Button>
+                  <Link to="/dashboard">
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      className={classes.loginButton}
+                    >
+                      Sign in
+                    </Button>
+                  </Link>
                 </form>
                 <p
                   style={{
@@ -165,8 +164,8 @@ const Signin = () => {
                   }}
                 >
                   Don't have an account?{" "}
-                  <a
-                    href="/signup"
+                  <Link
+                    to="/signup"
                     style={{
                       color: Colors.appRed,
                       fontWeight: "bold",
@@ -174,7 +173,7 @@ const Signin = () => {
                     }}
                   >
                     Signup to get one now
-                  </a>
+                  </Link>
                 </p>
               </Grid>
               <Grid item xs={6}>

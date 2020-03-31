@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Grid, Typography } from "@material-ui/core";
+import { Container, Grid, Typography, Link } from "@material-ui/core";
 import { useStyles, FancyButton } from "../../helpers";
 
 const AboutHeaderSection = () => {
@@ -37,7 +37,9 @@ const AboutHeaderSection = () => {
               affected by COVID-19. We are here to help, please register and log
               your cause and get speedy help from our Caritas team.
             </Typography>
-            <FancyButton label="Sign Up to get Started" />
+            <Link to="/signup">
+              <FancyButton label="Sign Up to get Started" />
+            </Link>
           </Grid>
         </Grid>
       </Container>

@@ -325,10 +325,9 @@ export default function PrimarySearchAppBar() {
                   </MenuList>
                 )}
                 {!location.pathname.includes("/dashboard") && !authPage && (
-                  <FancyButton
-                    label="Sign Up"
-                    onClick={() => (window.location = "/signup")}
-                  />
+                  <Link to="/signup">
+                    <FancyButton label="Sign Up" />
+                  </Link>
                 )}
                 {location.pathname.includes("/dashboard") && (
                   <>
