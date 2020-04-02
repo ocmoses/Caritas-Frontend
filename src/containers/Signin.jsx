@@ -4,14 +4,13 @@ import React, { Fragment } from "react";
 import {
   Grid,
   Container,
-  TextField,
   FormControl,
   Typography,
   Button,
   Zoom
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { PrimaryAppBar } from "../commons";
+import { PrimaryAppBar, MyTextField } from "../commons";
 import { Link } from "react-router-dom";
 import { Colors } from "../constants";
 
@@ -21,7 +20,6 @@ const useStyles = makeStyles(theme => ({
   },
   formControl: {
     width: `100%  !important`,
-    marginTop: theme.spacing(3),
     display: "block"
   },
   loginButton: {
@@ -116,25 +114,34 @@ const Signin = () => {
                 </Typography>
                 <form action={"#"} method="POST" className={classes.form}>
                   <FormControl className={classes.formControl}>
-                    <TextField
-                      id="outlined-read-only-input"
+                    <MyTextField
+                      id="email"
+                      type="email"
+                      name="username"
+                      required="required"
                       label="Username"
-                      variant="outlined"
-                      className={classes.textField}
+                      placeholder="Enter your username"
                     />
                   </FormControl>
 
                   <FormControl className={classes.formControl}>
-                    <TextField
-                      id="outlined-read-only-input"
+                    <MyTextField
+                      id="password"
                       type="password"
+                      name="password"
+                      required="required"
                       label="Password"
-                      variant="outlined"
-                      className={classes.textField}
+                      placeholder="Enter your password"
                     />
                   </FormControl>
 
-                  <FormControl style={{ width: "100%", textAlign: "right" }}>
+                  <FormControl
+                    style={{
+                      width: "100%",
+                      textAlign: "right",
+                      marginBottom: 10
+                    }}
+                  >
                     <Link
                       to="/recover-password"
                       style={{

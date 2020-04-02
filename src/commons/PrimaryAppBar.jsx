@@ -331,9 +331,12 @@ export default function PrimarySearchAppBar() {
                 )}
                 {location.pathname.includes("/dashboard") && (
                   <>
-                    <NavLink to="/dashboard/create-cause/1">
-                      <FancyButton label="+ Add a Cause" />{" "}
-                    </NavLink>
+                    {!location.pathname.includes("/dashboard/create-cause") && (
+                      <NavLink to="/dashboard/create-cause/1">
+                        <FancyButton label="+ Add a Cause" />{" "}
+                      </NavLink>
+                    )}
+
                     <LoggedInAvatar user={user} />
                   </>
                 )}

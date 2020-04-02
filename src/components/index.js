@@ -5,6 +5,7 @@ import Footer from "./Footer";
 import LoggedInAvatar from "./LoggedInAvatar";
 import SlideableGridList from "./SlideableGridList";
 import AddItem from "./AddItem";
+import AddImage from "./AddImage";
 
 export {
   CauseItem,
@@ -13,5 +14,6 @@ export {
   Footer,
   LoggedInAvatar,
   SlideableGridList,
-  AddItem
+  AddItem,
+  AddImage
 };

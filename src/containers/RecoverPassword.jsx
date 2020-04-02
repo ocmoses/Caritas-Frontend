@@ -11,7 +11,7 @@ import {
   Zoom
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { PrimaryAppBar } from "../commons";
+import { PrimaryAppBar, MyTextField } from "../commons";
 import { Link } from "react-router-dom";
 import { Colors } from "../constants";
 
@@ -21,7 +21,6 @@ const useStyles = makeStyles(theme => ({
   },
   formControl: {
     width: `100%  !important`,
-    marginTop: theme.spacing(3),
     display: "block"
   },
   loginButton: {
@@ -117,12 +116,13 @@ const RecoverPassword = () => {
                 </Typography>
                 <form action={"#"} method="POST" className={classes.form}>
                   <FormControl className={classes.formControl}>
-                    <TextField
-                      id="outlined-email"
+                    <MyTextField
+                      id="email"
                       type="email"
-                      label="Email address"
-                      variant="outlined"
-                      className={classes.textField}
+                      name="email"
+                      required="required"
+                      label="Enter email"
+                      placeholder="Enter your email"
                     />
                   </FormControl>
 
@@ -144,8 +144,8 @@ const RecoverPassword = () => {
                   }}
                 >
                   Silly me I remember my details,{" "}
-                  <a
-                    href="/signin"
+                  <Link
+                    to="/signin"
                     style={{
                       color: Colors.appRed,
                       fontWeight: "bold",
@@ -153,7 +153,7 @@ const RecoverPassword = () => {
                     }}
                   >
                     Sign In instead
-                  </a>
+                  </Link>
                 </p>
               </Grid>
               <Grid item xs={6}>

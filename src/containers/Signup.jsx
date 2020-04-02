@@ -11,7 +11,7 @@ import {
   Zoom
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { PrimaryAppBar } from "../commons";
+import { PrimaryAppBar, MyTextField } from "../commons";
 import { Link } from "react-router-dom";
 import { Colors } from "../constants";
 
@@ -21,7 +21,6 @@ const useStyles = makeStyles(theme => ({
   },
   formControl: {
     width: `100%  !important`,
-    marginTop: theme.spacing(3),
     display: "block"
   },
   loginButton: {
@@ -116,33 +115,35 @@ const Signup = () => {
                 </Typography>
                 <form action={"#"} method="POST" className={classes.form}>
                   <FormControl className={classes.formControl}>
-                    <TextField
-                      id="outlined-email"
-                      label="Email"
+                    <MyTextField
+                      id="email"
                       type="email"
-                      variant="outlined"
-                      className={classes.textField}
+                      name="email"
+                      required="required"
+                      label="Email"
+                      placeholder="Enter email address"
                     />
                   </FormControl>
 
                   <FormControl className={classes.formControl}>
-                    <TextField
-                      id="outlined-password"
+                    <MyTextField
+                      id="password"
                       type="password"
+                      name="password"
+                      required="required"
                       label="Password"
-                      variant="outlined"
-                      className={classes.textField}
+                      placeholder="Choose a password"
                     />
                   </FormControl>
 
                   <FormControl className={classes.formControl}>
-                    <TextField
-                      id="outlined-confirm-password"
+                    <MyTextField
+                      id="cconfirm-password"
                       type="password"
+                      name="confirm_password"
+                      required="required"
                       label="Confirm Password"
-                      variant="outlined"
-                      className={classes.textField}
-                      style={{ marginBottom: "20px" }}
+                      placeholder="Please confirm your password"
                     />
                   </FormControl>
 
