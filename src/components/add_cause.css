@@ -1,0 +1,36 @@
+item {
+  width: 250px;
+  height: 160px;
+  display: inline-flex;
+  flex-direction: column;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-right: 20px;
+}
+
+item img {
+  height: 60px;
+  display: block;
+  margin-left: auto;
+  margin-top: 50px;
+  margin-right: auto;
+}
+item:hover {
+  /* box-shadow: 0px 0px 10px 15px rgba(255, 0, 0, .9) !important; */
+  background-color: #fc636b;
+}
+
+item:hover p {
+  color: white;
+}
+title {
+  font-size: 10px;
+  text-align: center;
+  margin-top: 0px;
+  color: #fc636b;
+}
+text {
+  font-size: 10px;
+  text-align: center;
+  margin-top: 0px;
+}

@@ -5,32 +5,32 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Colors } from "../constants";
 import { Link } from "react-router-dom";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     padding: "50px",
-    backgroundColor: Colors.appRed
+    backgroundColor: Colors.appRed,
   },
   sectionHead: {
-    marginBottom: "24px"
+    marginBottom: "24px",
   },
   link: {
     color: "white",
     textDecoration: "none",
     marginBottom: "24px !important",
-    lineHeight: "30px"
+    lineHeight: "30px",
   },
   socialMedia: {
     width: 30,
-    marginRight: "30px"
-  }
+    marginRight: "30px",
+  },
 }));
 
-const Footer = props => {
+const Footer = (props) => {
   const classes = useStyles(props);
   return (
     <div className={classes.root}>
       <Container>
-        <Grid container spacing="5">
+        <Grid container spacing={5}>
           <Grid item xs={12} md={4} style={{ color: "white", height: "200px" }}>
             <Typography
               variant="h4"
@@ -103,7 +103,7 @@ const Footer = props => {
             <br />
           </Grid>
         </Grid>
-        <Grid container spacing="5" style={{ padding: "50px 0px" }}>
+        <Grid container spacing={5} style={{ padding: "50px 0px" }}>
           <Grid item xs={4} style={{ color: "white" }}>
             <Typography
               variant="body1"

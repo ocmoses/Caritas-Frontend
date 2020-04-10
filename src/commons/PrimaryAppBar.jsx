@@ -18,28 +18,33 @@ import { Colors } from "../constants";
 import { NavLink } from "react-router-dom";
 import { FancyShape, FancyButton } from "../helpers";
 import { LoggedInAvatar } from "../components";
-import { user } from "../mock";
+// import { user } from "../mock";
+import {
+  isAuthenticated,
+  getAuthenticatedUser,
+  signout,
+} from "../helpers/utils";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   caritas: {
     color: "black",
     fontWeight: "bold",
-    cursor: "pointer"
+    cursor: "pointer",
   },
   appbar: {
     backgroundColor: "rgba(0,0,0,.0) !important",
     boxShadow: "none",
-    padding: "20px 0px"
+    padding: "20px 0px",
   },
   appbarScrolling: {
     backgroundColor: "white !important",
     color: "black",
     boxShadow: "0px 1px 3px rgba(0, 0, 0, 0.5)",
-    padding: "20px 0px"
+    padding: "20px 0px",
   },
 
   logo: {
-    height: "30px"
+    height: "30px",
   },
 
   menulink: {
@@ -48,15 +53,15 @@ const useStyles = makeStyles(theme => ({
     textDecoration: "none",
     marginRight: "50px",
     "&:hover": {
-      color: Colors.appRed
-    }
+      color: Colors.appRed,
+    },
   },
 
   active: {
-    color: Colors.appRed
+    color: Colors.appRed,
   },
   grow: {
-    flexGrow: 1
+    flexGrow: 1,
   },
 
   login: {
@@ -69,31 +74,31 @@ const useStyles = makeStyles(theme => ({
 
     "&:hover": {
       backgroundColor: "grey",
-      color: "white"
-    }
+      color: "white",
+    },
   },
   menuButton: {
-    marginRight: theme.spacing(2)
+    marginRight: theme.spacing(2),
   },
   title: {
     [theme.breakpoints.up("sm")]: {
-      display: "block"
-    }
+      display: "block",
+    },
   },
   search: {
     position: "relative",
     borderRadius: theme.shape.borderRadius,
     backgroundColor: fade(theme.palette.common.white, 0.15),
     "&:hover": {
-      backgroundColor: fade(theme.palette.common.white, 0.25)
+      backgroundColor: fade(theme.palette.common.white, 0.25),
     },
     marginRight: theme.spacing(2),
     marginLeft: 0,
     width: "100%",
     [theme.breakpoints.up("sm")]: {
       marginLeft: theme.spacing(3),
-      width: "auto"
-    }
+      width: "auto",
+    },
   },
   searchIcon: {
     width: theme.spacing(7),
@@ -102,46 +107,52 @@ const useStyles = makeStyles(theme => ({
     pointerEvents: "none",
     display: "flex",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   inputRoot: {
-    color: "inherit"
+    color: "inherit",
   },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 7),
     transition: theme.transitions.create("width"),
     width: "100%",
     [theme.breakpoints.up("md")]: {
-      width: 200
-    }
+      width: 200,
+    },
   },
   sectionDesktop: {
     display: "none",
     [theme.breakpoints.up("md")]: {
-      display: "flex"
-    }
+      display: "flex",
+    },
+    "&:focus, &:active": {
+      outline: "none !important",
+    },
   },
   sectionMobile: {
     display: "flex",
     [theme.breakpoints.up("md")]: {
-      display: "none"
-    }
+      display: "none",
+    },
   },
   white: {
-    color: "white !important"
+    color: "white !important",
   },
   hidden: {
-    display: "none !important"
+    display: "none !important",
   },
   bottomShadow: {
-    boxShadow: "0px 2px 5px rgba(0,0,0,.2) !important"
-  }
+    boxShadow: "0px 2px 5px rgba(0,0,0,.2) !important",
+  },
 }));
 
 export default function PrimarySearchAppBar() {
   const classes = useStyles();
   const location = useLocation();
   const [scrolling, setScrolling] = useState(false);
+  const [user, setUser] = useState(
+    isAuthenticated() ? getAuthenticatedUser() : null
+  );
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const authPage =
@@ -152,7 +163,7 @@ export default function PrimarySearchAppBar() {
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-  const handleProfileMenuOpen = event => {
+  const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -165,11 +176,11 @@ export default function PrimarySearchAppBar() {
     handleMobileMenuClose();
   };
 
-  const handleMobileMenuOpen = event => {
+  const handleMobileMenuOpen = (event) => {
     // setMobileMoreAnchorEl(event.currentTarget);
   };
 
-  console.log("location", location);
+  // console.log("location", location);
 
   const menuId = "primary-search-account-menu";
   const renderMenu = (
@@ -245,7 +256,7 @@ export default function PrimarySearchAppBar() {
   );
 
   useEffect(() => {
-    window.addEventListener("scroll", function() {
+    window.addEventListener("scroll", function () {
       if (window.scrollY >= 50) {
         setScrolling(true);
       } else {
@@ -313,26 +324,33 @@ export default function PrimarySearchAppBar() {
                     >
                       How it works
                     </NavLink>
-                    <NavLink
-                      to="/signin"
-                      className={clsx(
-                        classes.menulink,
-                        authPage && classes.hidden
-                      )}
-                    >
-                      Sign In
-                    </NavLink>
+
+                    {isAuthenticated() ? (
+                      <LoggedInAvatar user={user} />
+                    ) : (
+                      <NavLink
+                        to="/signin"
+                        className={clsx(
+                          classes.menulink,
+                          authPage && classes.hidden
+                        )}
+                      >
+                        Sign In
+                      </NavLink>
+                    )}
                   </MenuList>
                 )}
-                {!location.pathname.includes("/dashboard") && !authPage && (
-                  <Link to="/signup">
-                    <FancyButton label="Sign Up" />
-                  </Link>
-                )}
+                {!location.pathname.includes("/dashboard") &&
+                  !authPage &&
+                  !isAuthenticated() && (
+                    <Link to="/signup">
+                      <FancyButton label="Sign Up" />
+                    </Link>
+                  )}
                 {location.pathname.includes("/dashboard") && (
                   <>
                     {!location.pathname.includes("/dashboard/create-cause") && (
-                      <NavLink to="/dashboard/create-cause/1">
+                      <NavLink to="/dashboard/create-cause">
                         <FancyButton label="+ Add a Cause" />{" "}
                       </NavLink>
                     )}

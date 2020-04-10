@@ -6,6 +6,8 @@ import LoggedInAvatar from "./LoggedInAvatar";
 import SlideableGridList from "./SlideableGridList";
 import AddItem from "./AddItem";
 import AddImage from "./AddImage";
+import MyButton from "./MyButton";
+import MyDialog from "./MyDialog";
 
 export {
   CauseItem,
@@ -15,5 +17,7 @@ export {
   LoggedInAvatar,
   SlideableGridList,
   AddItem,
-  AddImage
+  AddImage,
+  MyButton,
+  MyDialog,
 };

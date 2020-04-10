@@ -7,7 +7,7 @@ import {
   Tabs,
   Tab,
   Zoom,
-  Button
+  Button,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { FancyShape, useStyles } from "../../helpers";
@@ -17,26 +17,27 @@ import { CauseItem } from "../";
 import { CausesTabs } from "./";
 import "../../index.css";
 
-const moreStyles = makeStyles(theme => ({
+const moreStyles = makeStyles((theme) => ({
   mainImage: {
-    backgroundImage: props => `url('${props.cause.image}')`,
+    backgroundImage: (props) =>
+      `url('${props.cause ? props.cause.cause_photos[0] : "null"}')`,
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
-    height: "400px"
+    height: "400px",
   },
   headerTitle: {
     color: Colors.appRed,
     fontSize: "14px",
     fontWeight: "bold",
-    marginBottom: "20px"
+    marginBottom: "20px",
   },
   share: {
     height: "40px",
-    marginLeft: "20px"
-  }
+    marginLeft: "20px",
+  },
 }));
 
-const ACauseHeader = props => {
+const ACauseHeader = (props) => {
   const classes = useStyles();
   const classes2 = moreStyles(props);
 
@@ -59,7 +60,7 @@ const ACauseHeader = props => {
             component="h5"
             style={{ fontWeight: "bold", marginBottom: "20px" }}
           >
-            {props.cause.title}
+            {props.cause.cause_title}
           </Typography>
 
           <Typography
@@ -70,25 +71,28 @@ const ACauseHeader = props => {
             {props.cause.desc}
           </Typography>
           <div className={classes.root}>
-            <Slider value={props.cause.contribution} max={props.cause.target} />
+            <Slider
+              value={props.cause.amount_donated}
+              max={props.cause.amount_required}
+            />
             <Grid container style={{ marginTop: "20px", width: "100%" }}>
               <Grid
                 item
                 xs={6}
                 style={{
-                  fontSize: "16px"
+                  fontSize: "16px",
                 }}
               >
                 <Typography variant="body1" component="p">
                   {props.cause.currency}
-                  {props.cause.contribution} Raised
+                  {props.cause.amount_donated} Raised
                 </Typography>
               </Grid>
               <Grid
                 item
                 xs={6}
                 style={{
-                  fontSize: "16px"
+                  fontSize: "16px",
                 }}
               >
                 <Typography
@@ -97,10 +101,11 @@ const ACauseHeader = props => {
                   style={{ textAlign: "right" }}
                 >
                   {Math.round(
-                    (props.cause.contribution * 100) / props.cause.target
+                    (props.cause.amount_donated * 100) /
+                      props.cause.amount_required
                   )}
                   % of {props.cause.currency}
-                  {props.cause.target}
+                  {props.cause.amount_required}
                 </Typography>
               </Grid>
             </Grid>
@@ -113,7 +118,7 @@ const ACauseHeader = props => {
                     color: "white",
                     marginRight: "20px",
                     borderRadius: "0px",
-                    width: "120px"
+                    width: "120px",
                   }}
                 >
                   Donate
@@ -123,29 +128,31 @@ const ACauseHeader = props => {
                   style={{
                     borderColor: "black",
                     width: "120px",
-                    borderRadius: "0px"
+                    borderRadius: "0px",
                   }}
                 >
                   Watch
                 </Button>
               </Grid>
-              <Grid item xs={6} style={{ textAlign: "right" }}>
-                <img
-                  src="/assets/images/icons/facebook-red.png"
-                  alt=""
-                  className={classes2.share}
-                />
-                <img
-                  src="/assets/images/icons/twitter-red.png"
-                  alt=""
-                  className={classes2.share}
-                />
-                <img
-                  src="/assets/images/icons/link-red.png"
-                  alt=""
-                  className={classes2.share}
-                />
-              </Grid>
+              {props.cause.share_on_social_media && (
+                <Grid item xs={6} style={{ textAlign: "right" }}>
+                  <img
+                    src="/assets/images/icons/facebook-red.png"
+                    alt=""
+                    className={classes2.share}
+                  />
+                  <img
+                    src="/assets/images/icons/twitter-red.png"
+                    alt=""
+                    className={classes2.share}
+                  />
+                  <img
+                    src="/assets/images/icons/link-red.png"
+                    alt=""
+                    className={classes2.share}
+                  />
+                </Grid>
+              )}
             </Grid>
           </div>
         </Grid>

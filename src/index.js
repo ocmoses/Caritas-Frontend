@@ -11,7 +11,8 @@ import {
   HowItWorks,
   Signup,
   RecoverPassword,
-  ACausePage
+  ACausePage,
+  AddCause,
 } from "./containers";
 import * as serviceWorker from "./serviceWorker";
 import { useParams, useHistory, useLocation } from "react-router";
@@ -21,6 +22,8 @@ import { useTheme } from "@material-ui/core/styles";
 import { Provider } from "react-redux";
 import store from "./store";
 import { Colors } from "./constants";
+import ProtectedRoute from "./components/ProtectedRoute";
+import GuestRoute from "./components/GuestRoute";
 
 const App = () => {
   const theme = createMuiTheme({
@@ -32,14 +35,14 @@ const App = () => {
         standard: 200,
         complex: 200,
         enteringScreen: 200,
-        leavingScreen: 200
-      }
+        leavingScreen: 200,
+      },
     },
     palette: {
       primary: {
-        main: Colors.appRed
-      }
-    }
+        main: Colors.appRed,
+      },
+    },
   });
 
   return (
@@ -51,12 +54,15 @@ const App = () => {
             <Route path="/about" component={About} />
             <Route path="/FAQ" component={FAQ} />
             <Route path="/causes" exact component={Causes} />
-            <Route path="/signin" component={Signin} />
+            <GuestRoute path="/signin" component={Signin} />
+            <GuestRoute path="/signup" component={Signup} />
+            <GuestRoute path="/recover-password" component={RecoverPassword} />
             <Route path="/how-it-works" component={HowItWorks} />
-            <Route path="/dashboard" component={Dashboard} />
-            <Route path="/dashboard/create-cause/1" component={Dashboard} />
-            <Route path="/signup" component={Signup} />
-            <Route path="/recover-password" component={RecoverPassword} />
+            <ProtectedRoute path="/dashboard" component={Dashboard} exact />
+            <ProtectedRoute
+              path="/dashboard/create-cause"
+              component={AddCause}
+            />
             <Route path="/causes/:id" component={ACausePage} />
           </Switch>
         </BrowserRouter>

@@ -24,7 +24,7 @@ const AboutHeaderSection = () => {
                 color: "black",
                 marginBottom: 16,
                 fontSize: "12px",
-                width: "450px"
+                width: "450px",
               }}
             >
               As COVID-19 continues to spread in Africa, more individuals and

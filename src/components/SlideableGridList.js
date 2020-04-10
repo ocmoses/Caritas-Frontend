@@ -4,24 +4,25 @@ import {
   Grid,
   GridList,
   GridListTile,
-  GridListTileBar
+  GridListTileBar,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core";
 import { AddItem } from "./";
+import { baseUrl } from "../constants";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   listImage: {
-    height: "100%"
+    height: "100%",
   },
   gridlist: {
     flexWrap: "nowrap",
     padding: "50px 0px 0px 0px",
-    overflowX: "hidden"
+    overflowX: "hidden",
   },
   listTile: {
     borderRadius: "15px",
     overflow: "hidden",
-    margin: "0px 5px"
+    margin: "0px 5px",
   },
   listTileAdd: {
     display: "flex",
@@ -29,11 +30,11 @@ const useStyles = makeStyles(theme => ({
     height: "100%",
     alignItems: "center",
     boxShadow: "2px 2px 5px rgba(0,0,0,.2) !important",
-    padding: "20px"
+    padding: "20px",
   },
   titlebar: {
     backgroundColor: "transparent",
-    textShadow: "0px 0px 8px rgba(0,0,0,.9)"
+    textShadow: "0px 0px 8px rgba(0,0,0,.9)",
   },
   scrollButton: {
     position: "absolute",
@@ -47,16 +48,17 @@ const useStyles = makeStyles(theme => ({
     textAlign: "center",
     top: "90px",
     "&:hover": {
-      boxShadow: "0px 0px 5px 5px rgba(255,0,0,.2)"
+      boxShadow: "0px 0px 5px 5px rgba(255,0,0,.2)",
     },
-    cursor: "pointer"
+    cursor: "pointer",
   },
   scrollLeft: { left: "-10px" },
-  scrollRight: { left: "calc(100% - 5px)" }
+  scrollRight: { left: "calc(100% - 5px)" },
 }));
 
-const SlideableGridList = props => {
+const SlideableGridList = (props) => {
   const classes = useStyles();
+  console.log("received causes", props.causes);
   const isEmpty = props.causes.length === 0;
   return (
     <Grid container>
@@ -73,13 +75,13 @@ const SlideableGridList = props => {
                 className={classes.listTile}
               >
                 <img
-                  src={aCause.image}
-                  alt={aCause.title}
+                  src={aCause.cause_photos[0].replace(/^uploads\\/, baseUrl)}
+                  alt={aCause.cause_title}
                   className={classes.listImage}
                 />
                 <GridListTileBar
                   key={`gridlist-${index}`}
-                  title={aCause.title}
+                  title={aCause.cause_title}
                   className={classes.titlebar}
                 />
               </GridListTile>

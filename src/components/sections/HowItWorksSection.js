@@ -16,49 +16,49 @@ const HowItWorksSection = () => {
             marginTop: 10,
             fontSize: "12px",
             width: "300px",
-            marginBottom: "50px"
+            marginBottom: "50px",
           }}
         >
           Here is how charity projects are vetted and Approved on Caritas.
         </Typography>
         <Grid container spacing={4}>
-          <Grid item xs={2} md={3}>
+          <Grid item xs={4} md={3} sm={4}>
             <HowItWorks
               image="/assets/images/icons/account-icon.png"
               step="Create an Account."
             />
           </Grid>
-          <Grid item xs={2} md={3}>
+          <Grid item xs={4} md={3} sm={4}>
             <HowItWorks
               image="/assets/images/icons/upload-icon.png"
               step="Upload a Cause"
             />
           </Grid>
-          <Grid item xs={2} md={3}>
+          <Grid item xs={4} md={3} sm={4}>
             <HowItWorks
               image="/assets/images/icons/category-icon.png"
               step="Cause gets Vetted by Professional in Category"
             />
           </Grid>
-          <Grid item xs={2} md={3}>
+          <Grid item xs={4} md={3} sm={4}>
             <HowItWorks
               image="/assets/images/icons/vote-icon.png"
               step="Upon approval Cause is put up for voting"
             />
           </Grid>
-          <Grid item xs={2} md={3}>
+          <Grid item xs={4} md={3} sm={4}>
             <HowItWorks
               image="/assets/images/icons/donations-icon.png"
               step="When Voting is Succesful Cause is made public to receive donations"
             />
           </Grid>
-          <Grid item xs={2} md={3}>
+          <Grid item xs={4} md={3} sm={4}>
             <HowItWorks
               image="/assets/images/icons/contractor-icon.png"
               step="When Target donation amount is reached an approved contractor is chosen"
             />
           </Grid>
-          <Grid item xs={6} md={3} style={{ marginLeft: "50px" }}>
+          <Grid item xs={6} md={3} style={{ marginLeft: "30px" }}>
             <Typography
               variant="h5"
               component="h5"

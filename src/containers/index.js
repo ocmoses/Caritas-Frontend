@@ -8,6 +8,7 @@ import HowItWorks from "./HowItWorks.jsx";
 import Signup from "./Signup";
 import RecoverPassword from "./RecoverPassword";
 import ACausePage from "./ACausePage";
+import AddCause from "./AddCause";
 
 export {
   Home,
@@ -19,5 +20,6 @@ export {
   HowItWorks,
   Signup,
   RecoverPassword,
-  ACausePage
+  ACausePage,
+  AddCause,
 };

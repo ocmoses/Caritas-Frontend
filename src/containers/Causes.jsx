@@ -18,7 +18,7 @@ const Causes = () => {
         className={classes.appbar}
       ></PrimaryAppBar>
       <main className={classes.main}>
-        <CausesTabs />
+        <CausesTabs style={{ width: "100% !important", overflowX: "auto" }} />
         <div style={{ paddingBottom: "100px" }}>
           <SubscriptionBox />
         </div>

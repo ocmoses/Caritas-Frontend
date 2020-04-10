@@ -4,11 +4,12 @@ import { Paper, Slider, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Colors } from "../constants";
 import { NavLink } from "react-router-dom";
+import { baseUrl } from "../constants";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     padding: "0px !important",
-    textDecoration: "none !important"
+    textDecoration: "none !important",
   },
   item: {
     width: "550px",
@@ -23,25 +24,26 @@ const useStyles = makeStyles(theme => ({
       "& div:first-child": {
         backgroundSize: "110% 110%",
         transition: "background-size 10s",
-        "-webkit-transition": "background-size 10s"
-      }
-    }
+        "-webkit-transition": "background-size 10s",
+      },
+    },
   },
   image: {
-    backgroundImage: props => "url(" + props.cause.image + ")",
+    backgroundImage: (props) =>
+      "url(" + props.cause.cause_photos[0].replace(/^uploads\\/, baseUrl) + ")",
     backgroundSize: "cover",
     backgroundPosition: "center",
-    flex: 0.45
+    flex: 0.45,
   },
   right: {
     flex: 0.55,
     position: "relative",
-    textDecoration: "none !important"
+    textDecoration: "none !important",
   },
   desc: {
     position: "relative",
     padding: theme.spacing(2),
-    textDecoration: "none !important"
+    textDecoration: "none !important",
   },
   category: {
     backgroundColor: Colors.appRed,
@@ -49,7 +51,7 @@ const useStyles = makeStyles(theme => ({
     padding: "5px 10px",
     position: "absolute",
     top: 0,
-    right: 0
+    right: 0,
   },
   donate: {
     backgroundColor: Colors.appRed,
@@ -57,7 +59,7 @@ const useStyles = makeStyles(theme => ({
     height: 42,
     border: "none",
     width: "140px",
-    cursor: "pointer"
+    cursor: "pointer",
   },
   readMore: {
     backgroundColor: "black",
@@ -67,40 +69,43 @@ const useStyles = makeStyles(theme => ({
     width: "140px",
     marginLeft: "auto",
     float: "right",
-    cursor: "pointer"
-  }
+    cursor: "pointer",
+  },
 }));
 
-const CauseItem = props => {
+const CauseItem = (props) => {
   const classes = useStyles(props);
   return (
     <Paper
       elevation="4"
       className={clsx(classes.item, classes.root)}
-      onClick={() => (window.location = `/causes/${props.cause.id}`)}
+      onClick={() => (window.location = `/causes/${props.cause._id}`)}
     >
       <div className={clsx(classes.image, classes.root)}></div>
       <div className={classes.right}>
         <div className={classes.desc}>
           <span className={classes.category}>{props.cause.category}</span>
           <h4 style={{ color: Colors.appRed, width: "70%" }}>
-            {props.cause.title}
+            {props.cause.cause_title}
           </h4>
           <p style={{ fontSize: 10 }}>{props.children}</p>
           <div className={classes.root}>
-            <Slider value={props.cause.contribution} max={props.cause.target} />
+            <Slider
+              value={parseInt(props.cause.amount_donated)}
+              max={parseInt(props.cause.amount_required)}
+            />
             <p
               style={{
                 textAlign: "center",
                 padding: 0,
                 margin: 0,
                 color: Colors.appRed,
-                fontSize: "10px"
+                fontSize: "10px",
               }}
             >
-              {props.cause.currency}
-              {props.cause.contribution}-{props.cause.currency}
-              {props.cause.target}
+              {"#"}
+              {props.cause.amount_donated} - {"#"}
+              {props.cause.amount_required}
             </p>
           </div>
         </div>

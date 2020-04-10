@@ -3,17 +3,17 @@ import { TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Colors } from "../constants";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   rounded: {
     borderRadius: 10,
-    borderColor: Colors.appRed
+    borderColor: Colors.appRed,
   },
   textField: {
-    marginBottom: 20
-  }
+    marginBottom: 20,
+  },
 }));
 
-const MyTextField = props => {
+const MyTextField = (props) => {
   const classes = useStyles();
   return (
     <TextField
@@ -24,14 +24,15 @@ const MyTextField = props => {
         name: props.name,
         required: props.required,
         placeholder: props.placeholder,
-        type: props.type
+        type: props.type,
       }}
       label={props.label}
       multiline={props.multiline}
       rows={props.rows}
       InputProps={{
-        classes: { notchedOutline: classes.rounded }
+        classes: { notchedOutline: classes.rounded },
       }}
+      onChange={props.onChange}
       className={classes.textField}
     />
   );

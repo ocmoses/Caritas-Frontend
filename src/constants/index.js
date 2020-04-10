@@ -1,3 +1,5 @@
+const host = "http://localhost:5000/api/";
+const baseUrl = "http://localhost:5000/";
 const Colors = {
   appBackground: "#FFF5F4",
   appRed: "#FC636B",
@@ -7,24 +9,14 @@ const Colors = {
   appBlack: "#707070",
   active: "#349EE8",
   navItems: "#3A3A3A",
-  dashhboardBackground: "#eee",
-  lightPurple: "#F17096",
-  darkPurple: "#6D399C",
-  menuText: "#787878",
+};
 
-  interswitch: "#1F78B4",
-  GTB: "#F87EB9",
-  ITEX: "#7DE5E4",
+const Routes = {
+  register: host + "users/register",
+  login: host + "users/login",
 
-  kaduna: "#2A4F7A",
-  kano: "#C73B41",
-  yola: "#93E1E2",
-  jos: "#EAA654",
-  abuja: "#75DC85",
-  ibadan: "#696969",
-  eko: "#F9C034",
-  ph: "#519C79",
-  enugu: "#632E85"
+  ceate_cause: host + "cause/create",
+  all_causes: host + "cause",
 };
 
 const Actions = {
@@ -32,7 +24,7 @@ const Actions = {
   hide: "HIDE",
   navigate: "NAVIGATE",
   collapse: "COLLAPSE",
-  switchTab: "SWITCHTAB"
+  switchTab: "SWITCHTAB",
 };
 
-export { Colors, Actions };
+export { Colors, Actions, Routes, baseUrl };

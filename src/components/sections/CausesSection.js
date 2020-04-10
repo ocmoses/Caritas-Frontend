@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Container,
   Typography,
@@ -6,12 +6,13 @@ import {
   Grid,
   Tabs,
   Tab,
-  Zoom
+  Zoom,
 } from "@material-ui/core";
 import { FancyShape, useStyles } from "../../helpers";
 import { Colors } from "../../constants";
 import { Link } from "react-router-dom";
 import { CauseItem } from "../";
+import { getAllCauses } from "../../services/cause.service";
 
 const causes = [
   {
@@ -24,7 +25,7 @@ const causes = [
     target: 400000,
     desc: `Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
                         sed diam nonumy eirmod tempor invidunt ut labore et
-                        dolore magna aliquyam erat, sed diam voluptua.`
+                        dolore magna aliquyam erat, sed diam voluptua.`,
   },
   {
     id: 3,
@@ -36,25 +37,39 @@ const causes = [
     target: 400000,
     desc: `Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
                         sed diam nonumy eirmod tempor invidunt ut labore et
-                        dolore magna aliquyam erat, sed diam voluptua.`
-  }
+                        dolore magna aliquyam erat, sed diam voluptua.`,
+  },
 ];
 
 const CausesSection = () => {
   const classes = useStyles();
 
   const [tab, setTab] = useState(0);
+  const [allCauses, setAllCauses] = useState([]);
 
-  const handleTabChange = value => {
+  const handleTabChange = (value) => {
     setTab(value);
   };
+
+  const fetchAllCauses = async () => {
+    return await getAllCauses();
+  };
+
+  useEffect(() => {
+    async function setTheCauses() {
+      let returnedCauses = await fetchAllCauses();
+      if (Array.isArray(returnedCauses)) setAllCauses(returnedCauses);
+      else setAllCauses([]);
+    }
+    setTheCauses();
+  }, []);
 
   return (
     <section className={classes.corona}>
       <Container>
         <Zoom in={true} timeout={3000} mountOnEnter>
           <Grid item container>
-            <Grid item md={6}>
+            <Grid item md={6} className={classes.causesSection}>
               <Typography
                 variant="h6"
                 component="h6"
@@ -65,7 +80,7 @@ const CausesSection = () => {
               <Typography
                 variant="body1"
                 component="p"
-                style={{ fontSize: 14, marginBottom: 32 }}
+                style={{ fontSize: 14, marginBottom: 32, marginTop: 32 }}
               >
                 As COVID-19 continues to spread in Africa, more individuals and
                 communities are feeling the impact on their daily lives. Beyond
@@ -80,7 +95,7 @@ const CausesSection = () => {
               </Typography>
               <FancyShape>Sign Up to get Started</FancyShape>
             </Grid>
-            <Grid item md={5} style={{ marginLeft: "auto" }}>
+            <Grid item md={5} className={classes.justCoronaImage}>
               <img
                 src="/assets/images/corona.png"
                 alt=""
@@ -149,10 +164,16 @@ const CausesSection = () => {
                 Here are the top causes for today
               </Typography>
             </Grid>
-            <Grid item md={6} style={{ textAlign: "right" }}>
-              <Link to="/">See all</Link>
+            <Grid item sm={12} md={6} style={{ textAlign: "right" }}>
+              <Link to="/" style={{ float: "right" }}>
+                See all
+              </Link>
             </Grid>
-            <Grid item md={12} style={{ marginBottom: "50px" }}>
+            <Grid
+              item
+              md={12}
+              style={{ marginBottom: "50px", overflowX: "auto" }}
+            >
               <Tabs
                 value={tab}
                 indicatorColor="primary"
@@ -172,13 +193,13 @@ const CausesSection = () => {
                   style={{
                     padding: 50,
                     display: "flex",
-                    flexWrap: "no-wrap !important"
+                    flexWrap: "no-wrap !important",
                   }}
                 >
-                  {causes.map((cause, index) => (
+                  {allCauses.map((cause, index) => (
                     <Grid item>
-                      <CauseItem cause={cause} key={`cause-${cause.id}`}>
-                        {cause.desc}
+                      <CauseItem cause={cause} key={`cause-${cause._id}`}>
+                        {cause.brief_description}
                       </CauseItem>
                     </Grid>
                   ))}
@@ -192,31 +213,31 @@ const CausesSection = () => {
   );
 };
 
-const Precautions = props => {
+const Precautions = (props) => {
   const theClasses = {
     root: {
-      flex: 0.18,
+      width: "200px",
       color: "white",
-      textAlign: "center"
+      textAlign: "center",
     },
     src: {
       display: "block",
       margin: "auto",
       height: "60px",
-      marginBottom: 10
+      marginBottom: 10,
     },
     body: {
       fontWeight: "bold",
       textTransform: "uppercase",
       fontSize: 12,
       color: "black",
-      marginBottom: "0px"
+      marginBottom: "0px",
     },
     direction: {
       margin: 0,
       fontSize: 10,
-      color: Colors.appBlack
-    }
+      color: Colors.appBlack,
+    },
   };
 
   const { root, src, body, direction } = theClasses;

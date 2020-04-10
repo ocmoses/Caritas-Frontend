@@ -8,78 +8,98 @@ import {
   FormControl,
   Typography,
   Button,
-  Zoom
+  Zoom,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { PrimaryAppBar, MyTextField } from "../commons";
 import { Link } from "react-router-dom";
 import { Colors } from "../constants";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   content: {
-    marginTop: 100
+    marginTop: 100,
   },
   formControl: {
     width: `100%  !important`,
-    display: "block"
+    display: "block",
   },
   loginButton: {
     width: "100% !important",
     padding: theme.spacing(2),
-    color: "white"
+    color: "white",
   },
   formHeader: {
     fontWeight: "bold",
-    color: Colors.appRed
+    color: Colors.appRed,
+    [theme.breakpoints.down("md")]: {
+      textAlign: "center",
+    },
   },
   formSubheader: {
-    marginBottom: 50
+    marginBottom: 50,
+    [theme.breakpoints.down("md")]: {
+      textAlign: "center",
+    },
   },
   formByLine: {
-    marginLeft: "30px"
+    marginLeft: "30px",
   },
   textField: {
     width: "100% !important",
     borderRadius: 10,
-    marginBottom: 20
   },
   leftGrid: {
     height: "600px",
     backgroundImage: "url(/images/login_pic.png)",
-    backgroundSize: "cover"
+    backgroundSize: "cover",
   },
   left: {
     padding: "200px 50px",
-    backgroundColor: Colors.appBackground
+    backgroundColor: Colors.appBackground,
   },
   right: {
+    [theme.breakpoints.down("md")]: {
+      display: "none",
+    },
     backgroundColor: Colors.appRed,
     padding: "200px 50px",
     backgroundImage: "url('/assets/images/auth-background.png')",
     backgroundPosition: "80% 150px",
     backgroundRepeat: "no-repeat",
-    backgroundSize: "450px 450px"
+    backgroundSize: "450px 450px",
   },
   authPage: {
     width: "100%",
-    height: "100vh"
+    height: "100vh",
   },
   authImage: {
     width: "450px",
     display: "block",
     marginLeft: "auto",
-    marginTop: "50px"
+    marginTop: "50px",
+    [theme.breakpoints.down("md")]: {
+      display: "none",
+    },
   },
   authLeft: { position: "relative" },
+  alternate: {
+    [theme.breakpoints.down("md")]: {
+      textAlign: "center",
+    },
+  },
   copyright: {
     position: "absolute",
     bottom: "30px",
     fontSize: "10px",
-    width: "100%"
+    width: "100%",
   },
   form: {
-    width: "400px !important"
-  }
+    width: "400px !important",
+    [theme.breakpoints.down("md")]: {
+      display: "block",
+      margin: "auto",
+    },
+  },
 }));
 
 const RecoverPassword = () => {
@@ -94,12 +114,12 @@ const RecoverPassword = () => {
           style={{
             position: "absolute",
             width: "100%",
-            top: 200
+            top: 200,
           }}
         >
           <Container>
             <Grid container>
-              <Grid item xs={6} className={classes.authLeft}>
+              <Grid item xs={12} md={6} className={classes.authLeft}>
                 <Typography
                   variant="h4"
                   component="h4"
@@ -140,8 +160,9 @@ const RecoverPassword = () => {
                 <p
                   style={{
                     color: Colors.appBlack,
-                    marginTop: "50px"
+                    marginTop: "50px",
                   }}
+                  className={classes.alternate}
                 >
                   Silly me I remember my details,{" "}
                   <Link
@@ -149,14 +170,14 @@ const RecoverPassword = () => {
                     style={{
                       color: Colors.appRed,
                       fontWeight: "bold",
-                      display: "inline"
+                      display: "inline",
                     }}
                   >
                     Sign In instead
                   </Link>
                 </p>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12} md={6}>
                 <Zoom in={true} timeout={2000}>
                   <img
                     src="/assets/images/nurse.png"

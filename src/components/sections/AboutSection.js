@@ -71,23 +71,23 @@ const AboutSection = () => {
   );
 };
 
-const Stat = props => {
+const Stat = (props) => {
   const theClasses = {
     root: {
       flex: 0.25,
       color: "white",
-      textAlign: "center"
+      textAlign: "center",
     },
     src: {
       display: "block",
       margin: "auto",
       width: "40px",
-      marginBottom: 10
+      marginBottom: 10,
     },
     p: {
       margin: 0,
-      fontSize: 12
-    }
+      fontSize: 12,
+    },
   };
 
   const { root, src, p } = theClasses;

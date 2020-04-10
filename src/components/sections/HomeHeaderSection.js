@@ -11,7 +11,12 @@ const HomeHeaderSection = () => {
       <Container>
         <Grid container>
           <Grow in={true} timeout={3000} mountOnEnter>
-            <Grid item md={6} style={{ paddingRight: "30px" }}>
+            <Grid
+              item
+              md={6}
+              style={{ paddingRight: "30px" }}
+              className={classes.welcomeSubscribe}
+            >
               <Typography
                 variant="h6"
                 component="h6"
@@ -25,7 +30,7 @@ const HomeHeaderSection = () => {
                 style={{
                   color: "black",
                   fontWeight: "bold",
-                  marginBottom: 16
+                  marginBottom: 16,
                 }}
               >
                 An Online Community of people committed to a single cause of
@@ -42,7 +47,7 @@ const HomeHeaderSection = () => {
                     flex: 1,
                     color: Colors.appGreen,
                     cursor: "pointer",
-                    fontWeight: "bold"
+                    fontWeight: "bold",
                   }}
                 >
                   Education
@@ -53,7 +58,7 @@ const HomeHeaderSection = () => {
                     flex: 1,
                     color: Colors.appOrange,
                     cursor: "pointer",
-                    fontWeight: "bold"
+                    fontWeight: "bold",
                   }}
                 >
                   Food
@@ -64,7 +69,7 @@ const HomeHeaderSection = () => {
                     flex: 1,
                     color: Colors.appRed,
                     cursor: "pointer",
-                    fontWeight: "bold"
+                    fontWeight: "bold",
                   }}
                 >
                   Health
@@ -75,7 +80,7 @@ const HomeHeaderSection = () => {
                     flex: 1,
                     color: Colors.appBlue,
                     cursor: "pointer",
-                    fontWeight: "bold"
+                    fontWeight: "bold",
                   }}
                 >
                   Human Rights
@@ -98,7 +103,7 @@ const HomeHeaderSection = () => {
                   style={{
                     color: Colors.appRed,
                     fontWeight: "bold",
-                    marginRight: 8
+                    marginRight: 8,
                   }}
                 >
                   Call for help:
@@ -107,7 +112,7 @@ const HomeHeaderSection = () => {
                   href="/"
                   style={{
                     color: Colors.appBlack,
-                    fontWeight: "bold"
+                    fontWeight: "bold",
                   }}
                 >
                   Coronavirus Food &amp; Medical Assistance Relief
@@ -121,8 +126,9 @@ const HomeHeaderSection = () => {
             style={{
               marginLeft: "auto",
               display: "flex",
-              paddingBottom: "30px"
+              paddingBottom: "30px",
             }}
+            className={classes.welcomePictures}
           >
             <Grid item xs={6}>
               <Zoom in={true} timeout={1000} mountOnEnter>

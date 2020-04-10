@@ -1,13 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Grid, Tabs, Tab, Container } from "@material-ui/core";
 import { Colors } from "../../constants";
 import { CauseItem } from "../";
-import { causes } from "../../mock.js";
+import { getAllCauses } from "../../services/cause.service";
 
 const CausesTabs = () => {
   const [tab, setTab] = useState(0);
+  let [allCauses, setAllCauses] = useState([]);
 
-  const handleTabChange = value => {
+  const fetchAllCauses = async () => {
+    return await getAllCauses();
+  };
+
+  useEffect(() => {
+    async function setTheCauses() {
+      let returnedCauses = await fetchAllCauses();
+      if (Array.isArray(returnedCauses)) setAllCauses(returnedCauses);
+      else setAllCauses([]);
+    }
+    setTheCauses();
+  }, []);
+
+  const handleTabChange = (value) => {
     setTab(value);
   };
 
@@ -33,12 +47,12 @@ const CausesTabs = () => {
             style={{
               padding: 50,
               display: "flex",
-              flexWrap: "no-wrap !important"
+              flexWrap: "no-wrap !important",
             }}
           >
-            {causes.map((cause, index) => (
+            {allCauses.map((cause, index) => (
               <Grid item>
-                <CauseItem cause={cause}>{cause.desc}</CauseItem>
+                <CauseItem cause={cause}>{cause.brief_description}</CauseItem>
               </Grid>
             ))}
           </Grid>
