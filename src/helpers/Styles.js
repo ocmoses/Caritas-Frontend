@@ -118,7 +118,6 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     boxSizing: "border-box",
     backgroundColor: "white",
-    padding: "32px 32px 0px 32px",
     display: "inline-block",
   },
 
@@ -138,14 +137,16 @@ const useStyles = makeStyles((theme) => ({
       borderRadius: "50px 50px 0px 0px",
       backgroundColor: Colors.appRed,
       display: "flex",
+
       marginBottom: "-30px",
     },
     marginTop: "50px",
-    padding: "50px",
+    padding: "20px",
     boxSizing: "border-box",
-    borderRadius: "30px 30px 0px 0px",
+    borderRadius: "20px 20px 0px 0px",
     backgroundColor: Colors.appRed,
     display: "flex",
+    aligntems: "center",
   },
   causesSection: {
     padding: "20px",

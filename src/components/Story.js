@@ -4,33 +4,42 @@ import { Paper, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Colors } from "../constants";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    padding: "0px !important"
+    padding: "0px !important",
   },
   item: {
     width: "500px",
     height: "200px",
     display: "flex",
     padding: "0px !important",
-    overflow: "hidden"
+    overflow: "hidden",
+    [theme.breakpoints.down("md")]: {
+      display: "block",
+      margin: "auto",
+      width: "300px",
+      height: "450px",
+    },
   },
   image: {
-    backgroundImage: props => "url(" + props.image + ")",
+    backgroundImage: (props) => "url(" + props.image + ")",
     backgroundSize: "cover",
-    flex: 0.45
+    flex: 0.45,
+    [theme.breakpoints.down("md")]: {
+      height: "200px",
+    },
   },
   right: {
     flex: 0.55,
-    position: "relative"
+    position: "relative",
   },
   story: {
     position: "relative",
-    padding: theme.spacing(2)
-  }
+    padding: theme.spacing(2),
+  },
 }));
 
-const Story = props => {
+const Story = (props) => {
   const classes = useStyles(props);
   return (
     <Paper elevation="4" className={clsx(classes.item, classes.root)}>

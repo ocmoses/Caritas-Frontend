@@ -74,9 +74,9 @@ const AboutSection = () => {
 const Stat = (props) => {
   const theClasses = {
     root: {
-      flex: 0.25,
       color: "white",
       textAlign: "center",
+      margin: "0px 10px",
     },
     src: {
       display: "block",
