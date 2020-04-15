@@ -98,6 +98,7 @@ const useStyles = makeStyles((theme) => ({
   form: {
     width: "400px !important",
     [theme.breakpoints.down("md")]: {
+      width: "100% !important",
       display: "block",
       margin: "auto",
     },

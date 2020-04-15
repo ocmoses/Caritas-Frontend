@@ -75,11 +75,12 @@ const useStyles = makeStyles((theme) => ({
 
 const CauseItem = (props) => {
   const classes = useStyles(props);
+  console.log("Inside cause item", props);
   return (
     <Paper
       elevation="4"
       className={clsx(classes.item, classes.root)}
-      onClick={() => (window.location = `/causes/${props.cause._id}`)}
+      onClick={() => (window.location = `/cause/${props.cause._id}`)}
     >
       <div className={clsx(classes.image, classes.root)}></div>
       <div className={classes.right}>

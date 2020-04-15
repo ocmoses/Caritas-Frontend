@@ -155,6 +155,7 @@ export default function PrimarySearchAppBar() {
   );
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  let [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const authPage =
     location.pathname === "/signin" ||
     location.pathname === "/signup" ||
@@ -177,7 +178,7 @@ export default function PrimarySearchAppBar() {
   };
 
   const handleMobileMenuOpen = (event) => {
-    // setMobileMoreAnchorEl(event.currentTarget);
+    setMobileMoreAnchorEl(event.currentTarget);
   };
 
   // console.log("location", location);
@@ -209,49 +210,102 @@ export default function PrimarySearchAppBar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <a
-        href="/"
-        className={location.pathname == "/" ? classes.active : classes.inactive}
-      >
-        Home
-      </a>
-      <a
-        href="#about"
-        className={
-          location.hash == "#about" ? classes.active : classes.inactive
-        }
-      >
-        About
-      </a>
-      <a
-        href="#integrations"
-        className={
-          location.pathname == "#integrations"
-            ? classes.active
-            : classes.inactive
-        }
-      >
-        Integration
-      </a>
-      <a
-        href="#faq"
-        className={
-          location.pathname == "#faq" ? classes.active : classes.inactive
-        }
-      >
-        FAQs
-      </a>
-      <a
-        href="#support"
-        className={
-          location.pathname == "#support" ? classes.active : classes.inactive
-        }
-      >
-        Support
-      </a>
-
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem>
+        <NavLink
+          to="/about"
+          className={
+            location.pathname === "/about" ? classes.active : classes.inactive
+          }
+        >
+          About
+        </NavLink>
+      </MenuItem>
+      <MenuItem>
+        <NavLink
+          to="/causes"
+          className={
+            location.pathname === "/causes" ? classes.active : classes.inactive
+          }
+        >
+          Causes
+        </NavLink>
+      </MenuItem>
+      <MenuItem>
+        <NavLink
+          to="/how-it-works"
+          className={
+            location.pathname === "/how-it-works"
+              ? classes.active
+              : classes.inactive
+          }
+        >
+          How it Works
+        </NavLink>
+      </MenuItem>
+      {isAuthenticated() && (
+        <>
+          <MenuItem>
+            <NavLink
+              to="/dashboard"
+              className={
+                location.pathname === "/dashboard"
+                  ? classes.active
+                  : classes.inactive
+              }
+            >
+              Dashboard
+            </NavLink>
+          </MenuItem>
+          <MenuItem>
+            <NavLink
+              to="/dashboard/create-cause"
+              className={
+                location.pathname === "/dashboard/create-cause"
+                  ? classes.active
+                  : classes.inactive
+              }
+            >
+              Create a cause
+            </NavLink>
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              signout();
+              window.location = "/signin";
+            }}
+          >
+            Sign out
+          </MenuItem>
+        </>
+      )}
+      {!isAuthenticated() && (
+        <>
+          <MenuItem>
+            <NavLink
+              to="/signup"
+              className={
+                location.pathname === "/signup"
+                  ? classes.active
+                  : classes.inactive
+              }
+            >
+              Sign up
+            </NavLink>
+          </MenuItem>
+          <MenuItem>
+            <NavLink
+              to="/signin"
+              className={
+                location.pathname === "/signin"
+                  ? classes.active
+                  : classes.inactive
+              }
+            >
+              Sign in
+            </NavLink>
+          </MenuItem>
+        </>
+      )}
     </Menu>
   );
 

@@ -18,6 +18,22 @@ const getAllCauses = async () => {
     });
 };
 
+const getCause = async (id) => {
+  return await axios
+    .get(
+      `${Routes.get_cause}${id !== "úndefined" ? id : ""}`,
+
+      { "Content-Type": "application/json" }
+    )
+    .then((res) => {
+      console.log("The cause gotten", res.data.data);
+      return res.data.data;
+    })
+    .catch((err) => {
+      return err;
+    });
+};
+
 const createCause = async (cause) => {
   let formData = new FormData();
   formData.append("cause_title", cause.causeTitle);
@@ -26,18 +42,27 @@ const createCause = async (cause) => {
   formData.append("charity_information", cause.charityInformation);
   formData.append("additional_information", cause.additionalInformation);
   formData.append("category", "Health");
-  formData.append("cause_photos", [
-    cause.uploadFiles.image1,
-    // cause.uploadFiles.image2,
-    // cause.uploadFiles.image3,
-    // cause.uploadFiles.image4,
-    // cause.uploadFiles.image5,
-    // cause.uploadFiles.image6,
-  ]);
-  formData.append("cause_video", [cause.uploadFiles.video1]);
+  formData.append("cause_photos", cause.uploadFiles.image1);
+  if (cause.uploadFiles.image2) {
+    formData.append("cause_photos", cause.uploadFiles.image2);
+  }
+  if (cause.uploadFiles.image3) {
+    formData.append("cause_photos", cause.uploadFiles.image3);
+  }
+  if (cause.uploadFiles.image4) {
+    formData.append("cause_photos", cause.uploadFiles.image4);
+  }
+  if (cause.uploadFiles.image5) {
+    formData.append("cause_photos", cause.uploadFiles.image5);
+  }
+  if (cause.uploadFiles.image6) {
+    formData.append("cause_photos", cause.uploadFiles.image6);
+  }
+
+  formData.append("cause_video", cause.uploadFiles.video1);
   formData.append("account_number", 1234567890);
   formData.append(
-    "accept_comment_and_review",
+    "accept_comments_and_reviews",
     cause.causeOptions.enableComments
   );
   formData.append("watch_cause", cause.causeOptions.enableWatching);
@@ -58,11 +83,11 @@ const createCause = async (cause) => {
   })
     .then((res) => {
       console.log("All causes gotten", res.data.data);
-      return res.data.data;
+      return res;
     })
     .catch((err) => {
       return err;
     });
 };
 
-export { getAllCauses, createCause };
+export { getAllCauses, createCause, getCause };

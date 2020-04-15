@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Paper } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
 import { Colors } from "../constants";
+import { makeStyles } from "@material-ui/core/styles";
 // import "../add_cause.module.css";
 
 const styles = {
@@ -49,6 +49,7 @@ class AddImage extends Component {
     this.Ref = React.createRef();
     this.handleClick = this.handleClick.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
+    this.state = { backgroundImage: "" };
   }
 
   handleClick() {
@@ -56,25 +57,44 @@ class AddImage extends Component {
   }
 
   handleOnChange(event) {
-    console.log("New file", event.target.files[0]);
-    this.props.setImage(event.target.files[0]);
-    console.log("Then the last line ran");
+    const TheFile = event.target.files[0];
+    this.props.setImage(TheFile);
+
+    if (TheFile) {
+      var reader = new FileReader();
+
+      reader.onload = () => {
+        this.setState({ backgroundImage: TheFile });
+      };
+
+      reader.readAsDataURL(TheFile);
+    }
   }
 
   render() {
     const { item, title, text, img } = styles;
     return (
       <Paper style={item} onClick={this.handleClick}>
-        <img style={img} src={this.props.image} alt="" />
-        <p style={title}>{this.props.title}</p>
-        <p style={text}>{this.props.text}</p>
-        <input
-          type="file"
-          name={this.props.filename}
-          style={{ display: "none" }}
-          ref={this.Ref}
-          onChange={this.handleOnChange}
-        />
+        <div
+          style={{
+            width: "100%",
+            height: "100%",
+            backgroundImage: this.state.backgroundImage,
+            backgoundSize: "cover",
+            backgroundRepeat: "no-repeat",
+          }}
+        >
+          <img style={img} src={this.props.image} alt="" />
+          <p style={title}>{this.props.title}</p>
+          <p style={text}>{this.props.text}</p>
+          <input
+            type="file"
+            name={this.props.filename}
+            style={{ display: "none" }}
+            ref={this.Ref}
+            onChange={this.handleOnChange}
+          />
+        </div>
       </Paper>
     );
   }

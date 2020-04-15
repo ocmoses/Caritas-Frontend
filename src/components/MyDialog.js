@@ -78,9 +78,9 @@ export default function MyDialog(props) {
           <Typography
             gutterBottom
             style={{
-              height: "120px",
+              paddingTop: 100,
+              paddingBottom: 100,
               width: "400px",
-              lineHeight: "120px",
               textAlign: "center",
               color: props.positiveDialog ? "green" : "red",
             }}

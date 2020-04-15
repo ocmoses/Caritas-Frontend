@@ -10,7 +10,7 @@ const SubscriptionBox = () => {
       spacing={3}
       style={{
         padding: "100px 0px",
-        display: "flex"
+        display: "flex",
       }}
     >
       <div className={classes.subscribeArea}>
@@ -22,13 +22,16 @@ const SubscriptionBox = () => {
         >
           Stay up to date with our Events and Projects
         </Typography>
-        <input
-          type="email"
-          className={classes.subscribe}
-          id="sunscribe2"
-          placeholder="Subscribe to our newsletter"
-        />
-        <button className={classes.subscribeButton2}>Subscibe</button>
+        <div style={{ display: "flex", flexWrap: "nowrap" }}>
+          <input
+            type="email"
+            className={classes.subscribe}
+            id="sunscribe2"
+            placeholder="Subscribe to our newsletter"
+          />
+          <button className={classes.subscribeButton2}>Subscibe</button>
+        </div>
+
         <img
           src="/assets/images/shapes/shape3.png"
           alt=""
@@ -36,7 +39,7 @@ const SubscriptionBox = () => {
             width: 50,
             position: "absolute",
             top: -20,
-            left: -20
+            left: -20,
           }}
         />
         <img
@@ -46,7 +49,7 @@ const SubscriptionBox = () => {
             width: 50,
             position: "absolute",
             top: -20,
-            right: -20
+            right: -20,
           }}
         />
         <img
@@ -56,7 +59,7 @@ const SubscriptionBox = () => {
             width: 50,
             position: "absolute",
             bottom: -20,
-            left: "calc(50% - 25px)"
+            left: "calc(50% - 25px)",
           }}
         />
       </div>

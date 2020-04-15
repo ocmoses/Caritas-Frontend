@@ -24,6 +24,7 @@ import {
   isValidBriefDescription,
 } from "../helpers/validator";
 import { createCause } from "../services/cause.service";
+import { MyDialog } from "../components";
 
 const moreStyles = makeStyles((theme) => ({
   sectionHead: {
@@ -104,6 +105,10 @@ const AddCause = () => {
   });
 
   let [errorMessage, setErrorMessage] = useState("");
+  let [openDialog, setOpenDialog] = useState(false);
+  let [dialogMessage, setDialogMessage] = useState("");
+  let [dialogTitle, setDialogTitle] = useState("");
+  let [positiveDialog, setPositiveDialog] = useState(false);
 
   const handleCauseTitleChange = (event) => {
     setCauseTitle(event.target.value.trim());
@@ -166,13 +171,31 @@ const AddCause = () => {
     cause.uploadFiles = uploadFiles;
 
     if (cause.uploadFiles.image1 == null) {
-      setErrorMessage("You must upload at least one image");
+      setPositiveDialog(false);
+      setDialogTitle("Upload Failure");
+      setDialogMessage(`You must upload at least one image for your cause`);
+      setOpenDialog(true);
       return;
     }
 
     let outcome = await createCause(cause);
 
-    console.log("Result of creating cause", outcome);
+    if (outcome.status === 200) {
+      setPage(3);
+    } else {
+      setPositiveDialog(false);
+      setDialogTitle("Upload Failure");
+      setDialogMessage(
+        `There was an error uploading your cause ${
+          outcome.response.data.message
+            ? "," + outcome.response.data.message
+            : ""
+        }`
+      );
+      setOpenDialog(true);
+    }
+    // console.log("Result of creating cause", outcome);
+    // console.log("Error from creating cause", outcome.response);
   };
 
   const handleAddImageClick = (event) => {
@@ -185,6 +208,14 @@ const AddCause = () => {
   return (
     <>
       <PrimaryAppBar />
+      <MyDialog
+        title={dialogTitle}
+        openDialog={openDialog}
+        positiveDialog={positiveDialog}
+        onClose={() => setOpenDialog(false)}
+      >
+        {dialogMessage}
+      </MyDialog>
       {page === 1 && (
         <Container style={{ marginTop: 200 }}>
           <form action={"#"} method="POST" className={classes.form}>
@@ -400,6 +431,7 @@ const AddCause = () => {
                     style={{ alignSelf: "flex-start" }}
                     filename="image1"
                     onClick={handleAddImageClick}
+                    backgroundImage={uploadFiles.image1}
                     setImage={(file) => {
                       setUploadFiles({
                         ...uploadFiles,
@@ -415,6 +447,7 @@ const AddCause = () => {
                     text="This Video appears on the causes page."
                     filename="video1"
                     onClick={handleAddImageClick}
+                    backgroundImage={uploadFiles.video1}
                     setImage={(file) => {
                       setUploadFiles({
                         ...uploadFiles,
@@ -428,6 +461,7 @@ const AddCause = () => {
                     text="This Video appears on the causes page."
                     filename="image2"
                     onClick={handleAddImageClick}
+                    backgroundImage={uploadFiles.image2}
                     setImage={(file) => {
                       setUploadFiles({
                         ...uploadFiles,
@@ -441,6 +475,7 @@ const AddCause = () => {
                     text="This Video appears on the causes page."
                     filename="image3"
                     onClick={handleAddImageClick}
+                    backgroundImage={uploadFiles.image3}
                     setImage={(file) => {
                       setUploadFiles({
                         ...uploadFiles,
@@ -465,6 +500,7 @@ const AddCause = () => {
                     text="This image appears on the more Info tab."
                     filename="image4"
                     onClick={handleAddImageClick}
+                    backgroundImage={uploadFiles.image4}
                     setImage={(file) => {
                       setUploadFiles({
                         ...uploadFiles,
@@ -478,6 +514,7 @@ const AddCause = () => {
                     text="This image appears on the more Info tab."
                     filename="image5"
                     onClick={handleAddImageClick}
+                    backgroundImage={uploadFiles.image5}
                     setImage={(file) => {
                       setUploadFiles({
                         ...uploadFiles,
@@ -491,6 +528,7 @@ const AddCause = () => {
                     text="This image appears on the more Info tab."
                     filename="image6"
                     onClick={handleAddImageClick}
+                    backgroundImage={uploadFiles.image6}
                     setImage={(file) => {
                       setUploadFiles({
                         ...uploadFiles,

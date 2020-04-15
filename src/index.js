@@ -63,7 +63,7 @@ const App = () => {
               path="/dashboard/create-cause"
               component={AddCause}
             />
-            <Route path="/causes/:id" component={ACausePage} />
+            <Route path="/cause/:id" component={ACausePage} />
           </Switch>
         </BrowserRouter>
       </MuiThemeProvider>

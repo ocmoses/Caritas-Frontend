@@ -17,6 +17,7 @@ const Routes = {
 
   ceate_cause: host + "cause/create",
   all_causes: host + "cause",
+  get_cause: host + "cause/", //the cause id must be appended
 };
 
 const Actions = {

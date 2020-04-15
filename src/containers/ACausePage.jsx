@@ -8,7 +8,8 @@ import { useParams } from "react-router-dom";
 import { Grid, Typography, Container, Tabs, Tab } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Colors } from "../constants";
-import { getAllCauses } from "../services/cause.service";
+import { useLocation } from "react-router-dom";
+import { getCause, getAllCauses } from "../services/cause.service";
 
 const causes = [
   {
@@ -62,33 +63,42 @@ const moreStyles = makeStyles((theme) => ({
 
 const ACausePage = () => {
   const [tab, setTab] = useState(0);
+  const [cause, setCause] = useState([]);
   const [allCauses, setAllCauses] = useState([]);
+  const { id } = useParams();
 
   const handleTabChange = (value) => {
     setTab(value);
   };
   const classes = useStyles();
-  const params = useParams();
-  const id = params.id;
   const classes2 = moreStyles();
 
   console.log("The param id", id);
-  console.log("causes", causes);
+  console.log("cause", cause);
 
+  const fetchCause = async (id) => {
+    return await getCause(id);
+  };
   const fetchAllCauses = async () => {
     return await getAllCauses();
   };
 
   useEffect(() => {
+    async function setACause() {
+      let returnedCause = await fetchCause(id);
+      if (returnedCause) setCause(returnedCause);
+      else setCause([]);
+    }
     async function setTheCauses() {
       let returnedCauses = await fetchAllCauses();
       if (Array.isArray(returnedCauses)) setAllCauses(returnedCauses);
       else setAllCauses([]);
     }
     setTheCauses();
+    setACause();
   }, []);
 
-  console.log(allCauses);
+  console.log("The cause", cause);
 
   return (
     <Fragment>
@@ -97,7 +107,7 @@ const ACausePage = () => {
         className={classes.appbar}
       ></PrimaryAppBar>
       <main className={classes.main}>
-        <ACauseHeader cause={allCauses[0]} />
+        <ACauseHeader cause={cause} />
         <Container>
           <Tabs
             value={tab}

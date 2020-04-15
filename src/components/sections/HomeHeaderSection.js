@@ -86,7 +86,11 @@ const HomeHeaderSection = () => {
                   Human Rights
                 </Link>
               </Grid>
-              <Grid item xs={12}>
+              <Grid
+                item
+                xs={12}
+                style={{ display: "flex", flexWrap: "nowrap" }}
+              >
                 <input
                   type="email"
                   className={classes.subscribe}

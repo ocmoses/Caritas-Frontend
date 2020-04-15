@@ -32,8 +32,7 @@ const useStyles = makeStyles((theme) => ({
   },
 
   subscribe: {
-    width: "75%",
-    minWidth: "300px",
+    flex: 0.7,
     height: 50,
     boxSizing: "border-box",
     padding: 16,
@@ -46,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
   },
 
   subscribeButton: {
-    width: "25%",
+    flex: 0.3,
     height: 52,
     boxSizing: "border-box",
     padding: 16,
@@ -57,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: "2px 2px 5px rgba(0,0,0,.3)",
   },
   subscribeButton2: {
-    width: "25%",
+    flex: 0.3,
     height: 52,
     boxSizing: "border-box",
     padding: 16,
