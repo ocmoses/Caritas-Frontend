@@ -19,10 +19,8 @@ import {
   ResetPassword,
 } from "./containers";
 import * as serviceWorker from "./serviceWorker";
-import { useParams, useHistory, useLocation } from "react-router";
 import "./index.css";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
-import { useTheme } from "@material-ui/core/styles";
 import { Provider } from "react-redux";
 import store from "./store";
 import { Colors } from "./constants";

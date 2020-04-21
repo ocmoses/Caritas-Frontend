@@ -441,6 +441,25 @@ const Signup = () => {
                       <MenuItem value="UBA">UBA</MenuItem>
                       <MenuItem value="GT Bank">GT Bank</MenuItem>
                       <MenuItem value="Zenith">Zenith</MenuItem>
+                      <MenuItem value="First Bank">First Bank</MenuItem>
+                      <MenuItem value="Keystone Bank">Keystone Bank</MenuItem>
+                      <MenuItem value="Access Bank">Access Bank</MenuItem>
+                      <MenuItem value="FCMB">FCMB</MenuItem>
+                      <MenuItem value="Fidelity">Fidelity</MenuItem>
+                      <MenuItem value="Polaris">Polaris</MenuItem>
+                      <MenuItem value="Eko Bank">Eko Bank</MenuItem>
+                      <MenuItem value="Wema Bank">Wema Bank</MenuItem>
+                      <MenuItem value="Heritage Bank">Heritage Bank</MenuItem>
+                      <MenuItem value="Sterling Bank">Sterling Bank</MenuItem>
+                      <MenuItem value="Standard Chartered Bank">
+                        Standard Chartered Bank
+                      </MenuItem>
+                      <MenuItem value="Stanbic IBTC">
+                        Stanbic IBTC Bank
+                      </MenuItem>
+                      <MenuItem value="Titan Bank">Titan Bank</MenuItem>
+                      <MenuItem value="Unity Bank">Unity Bank</MenuItem>
+                      <MenuItem value="Union Bank">Union Bank</MenuItem>
                     </Select>
                   </FormControl>
                   <FormControl className={classes.formControl}>
