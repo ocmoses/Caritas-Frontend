@@ -37,9 +37,7 @@ const AboutHeaderSection = () => {
               affected by COVID-19. We are here to help, please register and log
               your cause and get speedy help from our Caritas team.
             </Typography>
-            <Link to="/signup">
-              <FancyButton label="Sign Up to get Started" />
-            </Link>
+            <FancyButton label="Sign Up to get Started" onClick={() => window.location = "/signup"}/>            
           </Grid>
         </Grid>
       </Container>

@@ -5,7 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Colors } from "../constants";
 import { NavLink } from "react-router-dom";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   paper: {
     display: "flex",
     width: "250px",
@@ -20,9 +20,9 @@ const useStyles = makeStyles(theme => ({
     "&:hover": {
       boxShadow: "0px 0px 5px 5px rgba(255,0,0,.2)",
       "& > div:first-child": {
-        boxShadow: "0px 0px 5px 5px rgba(255,0,0,.2)"
-      }
-    }
+        boxShadow: "0px 0px 5px 5px rgba(255,0,0,.2)",
+      },
+    },
   },
   addButton: {
     width: "40px !important",
@@ -37,27 +37,31 @@ const useStyles = makeStyles(theme => ({
     textAlign: "center",
     cursor: "pointer",
     "&$p": {
-      lineHeight: "100%"
+      lineHeight: "100%",
     },
     "&:hover": {
-      boxShadow: "0px 0px 5px 5px rgba(255,0,0,.2)"
+      boxShadow: "0px 0px 5px 5px rgba(255,0,0,.2)",
     },
-    paddingTop: "5px"
+    paddingTop: "5px",
   },
   label: {
     marginLeft: "30px",
     flex: 0.8,
     "&$p": {
-      fontSize: "10px"
-    }
-  }
+      fontSize: "10px",
+    },
+  },
 }));
 
-const AddItem = props => {
+const AddItem = (props) => {
   const classes = useStyles();
 
   return (
-    <Paper className={classes.paper} elevation={4}>
+    <Paper
+      className={classes.paper}
+      elevation={4}
+      onClick={() => (window.location = "/dashboard/create-cause")}
+    >
       <div className={classes.addButton}>+</div>
       <div className={classes.label}>
         <p>{props.label}</p>

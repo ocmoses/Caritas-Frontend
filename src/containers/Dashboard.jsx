@@ -13,6 +13,7 @@ import {
   FormControlLabel,
 } from "@material-ui/core";
 import { useStyles } from "../helpers";
+import { userIsUser, userIsModerator } from "../helpers/utils";
 
 import { Colors } from "../constants";
 import { useLocation, useHistory, Link } from "react-router-dom";
@@ -26,7 +27,11 @@ import {
   isValidFunds,
   isValidBriefDescription,
 } from "../helpers/validator";
-import { getAllCauses } from "../services/cause.service";
+import {
+  getAllCauses,
+  getAllCausesAsModerator,
+} from "../services/cause.service";
+import { CausesTable } from "../components";
 
 const moreStyles = makeStyles((theme) => ({
   sectionHead: {
@@ -113,79 +118,100 @@ const Summary = () => {
 
   return (
     <Container style={{ marginTop: 200 }}>
-      <Grid container spacing={10}>
-        <Grid item xs={12} md={6}>
-          <Typography
-            variant="h4"
-            component="h4"
-            className={classes.sectionHead}
-          >
-            Your Causes
-          </Typography>
-          <Typography
-            variant="body1"
-            component="p"
-            className={classes.sectionSubhead}
-          >
-            Here are the causes pioneered by you.
-          </Typography>
-          <SlideableGridList
-            causes={allCauses}
-            label="Glad you are here. Create a new cause."
-            cols={2}
-          />
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Typography
-            variant="h4"
-            component="h4"
-            className={classes.sectionHead}
-          >
-            Trending
-          </Typography>
-          <Typography
-            variant="body1"
-            component="p"
-            className={classes.sectionSubhead}
-          >
-            Here are the causes making the most impressions
-          </Typography>
-          <SlideableGridList
-            causes={allCauses}
-            label="There are no trending causes yet"
-            cols={2}
-          />
-        </Grid>
-        <Grid item xs={12} md={9}>
-          <Typography
-            variant="h4"
-            component="h4"
-            className={classes.sectionHead}
-          >
-            Causes you follow
-          </Typography>
-          <Typography
-            variant="body1"
-            component="p"
-            className={classes.sectionSubhead}
-          >
-            Here are the causes you have shown interest in
-          </Typography>
-          <SlideableGridList
-            causes={allCauses}
-            label="You are not following Any cause at the moment"
-            cols={3}
-          />
-        </Grid>
+      {userIsUser() && (
+        <Grid container spacing={10}>
+          <Grid item xs={12} md={6}>
+            <Typography
+              variant="h4"
+              component="h4"
+              className={classes.sectionHead}
+            >
+              Your Causes
+            </Typography>
+            <Typography
+              variant="body1"
+              component="p"
+              className={classes.sectionSubhead}
+            >
+              Here are the causes pioneered by you.
+            </Typography>
+            <SlideableGridList
+              causes={allCauses}
+              label="Glad you are here. Create a new cause."
+              cols={2}
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Typography
+              variant="h4"
+              component="h4"
+              className={classes.sectionHead}
+            >
+              Trending
+            </Typography>
+            <Typography
+              variant="body1"
+              component="p"
+              className={classes.sectionSubhead}
+            >
+              Here are the causes making the most impressions
+            </Typography>
+            <SlideableGridList
+              causes={allCauses}
+              label="There are no trending causes yet"
+              cols={2}
+            />
+          </Grid>
+          <Grid item xs={12} md={9}>
+            <Typography
+              variant="h4"
+              component="h4"
+              className={classes.sectionHead}
+            >
+              Causes you follow
+            </Typography>
+            <Typography
+              variant="body1"
+              component="p"
+              className={classes.sectionSubhead}
+            >
+              Here are the causes you have shown interest in
+            </Typography>
+            <SlideableGridList
+              causes={allCauses}
+              label="You are not following Any cause at the moment"
+              cols={3}
+            />
+          </Grid>
 
-        <Grid
-          item
-          xs={12}
-          md={3}
-          className={classes.coronalink}
-          onClick={() => (window.location = "/about")}
-        ></Grid>
-      </Grid>
+          <Grid
+            item
+            xs={12}
+            md={3}
+            className={classes.coronalink}
+            onClick={() => (window.location = "/about")}
+          ></Grid>
+        </Grid>
+      )}
+
+      {userIsModerator() && (
+        <>
+          <Typography
+            variant="h6"
+            component="h6"
+            style={{
+              color: Colors.appRed,
+              fontWeight: "bold",
+              marginBottom: "30px",
+            }}
+          >
+            All Causes
+          </Typography>
+          <Grid container spacing={5}>
+            <CausesTable />
+          </Grid>
+        </>
+      )}
     </Container>
   );
 };

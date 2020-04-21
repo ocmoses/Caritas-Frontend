@@ -75,7 +75,11 @@ const SlideableGridList = (props) => {
                 className={classes.listTile}
               >
                 <img
-                  src={aCause.cause_photos[0].replace(/^uploads\\/, baseUrl)}
+                  src={
+                    process.env.NODE_ENV === "development"
+                      ? aCause.cause_photos[0].replace(/^uploads\\/, baseUrl)
+                      : "/" + aCause.cause_photos[0]
+                  }
                   alt={aCause.cause_title}
                   className={classes.listImage}
                 />

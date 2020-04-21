@@ -79,10 +79,15 @@ const LoggedInAvatar = (props) => {
               <Link className={classes.dropdownLink} to="/dashboard">
                 Dashboard
               </Link>
+
               {/* <hr style={{ color: Colors.appRed }} /> */}
             </>
           )}
-
+          <p style={{ textAlign: "center" }}>
+            <Link to="/dashboard/profile" className={classes.dropdownLink}>
+              Profile
+            </Link>
+          </p>
           <p
             className={classes.dropdownLink}
             style={{ margin: "0px", textAlign: "center" }}

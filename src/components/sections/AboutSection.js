@@ -46,23 +46,23 @@ const AboutSection = () => {
           <div className={classes.aboutFooter}>
             <Stat
               src="/assets/images/icons/briefcase-icon.png"
-              total="30000+"
+              total="10+"
               label="Medical facilities"
             />
             <Stat
               src="/assets/images/icons/mortar-icon.png"
-              total="400000+"
+              total="20+"
               label="Educational supplies"
             />
             <Stat
               src="/assets/images/icons/balance-icon.png"
-              total="800+"
+              total="0+"
               label="Human rights cases"
             />
             <Stat
               src="/assets/images/icons/spanner-icon.png"
-              total="4000+"
-              label="Infrastructures"
+              total="30+"
+              label="Food"
             />
           </div>
         </Slide>

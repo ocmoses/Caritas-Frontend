@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from "react";
 // import ReactDom from "react-dom";
-
+import clsx from "clsx";
 import {
   Grid,
   Container,
@@ -12,10 +12,11 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import { PrimaryAppBar, MyTextField } from "../commons";
 import { Link } from "react-router-dom";
-import { Colors } from "../constants";
-import { MyButton } from "../components";
+import { Colors, recaptchaKey } from "../constants";
+import { MyButton, MyDialog } from "../components";
 import { signinUser } from "../services/user.service";
 import { isValidEmail, isValidPassword } from "../helpers/validator";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -24,6 +25,15 @@ const useStyles = makeStyles((theme) => ({
   formControl: {
     width: `100%  !important`,
     display: "block",
+  },
+  recaptcha: {
+    marginTop: 15,
+    marginBottom: 15,
+    textAlign: "center !important",
+    [theme.breakpoints.up("md")]: {
+      marginLeft: 45,
+    },
+    marginLeft: 30,
   },
   loginButton: {
     width: "100% !important",
@@ -64,6 +74,7 @@ const useStyles = makeStyles((theme) => ({
       display: "none",
     },
     backgroundColor: Colors.appRed,
+    height: "100% !important",
     padding: "200px 50px",
     backgroundImage: "url('/assets/images/auth-background.png')",
     backgroundPosition: "80% 150px",
@@ -72,7 +83,7 @@ const useStyles = makeStyles((theme) => ({
   },
   authPage: {
     width: "100%",
-    height: "100vh",
+    height: "120vh",
   },
   authImage: {
     width: "450px",
@@ -110,8 +121,14 @@ const Signin = () => {
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
   let [errorMessage, setErrorMessage] = useState("");
-  let [successMessage, setSuccessMessage] = useState("");
+  let [successMessage, setSuccessMessage] = useState(false);
   let [progress, setProgress] = useState(false);
+  let [dialogTitle, setDialogTitle] = useState("");
+  let [dialogMessage, setDialogMessage] = useState("");
+  let [openDialog, setOpenDialog] = useState();
+  let [positiveDialog, setPositiveDialog] = useState(true);
+
+  let [verified, setVerified] = useState(false);
 
   const handleSubmit = async (event) => {
     if (event) event.preventDefault();
@@ -120,6 +137,21 @@ const Signin = () => {
 
     if (validateLogin()) {
       //Here we submit shit...
+
+      if (!verified) {
+        setDialogTitle("Hold on!");
+        setDialogMessage("Please verify you are human");
+
+        setPositiveDialog(false);
+
+        setOpenDialog(true);
+
+        setTimeout(function () {
+          window.location.reload();
+        }, 2000);
+
+        return;
+      }
 
       let outcome = await signinUser({
         email: email,
@@ -136,11 +168,23 @@ const Signin = () => {
         setPassword("");
 
         setErrorMessage("");
-        setSuccessMessage("Login Successful...");
+        setSuccessMessage(true);
 
         setTimeout(() => (window.location = "/dashboard"), 3000);
+      } else if (outcome && outcome.status === 206) {
+        setProgress(false);
+        //Don't make a call
+        setDialogTitle("Unverified...");
+        setDialogMessage(
+          "Your account has not been verified. Please check your email for a verification link"
+        );
+
+        setPositiveDialog(false);
+
+        setOpenDialog(true);
+        return;
       } else if (outcome.message) {
-        setSuccessMessage("");
+        setSuccessMessage(false);
         if (outcome.message.includes("400"))
           setErrorMessage("Invalid credentials");
         else setErrorMessage(outcome.message);
@@ -169,9 +213,24 @@ const Signin = () => {
     return true;
   };
 
+  const onRecaptcha = (value) => {
+    //verified = value;
+    if (value) {
+      setVerified(true);
+    }
+  };
+
   return (
     <Fragment>
       <PrimaryAppBar />
+      <MyDialog
+        title={dialogTitle}
+        openDialog={openDialog}
+        positiveDialog={positiveDialog}
+        onClose={() => setOpenDialog(false)}
+      >
+        {dialogMessage}
+      </MyDialog>
       <Grid container className={classes.authPage}>
         <Grid item xs={12} md={6} className={classes.left}></Grid>
         <Grid item xs={12} md={6} className={classes.right}></Grid>
@@ -186,8 +245,8 @@ const Signin = () => {
             <Grid container>
               <Grid item xs={12} md={6} className={classes.authLeft}>
                 <Typography
-                  variant="h4"
-                  component="h4"
+                  variant="h5"
+                  component="h5"
                   className={classes.formHeader}
                 >
                   Welcome back...
@@ -205,11 +264,20 @@ const Signin = () => {
                   >
                     {errorMessage}
                   </div>
-                  <div
-                    style={{ color: "green", textAlign: "center", margin: 16 }}
-                  >
-                    {successMessage}
-                  </div>
+                  {successMessage && (
+                    <div
+                      style={{
+                        borderRadius: 10,
+                        color: "white",
+                        backgroundColor: Colors.appRed,
+                        textAlign: "center",
+                        margin: "16px 0px",
+                        padding: 15,
+                      }}
+                    >
+                      Login Successful...
+                    </div>
+                  )}
                   <FormControl className={classes.formControl}>
                     <MyTextField
                       id="email"
@@ -253,6 +321,12 @@ const Signin = () => {
                     >
                       Forgot password
                     </Link>
+                  </FormControl>
+
+                  <FormControl
+                    className={clsx(classes.formControl, classes.recaptcha)}
+                  >
+                    <ReCAPTCHA sitekey={recaptchaKey} onChange={onRecaptcha} />
                   </FormControl>
 
                   <MyButton processing={false} onClick={handleSubmit}>

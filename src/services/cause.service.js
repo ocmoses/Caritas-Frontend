@@ -18,6 +18,60 @@ const getAllCauses = async () => {
     });
 };
 
+const getAllCausesAsModerator = async () => {
+  console.log("Moderator fetching causes");
+  return await axios({
+    method: "get",
+    url: Routes.moderator_all_causes,
+
+    headers: { "x-auth-token": getToken() },
+  })
+    .then((res) => {
+      console.log("All causes gotten by moderator", res.data.data);
+      return res.data.data;
+    })
+    .catch((err) => {
+      console.log("Moderator fetching error", err.response);
+      return err;
+    });
+};
+
+const approveACause = async (id) => {
+  console.log("Moderator Approving cause");
+  return await axios({
+    method: "put",
+    url: Routes.approve_cause + (id ? id : ""),
+    data: { isApproved: 1 },
+    headers: { "x-auth-token": getToken() },
+  })
+    .then((res) => {
+      console.log("Result of approving cause", res.data.data);
+      return res;
+    })
+    .catch((err) => {
+      console.log("Moderator approval error", err.response);
+      return err.response;
+    });
+};
+
+const rejectACause = async (reason) => {
+  console.log("Moderator Rejecting a cause");
+  return await axios({
+    method: "put",
+    url: Routes.approveACause,
+    data: { isApproved: 0, reason_for_rejection: reason },
+    headers: { "x-auth-token": getToken() },
+  })
+    .then((res) => {
+      console.log("Result of rejecting cause", res.data.data);
+      return res.data.data;
+    })
+    .catch((err) => {
+      console.log("Moderator rejecting error", err.response);
+      return err;
+    });
+};
+
 const getCause = async (id) => {
   return await axios
     .get(
@@ -41,7 +95,7 @@ const createCause = async (cause) => {
   formData.append("brief_description", cause.briefDescription);
   formData.append("charity_information", cause.charityInformation);
   formData.append("additional_information", cause.additionalInformation);
-  formData.append("category", "Health");
+  formData.append("category", "Food");
   formData.append("cause_photos", cause.uploadFiles.image1);
   if (cause.uploadFiles.image2) {
     formData.append("cause_photos", cause.uploadFiles.image2);
@@ -60,7 +114,7 @@ const createCause = async (cause) => {
   }
 
   formData.append("cause_video", cause.uploadFiles.video1);
-  formData.append("account_number", 1234567890);
+  formData.append("account_number", 1000000000);
   formData.append(
     "accept_comments_and_reviews",
     cause.causeOptions.enableComments
@@ -90,4 +144,11 @@ const createCause = async (cause) => {
     });
 };
 
-export { getAllCauses, createCause, getCause };
+export {
+  getAllCauses,
+  createCause,
+  getCause,
+  getAllCausesAsModerator,
+  approveACause,
+  rejectACause,
+};

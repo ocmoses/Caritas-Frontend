@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 // import ReactDom from "react-dom";
 import clsx from "clsx";
 import {
@@ -14,10 +14,12 @@ import { makeStyles } from "@material-ui/core/styles";
 import { PrimaryAppBar, MyTextField } from "../commons";
 import { Link } from "react-router-dom";
 import { Colors, recaptchaKey } from "../constants";
+import { useParams } from "react-router";
+import { verifyUserEmail } from "../services/user.service";
+import { isValidPassword } from "../helpers/validator";
 import { MyButton, MyDialog } from "../components";
 import ReCAPTCHA from "react-google-recaptcha";
-import { isValidEmail } from "../helpers/validator";
-import { forgotPassword } from "../services/user.service";
+import { resetPassword } from "../services/user.service";
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -116,8 +118,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const RecoverPassword = () => {
-  let [email, setEmail] = useState("");
+const ResetPassword = () => {
+  const classes = useStyles();
+  const token = useParams().token;
+  const [message, setMessage] = useState("Hang on...");
+  const [success, setSuccess] = useState(false);
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  let [verified, setVerified] = useState(false);
+
   let [progress, setProgress] = useState(false);
   let [dialogTitle, setDialogTitle] = useState("");
   let [dialogMessage, setDialogMessage] = useState("");
@@ -125,11 +134,33 @@ const RecoverPassword = () => {
   let [positiveDialog, setPositiveDialog] = useState(true);
   let [errorMessage, setErrorMessage] = useState(true);
 
-  let [verified, setVerified] = useState(false);
-  const classes = useStyles();
+  const updatePassword = async (token) => {
+    const response = await verifyUserEmail(token);
+    if (response.status === 200) {
+      setMessage("Congrats. Your Your password was changed successfully");
+      setSuccess(true);
+    } else {
+      setMessage("Sorry, we couldn't change your password");
+    }
+  };
 
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value.trim());
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
+  };
+
+  const handleConfirmPassword = (event) => {
+    setConfirmPassword(event.target.value);
+  };
+
+  const verifyPassword = () => {
+    if (!isValidPassword(password.trim())) {
+      setErrorMessage("Password is not valid. Must be at least 8 characters");
+      return false;
+    } else if (password.trim() != confirmPassword.trim()) {
+      setErrorMessage("Passwords don't match");
+      return false;
+    }
+    return true;
   };
 
   const onRecaptcha = (value) => {
@@ -141,8 +172,8 @@ const RecoverPassword = () => {
 
   const handleSubmit = async () => {
     setProgress(true);
-    if (isValidEmail(email)) {
-      //Make a call.
+    if (verifyPassword()) {
+      //   Then we submit
       if (!verified) {
         setDialogTitle("Hold on!");
         setDialogMessage("Please verify you are human");
@@ -152,18 +183,20 @@ const RecoverPassword = () => {
         return;
       }
 
-      const result = await forgotPassword(email);
+      const result = await resetPassword(password, token);
 
       if (result.status && result.status === 200) {
         setProgress(false);
         setDialogTitle("Success");
-        setDialogMessage(
-          "Please check your email for instructions on how to change your password."
-        );
+        setDialogMessage("Password has been updated successfully");
 
         setPositiveDialog(true);
 
         setOpenDialog(true);
+
+        setTimeout(function () {
+          window.location = "/signin";
+        }, 3000);
       } else {
         setProgress(false);
         //Don't make a call
@@ -174,6 +207,8 @@ const RecoverPassword = () => {
 
         setOpenDialog(true);
       }
+    } else {
+      setProgress(false);
     }
   };
 
@@ -208,25 +243,37 @@ const RecoverPassword = () => {
                   component="h5"
                   className={classes.formHeader}
                 >
-                  Reset your password here...
+                  Choose a new password
                 </Typography>
                 <Typography
                   variant="body1"
                   component="p"
                   className={classes.formSubheader}
                 >
-                  Enter email to reset your password
+                  Enter and confrim your password
                 </Typography>
                 <form action={"#"} method="POST" className={classes.form}>
                   <FormControl className={classes.formControl}>
                     <MyTextField
-                      id="email"
-                      type="email"
-                      name="email"
+                      id="password"
+                      type="password"
+                      name="password"
                       required="required"
-                      label="Enter email"
-                      placeholder="Enter your email"
-                      onChange={handleEmailChange}
+                      label="Enter password"
+                      placeholder="Enter your new password"
+                      onChange={handlePasswordChange}
+                    />
+                  </FormControl>
+
+                  <FormControl className={classes.formControl}>
+                    <MyTextField
+                      id="confirm_password"
+                      type="password"
+                      name="confirm_password"
+                      required="required"
+                      label="Confirm password"
+                      placeholder="Confirm your new password"
+                      onChange={handleConfirmPassword}
                     />
                   </FormControl>
                   <FormControl
@@ -234,14 +281,14 @@ const RecoverPassword = () => {
                   >
                     <ReCAPTCHA sitekey={recaptchaKey} onChange={onRecaptcha} />
                   </FormControl>
-                  <Button
+                  <MyButton
                     variant="contained"
                     color="primary"
                     className={classes.loginButton}
                     onClick={handleSubmit}
                   >
-                    Send Recovery Link
-                  </Button>
+                    Change Password
+                  </MyButton>
                 </form>
                 <p
                   style={{
@@ -250,7 +297,7 @@ const RecoverPassword = () => {
                   }}
                   className={classes.alternate}
                 >
-                  Silly me I remember my details,{" "}
+                  I remember my details,{" "}
                   <Link
                     to="/signin"
                     style={{
@@ -285,4 +332,4 @@ const RecoverPassword = () => {
   );
 };
 
-export default RecoverPassword;
+export default ResetPassword;

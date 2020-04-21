@@ -203,7 +203,11 @@ const FancyShape = (props) => {
 
 const FancyButton = (props) => {
   const classes = useStyles();
-  return <Button className={classes.fancyShape}>{props.label}</Button>;
+  return (
+    <Button className={classes.fancyShape} onClick={props.onClick}>
+      {props.label}
+    </Button>
+  );
 };
 
 export { FancyShape, FancyButton, useStyles };

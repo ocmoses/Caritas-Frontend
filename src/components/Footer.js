@@ -31,7 +31,7 @@ const Footer = (props) => {
     <div className={classes.root}>
       <Container>
         <Grid container spacing={5}>
-          <Grid item xs={12} md={4} style={{ color: "white", height: "200px" }}>
+          <Grid item xs={12} md={4} style={{ color: "white", height: "300px" }}>
             <Typography
               variant="h4"
               component="h4"
@@ -54,7 +54,7 @@ const Footer = (props) => {
               people's life.
             </Typography>
           </Grid>
-          <Grid item xs={12} md={4} style={{ color: "white", height: "200px" }}>
+          <Grid item xs={12} md={4} style={{ color: "white", height: "300px" }}>
             <Typography
               variant="h4"
               component="h4"
@@ -80,7 +80,7 @@ const Footer = (props) => {
             </Link>
             <br />
           </Grid>
-          <Grid item xs={12} md={4} style={{ color: "white", height: "200px" }}>
+          <Grid item xs={12} md={4} style={{ color: "white", height: "300px" }}>
             <Typography
               variant="h4"
               component="h4"

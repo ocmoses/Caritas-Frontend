@@ -9,6 +9,10 @@ import Signup from "./Signup";
 import RecoverPassword from "./RecoverPassword";
 import ACausePage from "./ACausePage";
 import AddCause from "./AddCause";
+import Profile from "./Profile";
+import ModeratorCausePage from "./ModeratorCausePage";
+import VerifyEmailPage from "./VerifyEmailPage";
+import ResetPassword from "./ResetPassword";
 
 export {
   Home,
@@ -22,4 +26,8 @@ export {
   RecoverPassword,
   ACausePage,
   AddCause,
+  Profile,
+  ModeratorCausePage,
+  VerifyEmailPage,
+  ResetPassword,
 };

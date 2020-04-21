@@ -18,10 +18,27 @@ const getAuthenticatedUser = () => {
   return null;
 };
 
+const userIsUser = () => {
+  const user = getAuthenticatedUser();
+  return user.role[0] === "User";
+};
+
+const userIsModerator = () => {
+  const user = getAuthenticatedUser();
+  return user.role[0] === "Moderator";
+};
+
 const signout = () => {
   localStorage.removeItem("user");
   if (getAuthenticatedUser()) return false;
   return true;
 };
 
-export { isAuthenticated, getToken, getAuthenticatedUser, signout };
+export {
+  isAuthenticated,
+  getToken,
+  getAuthenticatedUser,
+  signout,
+  userIsUser,
+  userIsModerator,
+};

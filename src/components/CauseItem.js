@@ -3,7 +3,6 @@ import clsx from "clsx";
 import { Paper, Slider, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Colors } from "../constants";
-import { NavLink } from "react-router-dom";
 import { baseUrl } from "../constants";
 
 const useStyles = makeStyles((theme) => ({
@@ -30,7 +29,11 @@ const useStyles = makeStyles((theme) => ({
   },
   image: {
     backgroundImage: (props) =>
-      "url(" + props.cause.cause_photos[0].replace(/^uploads\\/, baseUrl) + ")",
+      process.env.NODE_ENV === "development"
+        ? "url(" +
+          props.cause.cause_photos[0].replace(/^uploads\\/, baseUrl) +
+          ")"
+        : "/" + props.cause.cause_photos[0],
     backgroundSize: "cover",
     backgroundPosition: "center",
     flex: 0.45,

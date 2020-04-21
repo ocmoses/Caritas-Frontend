@@ -159,7 +159,8 @@ export default function PrimarySearchAppBar() {
   const authPage =
     location.pathname === "/signin" ||
     location.pathname === "/signup" ||
-    location.pathname === "/recover-password";
+    location.pathname === "/recover-password" ||
+    location.pathname.includes("/users/reset_password/");
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -266,6 +267,18 @@ export default function PrimarySearchAppBar() {
               }
             >
               Create a cause
+            </NavLink>
+          </MenuItem>
+          <MenuItem>
+            <NavLink
+              to="/dashboard/profile"
+              className={
+                location.pathname === "/dashboard/profile"
+                  ? classes.active
+                  : classes.inactive
+              }
+            >
+              Profile
             </NavLink>
           </MenuItem>
           <MenuItem

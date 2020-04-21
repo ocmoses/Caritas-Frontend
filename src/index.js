@@ -13,6 +13,10 @@ import {
   RecoverPassword,
   ACausePage,
   AddCause,
+  Profile,
+  ModeratorCausePage,
+  VerifyEmailPage,
+  ResetPassword,
 } from "./containers";
 import * as serviceWorker from "./serviceWorker";
 import { useParams, useHistory, useLocation } from "react-router";
@@ -24,6 +28,7 @@ import store from "./store";
 import { Colors } from "./constants";
 import ProtectedRoute from "./components/ProtectedRoute";
 import GuestRoute from "./components/GuestRoute";
+import ModeratorRoute from "./components/ModeratorRoute";
 
 const App = () => {
   const theme = createMuiTheme({
@@ -57,13 +62,26 @@ const App = () => {
             <GuestRoute path="/signin" component={Signin} />
             <GuestRoute path="/signup" component={Signup} />
             <GuestRoute path="/recover-password" component={RecoverPassword} />
+            <GuestRoute
+              path="/users/verify_email/:token"
+              component={VerifyEmailPage}
+            />
+            <GuestRoute
+              path="/users/reset_password/:token"
+              component={ResetPassword}
+            />
             <Route path="/how-it-works" component={HowItWorks} />
             <ProtectedRoute path="/dashboard" component={Dashboard} exact />
             <ProtectedRoute
               path="/dashboard/create-cause"
               component={AddCause}
             />
+            <ProtectedRoute path="/dashboard/profile" component={Profile} />
             <Route path="/cause/:id" component={ACausePage} />
+            <ModeratorRoute
+              path="/dashboard/cause/:id"
+              component={ModeratorCausePage}
+            />
           </Switch>
         </BrowserRouter>
       </MuiThemeProvider>

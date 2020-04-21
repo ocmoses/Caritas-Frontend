@@ -29,6 +29,7 @@ const MyTextField = (props) => {
       label={props.label}
       multiline={props.multiline}
       rows={props.rows}
+      margin={props.margin}
       InputProps={{
         classes: { notchedOutline: classes.rounded },
       }}

@@ -82,7 +82,7 @@ const moreStyles = makeStyles((theme) => ({
   },
 }));
 
-const ACausePage = () => {
+const ModeratorCausePage = () => {
   const [tab, setTab] = useState(0);
   const [cause, setCause] = useState([]);
   const [allCauses, setAllCauses] = useState([]);
@@ -130,122 +130,67 @@ const ACausePage = () => {
       <main className={classes.main}>
         <ACauseHeader cause={cause} />
         <Container>
-          <Tabs
-            value={tab}
-            indicatorColor="primary"
-            onChange={(tab, index) => handleTabChange(index)}
-            variant="fullWidth"
-          >
-            <Tab
-              label="Charity Information"
-              style={{ textTransform: "none" }}
-            />
-            <Tab
-              label="Additional Information"
-              style={{ textTransform: "none" }}
-            />
-            <Tab label="Comments/reviews" style={{ textTransform: "none" }} />
-          </Tabs>
-          {tab === 0 && (
-            <div style={{ paddingTop: "50px" }}>
-              <Typography
-                variant="body1"
-                component="p"
-                style={{ paddingBottom: "50px" }}
-              >
-                {cause.charity_information}
-              </Typography>
-              <Grid container spacing={3} style={{ marginBottom: "100px" }}>
-                <Grid item xs={12} md={7}>
-                  <div className={classes2.tab1LeftImage}></div>
-                </Grid>
-                <Grid
-                  item
-                  xs={12}
-                  md={5}
-                  style={{
-                    margin: "0px !important",
-                    padding: "0px !important",
-                  }}
+          <div style={{ paddingTop: "50px" }}>
+            <Grid container spacing={5}>
+              <Grid item xs={12} md={6}>
+                <Typography
+                  variant="body1"
+                  component="h6"
+                  style={{ color: Colors.appRed }}
                 >
-                  <div className={classes2.tab1TopRightImage}></div>
-                  <div className={classes2.tab1BottomRightImage}></div>
-                </Grid>
-              </Grid>
-            </div>
-          )}
-          {tab === 1 && (
-            <div style={{ paddingTop: "50px" }}>
-              <Typography
-                variant="body1"
-                component="p"
-                style={{ paddingBottom: "50px" }}
-              >
-                {cause.additional_information}
-              </Typography>
-              <Grid container spacing={3} style={{ marginBottom: "100px" }}>
-                <Grid item xs={12} md={7}>
-                  <div className={classes2.tab1LeftImage}></div>
-                </Grid>
-                <Grid
-                  item
-                  xs={12}
-                  md={5}
-                  style={{
-                    margin: "0px !important",
-                    padding: "0px !important",
-                  }}
+                  Charity Information
+                </Typography>
+                <Typography
+                  variant="body1"
+                  component="p"
+                  style={{ paddingBottom: "50px" }}
                 >
-                  <div className={classes2.tab1TopRightImage}></div>
-                  <div className={classes2.tab1BottomRightImage}></div>
-                </Grid>
+                  {cause.charity_information}
+                </Typography>
               </Grid>
-            </div>
-          )}
-          {tab === 2 && (
-            <div style={{ paddingTop: "50px" }}>
-              <Typography
-                variant="body1"
-                component="p"
-                style={{ paddingBottom: "50px" }}
+              <Grid item xs={12} md={6}>
+                <Typography
+                  variant="body1"
+                  component="h6"
+                  style={{ color: Colors.appRed }}
+                >
+                  Additional Information
+                </Typography>
+                <Typography
+                  variant="body1"
+                  component="p"
+                  style={{ paddingBottom: "50px" }}
+                >
+                  {cause.additional_information}
+                </Typography>
+              </Grid>
+            </Grid>
+
+            <Grid container spacing={3} style={{ marginBottom: "100px" }}>
+              <Grid item xs={12} md={6}>
+                <div className={classes2.tab1LeftImage}></div>
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                md={6}
+                style={{
+                  margin: "0px !important",
+                  padding: "0px !important",
+                }}
               >
-                Comments unavailable
-              </Typography>
-            </div>
-          )}
-        </Container>
-        <Container>
-          <Typography
-            varant="h5"
-            component="h5"
-            style={{ color: Colors.appRed, fontWeight: "bold" }}
-          >
-            Similar Causes
-          </Typography>
-          <Grid
-            container
-            spacing={3}
-            style={{
-              padding: 50,
-              display: "flex",
-              flexWrap: "no-wrap !important",
-            }}
-          >
-            {allCauses.map((cause, index) => (
-              <Grid item>
-                <CauseItem cause={cause} key={`cause-${cause._id}`}>
-                  {cause.brief_description}
-                </CauseItem>
+                <div className={classes2.tab1TopRightImage}></div>
+                <div className={classes2.tab1BottomRightImage}></div>
               </Grid>
-            ))}
-          </Grid>
+            </Grid>
+          </div>
+          )}
         </Container>
 
-        <SubscriptionBox />
         <Footer />
       </main>
     </Fragment>
   );
 };
 
-export default ACausePage;
+export default ModeratorCausePage;

@@ -28,6 +28,7 @@ const MyButton = (props) => {
         />
       }
       onClick={props.onClick}
+      margin={props.margin}
     >
       {props.children}
     </Button>

@@ -6,8 +6,9 @@ import LoggedInAvatar from "./LoggedInAvatar";
 import SlideableGridList from "./SlideableGridList";
 import AddItem from "./AddItem";
 import AddImage from "./AddImage";
-import MyButton from "./MyButton";
-import MyDialog from "./MyDialog";
+import MyButton from "../commons/MyButton";
+import MyDialog from "../commons/MyDialog";
+import CausesTable from "./CausesTable";
 
 export {
   CauseItem,
@@ -20,4 +21,5 @@ export {
   AddImage,
   MyButton,
   MyDialog,
+  CausesTable,
 };

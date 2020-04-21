@@ -8,6 +8,7 @@ import {
   Tab,
   Zoom,
 } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import { FancyShape, useStyles } from "../../helpers";
 import { Colors } from "../../constants";
 import { Link } from "react-router-dom";
@@ -85,15 +86,17 @@ const CausesSection = () => {
                 As COVID-19 continues to spread in Africa, more individuals and
                 communities are feeling the impact on their daily lives. Beyond
                 the global health crisis, the coronavirus is having a severe
-                economic impact on individuals, small businesses and medical
-                organizations. There is an urgent need for medical supplies,
-                basic food items, financial support for families under
-                quarantine and quality healthcare is only increasing as more
-                communities become affected by COVID-19. We are here to help,
-                please register and log your cause and get speedy help from our
-                Caritas team.
+                economic impact on individuals, small businesses, organizations,
+                and governments. There is an urgent need for medical supplies,
+                basic food items, financial support for families especially the
+                indigent and the vulnerable in our communities. We are here to
+                help, please register and log a case for food support to get
+                speedy help from our Caritas team. This currently open to states
+                with lockdown restrictions in Nigeria.
               </Typography>
-              <FancyShape>Sign Up to get Started</FancyShape>
+              <Link to="/signup">
+                <FancyShape>Sign Up to get Started</FancyShape>
+              </Link>
             </Grid>
             <Grid item md={5} className={classes.justCoronaImage}>
               <img
@@ -116,7 +119,7 @@ const CausesSection = () => {
             >
               Do the Five - Help stop Corona Virus
             </Typography>
-            <Grid item style={{ display: "flex" }} xs={12}>
+            <Grid item xs={12} style={{ display: "flex", flexWrap: "wrap" }}>
               <Precautions
                 src="/assets/images/icons/hands.png"
                 body="HANDS"
@@ -184,7 +187,7 @@ const CausesSection = () => {
                 <Tab label="Education" style={{ textTransform: "none" }} />
                 <Tab label="Health" style={{ textTransform: "none" }} />
                 <Tab label="Human Rights" style={{ textTransform: "none" }} />
-                <Tab label="Infrastructure" style={{ textTransform: "none" }} />
+                <Tab label="Food" style={{ textTransform: "none" }} />
               </Tabs>
               {tab === 0 && (
                 <Grid
@@ -203,6 +206,164 @@ const CausesSection = () => {
                       </CauseItem>
                     </Grid>
                   ))}
+                  {allCauses.length === 0 && (
+                    <div
+                      style={{
+                        backgroundColor: "rgba(255,255,255,.5)",
+                        boxShadow: "2px 2px 5px rgba(0,0,0,.2)",
+                        borderRadius: "10px",
+                        padding: "16px",
+                        width: "300px",
+                        display: "block",
+                        margin: "auto",
+                        boxSizing: "border-box",
+                      }}
+                    >
+                      Many causes are currently undergoing review post launching
+                      of this platform. This section will be updated.
+                    </div>
+                  )}
+                </Grid>
+              )}
+              {tab === 1 && (
+                <Grid
+                  container
+                  spacing={3}
+                  style={{
+                    padding: 50,
+                    display: "flex",
+                    flexWrap: "no-wrap !important",
+                  }}
+                >
+                  {allCauses.map((cause, index) => (
+                    <Grid item>
+                      <CauseItem cause={cause} key={`cause-${cause._id}`}>
+                        {cause.brief_description}
+                      </CauseItem>
+                    </Grid>
+                  ))}
+                  {allCauses.length === 0 && (
+                    <div
+                      style={{
+                        backgroundColor: "rgba(255,255,255,.5)",
+                        boxShadow: "2px 2px 5px rgba(0,0,0,.2)",
+                        borderRadius: "10px",
+                        padding: "16px",
+                        width: "300px",
+                        display: "block",
+                        margin: "auto",
+                        boxSizing: "border-box",
+                      }}
+                    >
+                      Many causes are currently undergoing review post launching
+                      of this platform. This section will be updated.
+                    </div>
+                  )}
+                </Grid>
+              )}
+              {tab === 2 && (
+                <Grid
+                  container
+                  spacing={3}
+                  style={{
+                    padding: 50,
+                    display: "flex",
+                    flexWrap: "no-wrap !important",
+                  }}
+                >
+                  {allCauses.map((cause, index) => (
+                    <Grid item>
+                      <CauseItem cause={cause} key={`cause-${cause._id}`}>
+                        {cause.brief_description}
+                      </CauseItem>
+                    </Grid>
+                  ))}
+                  {allCauses.length === 0 && (
+                    <div
+                      style={{
+                        backgroundColor: "rgba(255,255,255,.5)",
+                        boxShadow: "2px 2px 5px rgba(0,0,0,.2)",
+                        borderRadius: "10px",
+                        padding: "16px",
+                        width: "300px",
+                        display: "block",
+                        margin: "auto",
+                      }}
+                    >
+                      Many causes are currently undergoing review post launching
+                      of this platform. This section will be updated.
+                    </div>
+                  )}
+                </Grid>
+              )}
+              {tab === 3 && (
+                <Grid
+                  container
+                  spacing={3}
+                  style={{
+                    padding: 50,
+                    display: "flex",
+                    flexWrap: "no-wrap !important",
+                  }}
+                >
+                  {allCauses.map((cause, index) => (
+                    <Grid item>
+                      <CauseItem cause={cause} key={`cause-${cause._id}`}>
+                        {cause.brief_description}
+                      </CauseItem>
+                    </Grid>
+                  ))}
+                  {allCauses.length === 0 && (
+                    <div
+                      style={{
+                        backgroundColor: "rgba(255,255,255,.5)",
+                        boxShadow: "2px 2px 5px rgba(0,0,0,.2)",
+                        borderRadius: "10px",
+                        padding: "16px",
+                        width: "300px",
+                        display: "block",
+                        margin: "auto",
+                      }}
+                    >
+                      Many causes are currently undergoing review post launching
+                      of this platform. This section will be updated.
+                    </div>
+                  )}
+                </Grid>
+              )}
+              {tab === 4 && (
+                <Grid
+                  container
+                  spacing={3}
+                  style={{
+                    padding: 50,
+                    display: "flex",
+                    flexWrap: "no-wrap !important",
+                  }}
+                >
+                  {allCauses.map((cause, index) => (
+                    <Grid item>
+                      <CauseItem cause={cause} key={`cause-${cause._id}`}>
+                        {cause.brief_description}
+                      </CauseItem>
+                    </Grid>
+                  ))}
+                  {allCauses.length === 0 && (
+                    <div
+                      style={{
+                        backgroundColor: "rgba(255,255,255,.5)",
+                        boxShadow: "2px 2px 5px rgba(0,0,0,.2)",
+                        borderRadius: "10px",
+                        padding: "16px",
+                        width: "300px",
+                        display: "block",
+                        margin: "auto",
+                      }}
+                    >
+                      Many causes are currently undergoing review post launching
+                      of this platform. This section will be updated.
+                    </div>
+                  )}
                 </Grid>
               )}
             </Grid>
@@ -212,41 +373,41 @@ const CausesSection = () => {
     </section>
   );
 };
-
+const useStyles2 = makeStyles((theme) => ({
+  rootClass: {
+    width: "200px !important",
+    color: "white",
+    textAlign: "center",
+    display: "inline !important",
+    margin: "20px",
+  },
+  src: {
+    display: "block",
+    margin: "auto",
+    height: "60px",
+    marginBottom: 10,
+  },
+  body: {
+    fontWeight: "bold",
+    textTransform: "uppercase",
+    fontSize: 12,
+    color: "black",
+    marginBottom: "0px",
+  },
+  direction: {
+    margin: 0,
+    fontSize: 10,
+    color: Colors.appBlack,
+  },
+}));
 const Precautions = (props) => {
-  const theClasses = {
-    root: {
-      width: "200px",
-      color: "white",
-      textAlign: "center",
-    },
-    src: {
-      display: "block",
-      margin: "auto",
-      height: "60px",
-      marginBottom: 10,
-    },
-    body: {
-      fontWeight: "bold",
-      textTransform: "uppercase",
-      fontSize: 12,
-      color: "black",
-      marginBottom: "0px",
-    },
-    direction: {
-      margin: 0,
-      fontSize: 10,
-      color: Colors.appBlack,
-    },
-  };
-
-  const { root, src, body, direction } = theClasses;
+  const classes = useStyles2();
 
   return (
-    <div style={root}>
-      <img style={src} src={props.src} alt="" />
-      <p style={body}>{props.body}</p>
-      <p style={direction}>{props.direction}</p>
+    <div className={classes.rootClass}>
+      <img className={classes.src} src={props.src} alt="" />
+      <p className={classes.body}>{props.body}</p>
+      <p className={classes.direction}>{props.direction}</p>
     </div>
   );
 };

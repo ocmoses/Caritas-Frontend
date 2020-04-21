@@ -1,5 +1,13 @@
-const host = "http://localhost:5000/api/";
-const baseUrl = "http://localhost:5000/";
+const host =
+  process.env.NODE_ENV == "development"
+    ? "http://localhost:5000/api/"
+    : "http://157.245.247.105/api/";
+const baseUrl =
+  process.env.NODE_ENV == "development"
+    ? "http://localhost:5000/"
+    : "http://157.245.247.105/";
+const recaptchaKey = "6LeLGOoUAAAAAPGXh9Om0bkl1OnE-Bvr31Ld-yuo"; //shouldn't be here
+const recaptchaSecret = "6LeLGOoUAAAAAPGXh9Om0bkl1OnE-Bvr31Ld-yuo"; //this too
 const Colors = {
   appBackground: "#FFF5F4",
   appRed: "#FC636B",
@@ -18,6 +26,12 @@ const Routes = {
   ceate_cause: host + "cause/create",
   all_causes: host + "cause",
   get_cause: host + "cause/", //the cause id must be appended
+  moderator_all_causes: host + "cause/approve_causes",
+  approve_cause: host + "cause/approve/", //the cause id must be appended
+
+  verify_email: host + "users/confirm_email/", //the verification token must be appended
+  forgot_password: host + "users/forgot_password",
+  reset_password: host + "users/update_password/", //the reset password token must be appended
 };
 
 const Actions = {
@@ -28,4 +42,4 @@ const Actions = {
   switchTab: "SWITCHTAB",
 };
 
-export { Colors, Actions, Routes, baseUrl };
+export { Colors, Actions, Routes, baseUrl, recaptchaKey };

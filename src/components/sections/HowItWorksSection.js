@@ -2,6 +2,8 @@ import React from "react";
 import { Container, Typography, Grid } from "@material-ui/core";
 import { FancyShape, FancyButton, useStyles } from "../../helpers";
 import { HowItWorks } from "../";
+import { Colors } from "../../constants";
+import { Link } from "react-router-dom";
 
 const HowItWorksSection = () => {
   const classes = useStyles();
@@ -20,45 +22,54 @@ const HowItWorksSection = () => {
           }}
         >
           Here is how charity projects are vetted and Approved on Caritas.
+          <br />
+          <span style={{ color: Colors.appRed }}>Please note:</span> For food
+          support during COVID-19 pandemic, the initiative is fully sponsored by
+          InstiQ hence approval is done immediately after the cause is uploaded
+          and the beneficiaries will receive help.
         </Typography>
-        <Grid container spacing={4}>
-          <Grid item xs={4} md={3} sm={4}>
+        <Grid
+          container
+          spacing={4}
+          style={{ display: "flex", flexWrap: "nowrap", width: "100%" }}
+        >
+          <Grid item xs={4}>
             <HowItWorks
               image="/assets/images/icons/account-icon.png"
               step="Create an Account."
             />
           </Grid>
-          <Grid item xs={4} md={3} sm={4}>
+          <Grid item xs={4}>
             <HowItWorks
               image="/assets/images/icons/upload-icon.png"
               step="Upload a Cause"
             />
           </Grid>
-          <Grid item xs={4} md={3} sm={4}>
+          <Grid item xs={4}>
             <HowItWorks
               image="/assets/images/icons/category-icon.png"
               step="Cause gets Vetted by Professional in Category"
             />
           </Grid>
-          <Grid item xs={4} md={3} sm={4}>
+          <Grid item xs={4}>
             <HowItWorks
               image="/assets/images/icons/vote-icon.png"
               step="Upon approval Cause is put up for voting"
             />
           </Grid>
-          <Grid item xs={4} md={3} sm={4}>
+          <Grid item xs={4}>
             <HowItWorks
               image="/assets/images/icons/donations-icon.png"
               step="When Voting is Succesful Cause is made public to receive donations"
             />
           </Grid>
-          <Grid item xs={4} md={3} sm={4}>
+          <Grid item xs={4}>
             <HowItWorks
               image="/assets/images/icons/contractor-icon.png"
               step="When Target donation amount is reached an approved contractor is chosen"
             />
           </Grid>
-          <Grid item xs={6} md={3} style={{ marginLeft: "30px" }}>
+          <Grid item xs={6} md={4} style={{ marginLeft: "30px" }}>
             <Typography
               variant="h5"
               component="h5"
@@ -76,10 +87,12 @@ const HowItWorksSection = () => {
               registration on this platform. We are committed to impacting your
               lives positively.
             </Typography>
-            <FancyButton
-              label="Sign Up to get Started"
-              style={{ width: "100% !important" }}
-            />
+            <Link to="/signup">
+              <FancyButton
+                label="Sign Up to get Started"
+                style={{ width: "100% !important" }}
+              />
+            </Link>
           </Grid>
         </Grid>
       </Container>
