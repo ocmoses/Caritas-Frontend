@@ -28,11 +28,7 @@ const HowItWorksSection = () => {
           InstiQ hence approval is done immediately after the cause is uploaded
           and the beneficiaries will receive help.
         </Typography>
-        <Grid
-          container
-          spacing={4}
-          style={{ display: "flex", flexWrap: "nowrap", width: "100%" }}
-        >
+        <Grid container spacing={4} style={{ display: "flex" }}>
           <Grid item xs={4}>
             <HowItWorks
               image="/assets/images/icons/account-icon.png"
