@@ -6,8 +6,8 @@ const baseUrl =
   process.env.NODE_ENV == "development"
     ? "http://localhost:5000/"
     : "http://157.245.247.105/";
-const recaptchaKey = "6LeLGOoUAAAAAPGXh9Om0bkl1OnE-Bvr31Ld-yuo"; //shouldn't be here
-const recaptchaSecret = "6LeLGOoUAAAAAPGXh9Om0bkl1OnE-Bvr31Ld-yuo"; //this too
+const recaptchaKey = "6LcZFewUAAAAADBST21gzdTFt-BBdFdlDk2H5UEY"; //shouldn't be here
+const recaptchaSecret = "6LcZFewUAAAAAEMwQ7Q4eCOm5L2NyFsG-ij2CR3w"; //this too
 const Colors = {
   appBackground: "#FFF5F4",
   appRed: "#FC636B",
