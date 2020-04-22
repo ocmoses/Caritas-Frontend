@@ -20,7 +20,7 @@ const isValidCauseTitle = (title) => {
 };
 
 const isValidBriefDescription = (briefDescription) => {
-  return /^.{20,}$/.test(briefDescription);
+  return /^.{5,}$/.test(briefDescription);
 };
 
 const isValidFunds = (funds) => {

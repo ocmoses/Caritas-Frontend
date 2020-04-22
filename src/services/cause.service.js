@@ -95,7 +95,7 @@ const createCause = async (cause) => {
   formData.append("brief_description", cause.briefDescription);
   formData.append("charity_information", cause.charityInformation);
   formData.append("additional_information", cause.additionalInformation);
-  formData.append("category", "Food");
+  formData.append("category", cause.category);
   formData.append("cause_photos", cause.uploadFiles.image1);
   if (cause.uploadFiles.image2) {
     formData.append("cause_photos", cause.uploadFiles.image2);

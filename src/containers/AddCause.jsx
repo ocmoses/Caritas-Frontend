@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import clsx from "clsx";
 import {
   Container,
   Grid,
@@ -9,6 +10,8 @@ import {
   Checkbox,
   Paper,
   FormControlLabel,
+  Select,
+  MenuItem,
 } from "@material-ui/core";
 import { useStyles } from "../helpers";
 import { Colors } from "../constants";
@@ -17,14 +20,14 @@ import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 import { PrimaryAppBar, MyTextField } from "../commons";
 import { yourCauses, trendingCauses, followedCauses, user } from "../mock";
-import { SlideableGridList, AddImage } from "../components";
+import { SlideableGridList, AddImage, AddVideo } from "../components";
 import {
   isValidCauseTitle,
   isValidFunds,
   isValidBriefDescription,
 } from "../helpers/validator";
 import { createCause } from "../services/cause.service";
-import { MyDialog } from "../components";
+import { MyDialog, MyButton } from "../components";
 
 const moreStyles = makeStyles((theme) => ({
   sectionHead: {
@@ -57,6 +60,13 @@ const moreStyles = makeStyles((theme) => ({
   },
   checkbox: {
     display: "block",
+  },
+  t_and_c: {
+    marginLeft: "-60px",
+    display: "inline",
+    [theme.breakpoints.down("md")]: {
+      marginLeft: "30px",
+    },
   },
   successBox: {
     backgroundColor: "white",
@@ -104,11 +114,17 @@ const AddCause = () => {
     video1: null,
   });
 
+  let [category, setCategory] = useState("Food");
   let [errorMessage, setErrorMessage] = useState("");
   let [openDialog, setOpenDialog] = useState(false);
   let [dialogMessage, setDialogMessage] = useState("");
   let [dialogTitle, setDialogTitle] = useState("");
   let [positiveDialog, setPositiveDialog] = useState(false);
+  let [terms, setTerms] = useState(false);
+
+  const handleCategoryChange = (event) => {
+    setCategory(event.target.value);
+  };
 
   const handleCauseTitleChange = (event) => {
     setCauseTitle(event.target.value.trim());
@@ -159,9 +175,17 @@ const AddCause = () => {
 
   const handleSubmit = async () => {
     // setPage(3);
-    console.log("Title state", causeTitle);
-    console.log("Upload state", uploadFiles);
+    if (!terms) {
+      setPositiveDialog(false);
+      setDialogTitle("Terms and Conditions");
+      setDialogMessage(
+        `To be able to upload this cause, you must agree to our terms aand conditions`
+      );
+      setOpenDialog(true);
+      return;
+    }
     let cause = {};
+    cause.category = category;
     cause.causeTitle = causeTitle;
     cause.amountRequired = amountRequired;
     cause.briefDescription = briefDescription;
@@ -244,6 +268,24 @@ const AddCause = () => {
             <Grid container spacing={10} style={{ marginTop: "50px" }}>
               <Grid item xs={12} md={6}>
                 <FormControl className={classes.formControl}>
+                  <Select
+                    labelId="category"
+                    id="category"
+                    value={category}
+                    onChange={handleCategoryChange}
+                    variant="outlined"
+                    style={{ width: "100% !important" }}
+                    // margin="dense"
+                    fullWidth
+                  >
+                    <MenuItem value="Food">Food</MenuItem>
+                    <MenuItem value="Human Rights">Human Rights</MenuItem>
+                    <MenuItem value="Education">Education</MenuItem>
+                    <MenuItem value="Health">Health</MenuItem>
+                  </Select>
+                </FormControl>
+
+                <FormControl className={classes.formControl}>
                   <MyTextField
                     id="cause_title"
                     type="text"
@@ -307,7 +349,7 @@ const AddCause = () => {
                     label="Additional Information"
                     placeholder="Provide any additional information you would require"
                     multiline={true}
-                    rows={3}
+                    rows={5}
                     value={additionalInformation}
                     onChange={handleAdditionalInformationChange}
                   />
@@ -329,7 +371,7 @@ const AddCause = () => {
                   </Typography>
                   <FormControlLabel
                     className={classes.checkbox}
-                    style={{ marginTop: "10px" }}
+                    style={{ marginTop: "20px" }}
                     control={
                       <Checkbox
                         checked={causeOptions.enableComments}
@@ -384,7 +426,7 @@ const AddCause = () => {
                       width: "100%",
                       height: "50px",
                       borderRadius: "10px",
-                      marginTop: "20px",
+                      marginTop: "40px",
                       borderWidth: "2px",
                       textTransform: "none",
                       marginRight: "0px",
@@ -401,6 +443,14 @@ const AddCause = () => {
       )}
       {page === 2 && (
         <Container style={{ marginTop: 200 }}>
+          <Button
+            variant="outlined"
+            color="primary"
+            style={{ marginBottom: "30px" }}
+            onClick={() => setPage(1)}
+          >
+            Back
+          </Button>
           <Grid container spacing={10}>
             <Grid item xs={12} md={4}>
               <Typography
@@ -422,7 +472,7 @@ const AddCause = () => {
             </Grid>
 
             <Grid item xs={12}>
-              <Grid container spacing={10}>
+              <Grid container spacing={5}>
                 <Grid item xs={6} md={3}>
                   <AddImage
                     image="/assets/images/icons/upload-image.png"
@@ -440,8 +490,8 @@ const AddCause = () => {
                     }}
                   />
                 </Grid>
-                <Grid item xs={12} md={9} style={{ textAlign: "right" }}>
-                  <AddImage
+                <Grid item xs={6} md={3}>
+                  <AddVideo
                     image="/assets/images/icons/upload_video.png"
                     title="Cause Video"
                     text="This Video appears on the causes page."
@@ -455,10 +505,12 @@ const AddCause = () => {
                       });
                     }}
                   />
+                </Grid>
+                <Grid item xs={6} md={3}>
                   <AddImage
                     image="/assets/images/icons/upload-image.png"
                     title="Cause Image - 1 *"
-                    text="This Video appears on the causes page."
+                    text="This Image appears on the causes page."
                     filename="image2"
                     onClick={handleAddImageClick}
                     backgroundImage={uploadFiles.image2}
@@ -469,10 +521,12 @@ const AddCause = () => {
                       });
                     }}
                   />
+                </Grid>
+                <Grid item xs={6} md={3}>
                   <AddImage
                     image="/assets/images/icons/upload-image.png"
                     title="Cause Image - 2"
-                    text="This Video appears on the causes page."
+                    text="This image appears on the causes page."
                     filename="image3"
                     onClick={handleAddImageClick}
                     backgroundImage={uploadFiles.image3}
@@ -493,7 +547,7 @@ const AddCause = () => {
                   marginBottom: "100px",
                 }}
               >
-                <Grid item xs={12} md={9}>
+                <Grid item xs={6} md={3}>
                   <AddImage
                     image="/assets/images/icons/upload-image.png"
                     title="More Info Image - 1 *"
@@ -508,6 +562,8 @@ const AddCause = () => {
                       });
                     }}
                   />
+                </Grid>
+                <Grid item xs={6} md={3}>
                   <AddImage
                     image="/assets/images/icons/upload-image.png"
                     title="More Info Image - 2*"
@@ -522,6 +578,8 @@ const AddCause = () => {
                       });
                     }}
                   />
+                </Grid>
+                <Grid item xs={6} md={3}>
                   <AddImage
                     image="/assets/images/icons/upload-image.png"
                     title="More Info Image - 3"
@@ -537,15 +595,16 @@ const AddCause = () => {
                     }}
                   />
                 </Grid>
+
                 <Grid item xs={12} md={3}>
                   <FormControlLabel
-                    className={classes.checkbox}
-                    style={{ marginLeft: "-60px", display: "inline" }}
+                    className={clsx(classes.checkbox, classes.t_and_c)}
                     control={
                       <Checkbox
-                        checked={false}
+                        checked={terms}
                         //onChange={handleChange}
-                        name="social_media_sharing"
+                        name="t_and_c"
+                        onChange={() => setTerms(!terms)}
                       />
                     }
                   />
@@ -595,7 +654,10 @@ const SuccessUpload = () => {
           Upload Successful
         </Typography>
         <Link to="/dashboard">
-          <u>Return to your dashboard and await approval.</u>
+          <u>
+            Cause will be displayed once it has been approved. Return to your
+            dashboard and await approval.
+          </u>
         </Link>
       </Paper>
     </Container>

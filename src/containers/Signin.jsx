@@ -173,7 +173,6 @@ const Signin = () => {
         setTimeout(() => (window.location = "/dashboard"), 3000);
       } else if (outcome && outcome.status === 206) {
         setProgress(false);
-        //Don't make a call
         setDialogTitle("Unverified...");
         setDialogMessage(
           "Your account has not been verified. Please check your email for a verification link"

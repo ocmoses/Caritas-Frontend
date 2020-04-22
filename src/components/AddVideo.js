@@ -43,7 +43,7 @@ const styles = {
   },
 };
 
-class AddImage extends Component {
+class AddVideo extends Component {
   constructor(props) {
     super(props);
     this.Ref = React.createRef();
@@ -68,7 +68,7 @@ class AddImage extends Component {
 
       reader.onload = () => {
         this.setState({
-          backgroundImage: reader.result,
+          backgroundImage: "/assets/images/video.png",
         });
       };
 
@@ -111,4 +111,4 @@ class AddImage extends Component {
   }
 }
 
-export default AddImage;
+export default AddVideo;

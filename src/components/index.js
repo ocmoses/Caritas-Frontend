@@ -9,6 +9,7 @@ import AddImage from "./AddImage";
 import MyButton from "../commons/MyButton";
 import MyDialog from "../commons/MyDialog";
 import CausesTable from "./CausesTable";
+import AddVideo from "./AddVideo";
 
 export {
   CauseItem,
@@ -22,4 +23,5 @@ export {
   MyButton,
   MyDialog,
   CausesTable,
+  AddVideo,
 };
