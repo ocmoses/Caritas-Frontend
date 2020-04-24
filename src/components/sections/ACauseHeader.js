@@ -15,9 +15,10 @@ import {
   TwitterShareButton,
   InstapaperShareButton,
 } from "react-share";
-import { userIsModerator } from "../../helpers/utils";
+import { userIsModerator, processPhoto } from "../../helpers/utils";
 import { approveACause, rejectACause } from "../../services/cause.service";
 import { MyDialog, MyConfirmationDialog } from "../../commons";
+import * as moment from "moment";
 
 const moreStyles = makeStyles((theme) => ({
   mainImage: {
@@ -113,7 +114,7 @@ const ACauseHeader = (props) => {
         <Grid item xs={12} md={6} className={classes2.mainImage}>
           {props.cause.cause_photos && (
             <img
-              src={props.cause.cause_photos[0].replace(/^uploads\\/, baseUrl)}
+              src={processPhoto(props.cause.cause_photos[0])}
               alt=""
               style={{ width: "100%", height: "100%" }}
             />
@@ -142,80 +143,83 @@ const ACauseHeader = (props) => {
           >
             {props.cause.brief_description || "Description goes here"}
           </Typography>
+
           <div className={classes.root}>
-            <Slider
-              value={props.cause.amount_donated || 0}
-              max={props.cause.amount_required || 1}
-            />
-            <Grid container style={{ marginTop: "20px", width: "100%" }}>
-              <Grid
-                item
-                xs={6}
-                style={{
-                  fontSize: "16px",
-                }}
-              >
+            {!userIsModerator() && (
+              <>
+                <Slider
+                  value={props.cause.amount_donated || 0}
+                  max={props.cause.amount_required || 1}
+                />
+                <Grid container style={{ marginTop: "20px", width: "100%" }}>
+                  <Grid
+                    item
+                    xs={6}
+                    style={{
+                      fontSize: "16px",
+                    }}
+                  >
+                    <Typography variant="body1" component="p">
+                      {props.cause.currency || "#"}
+                      {props.cause.amount_donated || 0} Raised
+                    </Typography>
+                  </Grid>
+                  <Grid
+                    item
+                    xs={6}
+                    style={{
+                      fontSize: "16px",
+                    }}
+                  >
+                    <Typography
+                      variant="body1"
+                      component="p"
+                      style={{ textAlign: "right" }}
+                    >
+                      {Math.round(
+                        (props.cause.amount_donated || 0 * 100) /
+                          props.cause.amount_required || 0
+                      )}
+                      % of {props.cause.currency}
+                      {props.cause.amount_required}
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </>
+            )}
+            {userIsModerator() && (
+              <>
                 <Typography variant="body1" component="p">
-                  {props.cause.currency || "#"}
-                  {props.cause.amount_donated || 0} Raised
+                  <b>Name: </b>
+                  {props.user.first_name} {props.user.last_name}
                 </Typography>
-              </Grid>
-              <Grid
-                item
-                xs={6}
-                style={{
-                  fontSize: "16px",
-                }}
-              >
-                <Typography
-                  variant="body1"
-                  component="p"
-                  style={{ textAlign: "right" }}
-                >
-                  {Math.round(
-                    (props.cause.amount_donated || 0 * 100) /
-                      props.cause.amount_required || 0
-                  )}
-                  % of {props.cause.currency}
-                  {props.cause.amount_required}
+                <Typography variant="body1" component="p">
+                  <b>Address: </b>
+                  {props.user.address}
                 </Typography>
-              </Grid>
-            </Grid>
-            {/* <Typography
-              variant="body1"
-              component="p"
-              style={{ textAlign: "right" }}
-            >
-              {props.cause.address}
-            </Typography>
-            <Typography
-              variant="body1"
-              component="p"
-              style={{ textAlign: "right" }}
-            >
-              {props.cause.phone_number}
-            </Typography>
-            <Typography
-              variant="body1"
-              component="p"
-              style={{ textAlign: "right" }}
-            >
-              {props.cause.account_number}
-            </Typography>
-            <Typography
-              variant="body1"
-              component="p"
-              style={{ textAlign: "right" }}
-            >
-              {props.cause.bank_name}
-            </Typography>
-            <Typography
-              variant="body1"
-              component="p"
-              style={{ textAlign: "right" }}
-            >
-              {props.cause.account_type}
-            </Typography> */}
+                <Typography variant="body1" component="p">
+                  <b>Phone: </b>
+                  {props.user.phone_number}
+                </Typography>
+                <Typography variant="body1" component="p">
+                  <b>Account no: </b>
+                  {props.user.account_number}
+                </Typography>
+                <Typography variant="body1" component="p">
+                  <b>Account name: </b> {props.user.account_name}
+                </Typography>
+                <Typography variant="body1" component="p">
+                  <b>Bank name: </b> {props.user.bank_name}
+                </Typography>
+                <Typography variant="body1" component="p">
+                  <b>Account type: </b> {props.user.account_type}
+                </Typography>
+                <Typography variant="body1" component="p">
+                  <b>Posted on: </b>{" "}
+                  {moment(props.cause.created_at).format("ddd, MMM Do, hh:mm")}
+                </Typography>
+              </>
+            )}
             <Grid container style={{ position: "absolute", bottom: "0px" }}>
               {!userIsModerator() && (
                 <Grid item xs={6}>

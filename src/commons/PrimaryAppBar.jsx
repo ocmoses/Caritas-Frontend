@@ -244,7 +244,7 @@ export default function PrimarySearchAppBar() {
         </NavLink>
       </MenuItem>
       {isAuthenticated() && (
-        <>
+        <span>
           <MenuItem>
             <NavLink
               to="/dashboard"
@@ -289,10 +289,10 @@ export default function PrimarySearchAppBar() {
           >
             Sign out
           </MenuItem>
-        </>
+        </span>
       )}
       {!isAuthenticated() && (
-        <>
+        <span>
           <MenuItem>
             <NavLink
               to="/signup"
@@ -317,7 +317,7 @@ export default function PrimarySearchAppBar() {
               Sign in
             </NavLink>
           </MenuItem>
-        </>
+        </span>
       )}
     </Menu>
   );

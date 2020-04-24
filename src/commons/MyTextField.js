@@ -25,6 +25,7 @@ const MyTextField = (props) => {
         required: props.required,
         placeholder: props.placeholder,
         type: props.type,
+        value: props.value,
       }}
       label={props.label}
       multiline={props.multiline}

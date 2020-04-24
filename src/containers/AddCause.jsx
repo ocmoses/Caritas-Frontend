@@ -127,19 +127,19 @@ const AddCause = () => {
   };
 
   const handleCauseTitleChange = (event) => {
-    setCauseTitle(event.target.value.trim());
+    setCauseTitle(event.target.value);
   };
 
   const handleAmountRequiredChange = (event) => {
-    setAmountRequired(event.target.value.trim());
+    setAmountRequired(event.target.value);
   };
 
   const handleCharityInformationChange = (event) => {
-    setCharityInformation(event.target.value.trim());
+    setCharityInformation(event.target.value);
   };
 
   const handleAdditionalInformationChange = (event) => {
-    setAdditionalInformation(event.target.value.trim());
+    setAdditionalInformation(event.target.value);
   };
 
   const handleCheck = (event) => {
@@ -150,7 +150,7 @@ const AddCause = () => {
   };
 
   const handleBriefDescriptionChange = (event) => {
-    setBriefDescription(event.target.value.trim());
+    setBriefDescription(event.target.value);
   };
 
   const validateEntries = (event) => {

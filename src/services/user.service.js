@@ -91,10 +91,50 @@ const resetPassword = async (password, token) => {
     });
 };
 
+const getProfile = async (token) => {
+  return await axios({
+    method: "get",
+    url: Routes.get_profile,
+    headers: { "x-auth-token": token },
+  })
+    .then((res) => {
+      console.log("response", res);
+      return res;
+    })
+    .catch((err) => {
+      console.log(err.response);
+      return err.response;
+    });
+};
+
+const updateProfile = async (token, profile) => {
+  let formData = new FormData();
+  for (let x in profile) {
+    formData.append([x], profile[x]);
+  }
+
+  return await axios({
+    method: "post",
+    data: formData,
+    url: Routes.update_profile,
+    headers: { "x-auth-token": token },
+  })
+    .then((res) => {
+      console.log("response", res);
+      return res;
+    })
+    .catch((err) => {
+      console.log(err.response);
+      return err.response;
+    });
+};
+
 export {
   registerUser,
   signinUser,
   verifyUserEmail,
   forgotPassword,
   resetPassword,
+  getProfile,
+  updateProfile,
 };

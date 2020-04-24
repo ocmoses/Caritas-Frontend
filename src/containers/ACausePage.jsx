@@ -107,7 +107,7 @@ const ACausePage = () => {
   useEffect(() => {
     async function setACause() {
       let returnedCause = await fetchCause(id);
-      if (returnedCause) setCause(returnedCause);
+      if (returnedCause) setCause(returnedCause[0]);
       else setCause([]);
     }
     async function setTheCauses() {

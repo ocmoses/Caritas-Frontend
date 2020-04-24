@@ -75,12 +75,12 @@ const rejectACause = async (reason) => {
 const getCause = async (id) => {
   return await axios
     .get(
-      `${Routes.get_cause}${id !== "úndefined" ? id : ""}`,
+      `${Routes.get_cause}${id !== "undefined" ? id : ""}`,
 
       { "Content-Type": "application/json" }
     )
     .then((res) => {
-      console.log("The cause gotten", res.data.data);
+      console.log("The cause gotten in getCase", res.data.data);
       return res.data.data;
     })
     .catch((err) => {

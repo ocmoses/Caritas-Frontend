@@ -9,6 +9,8 @@ import {
 import { makeStyles } from "@material-ui/core";
 import { AddItem } from "./";
 import { baseUrl } from "../constants";
+import { Link } from "react-router-dom";
+import { processPhoto } from "../helpers/utils";
 
 const useStyles = makeStyles((theme) => ({
   listImage: {
@@ -74,15 +76,13 @@ const SlideableGridList = (props) => {
                 key={`gridlist-${index}`}
                 className={classes.listTile}
               >
-                <img
-                  src={
-                    process.env.NODE_ENV === "development"
-                      ? aCause.cause_photos[0].replace(/^uploads\\/, baseUrl)
-                      : "/" + aCause.cause_photos[0]
-                  }
-                  alt={aCause.cause_title}
-                  className={classes.listImage}
-                />
+                <Link to={"/cause/" + aCause._id}>
+                  <img
+                    src={processPhoto(aCause.cause_photos[0])}
+                    alt={aCause.cause_title}
+                    className={classes.listImage}
+                  />
+                </Link>
                 <GridListTileBar
                   key={`gridlist-${index}`}
                   title={aCause.cause_title}

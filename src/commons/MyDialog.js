@@ -65,7 +65,7 @@ export default function MyDialog(props) {
       <Dialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
-        open={props.openDialog}
+        open={props.openDialog || false}
       >
         <DialogTitle
           id="customized-dialog-title"

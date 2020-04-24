@@ -591,27 +591,27 @@ export default function CausesTable(props) {
                         {moment(aCause.created_at).format("ddd, MMM Do, hh:mm")}
                       </TableCell>
                       <TableCell align="left">
-                        {aCause.isApproved ? (
-                          "Approved"
-                        ) : (
-                          <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            value={10}
-                            onChange={() => {}}
-                            variant="outlined"
-                            margin="dense"
-                          >
-                            <MenuItem value={10}>Pending</MenuItem>
-                            <MenuItem value={20}>Approved</MenuItem>
-                            <MenuItem value={30}>Rejected</MenuItem>
-                          </Select>
-                        )}
+                        {aCause.isApproved == 1 && "Approved"}
+                        {aCause.reason_for_disapproval != null && "Rejected"}
+                        {aCause.reason_for_disapproval == null &&
+                          aCause.isApproved == 0 &&
+                          "Pending"}
                       </TableCell>
                       <TableCell align="left">
-                        {aCause.isResolved ? (
-                          "resolved"
-                        ) : (
+                        {aCause.isResolved == 1 && "resolved"}
+                        {aCause.reason_for_disapproval != null && (
+                          <Button
+                            margin="dense"
+                            color="primary"
+                            variant="contained"
+                            onClick={() => {}}
+                            style={{ color: "white" }}
+                            disabled
+                          >
+                            Resolve
+                          </Button>
+                        )}
+                        {aCause.isApproved == 1 && aCause.resolved == 0 && (
                           <Button
                             margin="dense"
                             color="primary"

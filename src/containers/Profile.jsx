@@ -16,7 +16,7 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import { PrimaryAppBar, MyTextField } from "../commons";
 import { Link } from "react-router-dom";
-import { Colors, recaptchaKey } from "../constants";
+import { Colors, recaptchaKey, baseUrl } from "../constants";
 import { registerUser } from "../services/user.service";
 import {
   isValidFirstName,
@@ -26,7 +26,10 @@ import {
 } from "../helpers/validator";
 import { MyButton, MyDialog } from "../components";
 import ReCAPTCHA from "react-google-recaptcha";
-import { getAuthenticatedUser } from "../helpers/utils";
+import { getAuthenticatedUser, getToken, processPhoto } from "../helpers/utils";
+import { getProfile, updateProfile } from "../services/user.service";
+import { useEffect } from "react";
+import { AddProfileImage } from "../components";
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -40,10 +43,6 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 15,
     marginBottom: 15,
     textAlign: "center !important",
-    [theme.breakpoints.up("md")]: {
-      marginLeft: 45,
-    },
-    marginLeft: 30,
   },
   loginButton: {
     width: "100% !important",
@@ -120,17 +119,19 @@ const useStyles = makeStyles((theme) => ({
 
 const Profile = () => {
   const classes = useStyles();
-  let [firstName, setFirstName] = useState("");
-  let [lastName, setLastName] = useState("");
-  let [email, setEmail] = useState("");
-  let [phone, setPhone] = useState();
-  let [accountType, setAccountType] = useState("Savings");
-  let [address, setAddress] = useState("");
-  let [bankName, setBankName] = useState("Select Bank");
-  let [accountName, setAccountName] = useState("");
-  let [accountNumber, setAccountNumber] = useState("");
-  let [password, setPassword] = useState("");
-  let [confirmPassword, setConfirmPassword] = useState("");
+  let [profile, setProfile] = useState({
+    photo: "",
+    first_name: "",
+    last_name: "",
+    email: "",
+    phone_number: "",
+    account_type: "",
+    address: "",
+    bank_name: "",
+    account_name: "",
+    account_number: "",
+  });
+
   let [errorMessage, setErrorMessage] = useState("");
   let [progress, setProgress] = useState(false);
   let [dialogTitle, setDialogTitle] = useState("");
@@ -140,6 +141,29 @@ const Profile = () => {
 
   let [verified, setVerified] = useState(false);
 
+  useEffect(function () {
+    const getTheProfile = async () => {
+      let profile = await getProfile(getToken());
+      if (profile.status === 200) {
+        setProfile(profile.data.data);
+      } else {
+        console.log("error getting profile", profile.response.message);
+      }
+    };
+    getTheProfile();
+  }, []);
+
+  const handleChange = (field, event) => {
+    setProfile({ ...profile, [field]: event.target.value });
+  };
+
+  const handleAddImageClick = (event) => {
+    event.stopPropagation();
+    console.log("Clicked", event.target);
+    let fileInput = event.target.getElementsByTagName("input")[0];
+    fileInput.click();
+  };
+
   const handleSubmit = async (event) => {
     if (event) event.preventDefault();
 
@@ -147,103 +171,36 @@ const Profile = () => {
 
     if (validateSignup()) {
       //Here we submit shit...
-
-      //   if (!verified) {
-      //     setDialogTitle("Hold on!");
-      //     setDialogMessage("Please verify you are human");
-
-      //     setPositiveDialog(false);
-
-      //     setOpenDialog(true);
-
-      //     return;
-      //   }
-
-      let outcome = await registerUser({
-        first_name: firstName,
-        last_name: lastName,
-        email: email,
-        phone: phone,
-        password: password,
-        address: address,
-        bankName: bankName,
-        accountNumber: accountNumber,
-        accountName: accountName,
-        accountType: accountType,
-      });
-
-      setProgress(false);
-
-      console.log(outcome);
-
-      if (outcome && outcome.data) {
-        setErrorMessage("");
-        setFirstName("");
-        setLastName("");
-        setEmail("");
-        setPhone("");
-        setAddress("");
-        setBankName("");
-        setAccountName("");
-        setAccountNumber("");
-        setAccountType("");
-        setPassword("");
-        setConfirmPassword("");
-
-        setDialogTitle("Registration Successful");
-        setDialogMessage("Please check your email for verification");
-
-        setPositiveDialog(true);
-
-        setOpenDialog(true);
-        setTimeout(() => (window.location = "/signin"), 5000);
-      } else if (outcome.message) {
-        setDialogTitle("Registration failed");
-        setDialogMessage(
-          outcome.message.includes("400")
-            ? "Email is already taken"
-            : "Please check your Internet connection"
-        );
-
+      if (!verified) {
+        setDialogTitle("Hold on!");
+        setDialogMessage("Please verify you are human");
         setPositiveDialog(false);
-
+        setOpenDialog(true);
+        return;
+      }
+      let outcome = await updateProfile(getToken(), profile);
+      setProgress(false);
+      console.log(outcome);
+      if (outcome && outcome.status === 200) {
+        setErrorMessage("");
+        setDialogTitle("Update Successful");
+        setDialogMessage("Profile updated successfully");
+        setPositiveDialog(true);
+        setOpenDialog(true);
+        setTimeout(() => (window.location = "/dashboard"), 5000);
+      } else if (outcome && outcome.status === 206) {
+        setErrorMessage("");
+        setDialogTitle("No Update");
+        setDialogMessage("There is nothing to update");
+        setPositiveDialog(true);
+        setOpenDialog(true);
+      } else if (outcome.message) {
+        setDialogTitle("Update failed");
+        setDialogMessage(outcome.data.message);
+        setPositiveDialog(false);
         setOpenDialog(true);
       }
     }
-  };
-
-  const handleFirstNameChange = (event) => {
-    setFirstName(event.target.value.trim());
-  };
-  const handleLastNameChange = (event) => {
-    setLastName(event.target.value.trim());
-  };
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value.trim());
-  };
-  const handlePhoneChange = (event) => {
-    setPhone(event.target.value.trim());
-  };
-  const handleAddressChange = (event) => {
-    setAddress(event.target.value.trim());
-  };
-  const handleAccountNumberChange = (event) => {
-    setAccountNumber(event.target.value.trim());
-  };
-  const handleAccountNameChange = (event) => {
-    setAccountName(event.target.value.trim());
-  };
-  const handleAccountTypeChange = (event) => {
-    setAccountType(event.target.value);
-  };
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value.trim());
-  };
-  const handleBankNameChange = (event) => {
-    setBankName(event.target.value);
-  };
-  const handleConfirmPasswordChange = (event) => {
-    setConfirmPassword(event.target.value.trim());
   };
 
   const onRecaptcha = (value) => {
@@ -254,56 +211,37 @@ const Profile = () => {
   };
 
   const validateSignup = () => {
-    if (!isValidFirstName(firstName)) {
+    if (!isValidFirstName(profile.first_name)) {
       setErrorMessage("Ïnvalid First name");
       setProgress(false);
       return;
     }
-    if (!isValidLastName(lastName)) {
+    if (!isValidLastName(profile.last_name)) {
       setErrorMessage("Ïnvalid Last name");
       setProgress(false);
       return;
     }
-    if (bankName === "Select Bank") {
+    if (profile.bank_name === "Select Bank") {
       setErrorMessage("Please select your bank");
       setProgress(false);
       return;
     }
-    if (accountName === "") {
+    if (profile.account_name === "") {
       setErrorMessage("Your account name is empty");
       setProgress(false);
       return;
     }
-    if (accountNumber === "") {
+    if (profile.account_number === "") {
       setErrorMessage("Your account number is empty");
       setProgress(false);
       return;
     }
-    if (!isValidEmail(email)) {
+    if (!isValidEmail(profile.email)) {
       setErrorMessage("Ïnvalid email address");
       setProgress(false);
       return;
     }
-    if (!isValidPassword(password)) {
-      setErrorMessage("Ïnvalid password");
-      setProgress(false);
-      return;
-    }
-    if (confirmPassword === "") {
-      setErrorMessage("Please confirm your password");
-      setProgress(false);
-      return;
-    }
-    if (confirmPassword === "") {
-      setErrorMessage("Please confirm your password");
-      setProgress(false);
-      return;
-    }
-    if (confirmPassword !== password) {
-      setErrorMessage("Passwords don't match");
-      setProgress(false);
-      return;
-    }
+
     return true;
   };
   return (
@@ -320,10 +258,19 @@ const Profile = () => {
       <Grid container className={classes.authPage}>
         <Container style={{ marginTop: "200px" }}>
           <Grid container>
-            <Avatar
-              src="userimage"
-              alt={getAuthenticatedUser().first_name}
-              className={classes.profileAvatar}
+            <AddProfileImage
+              onClick={handleAddImageClick}
+              image={
+                typeof profile.image == String
+                  ? processPhoto(profile.image)
+                  : profile.image
+              }
+              setImage={(file) => {
+                setProfile({
+                  ...profile,
+                  photo: file,
+                });
+              }}
             />
             <form action={"#"} method="POST" className={classes.form}>
               <div style={{ color: "red", textAlign: "center", margin: 16 }}>
@@ -339,8 +286,8 @@ const Profile = () => {
                       required="required"
                       label="First name"
                       placeholder="Enter your first name"
-                      value={firstName}
-                      onChange={handleFirstNameChange}
+                      value={profile.first_name}
+                      onChange={() => handleChange("first_name", window.event)}
                     />
                   </FormControl>
                 </Grid>
@@ -353,8 +300,8 @@ const Profile = () => {
                       required="required"
                       label="Last name"
                       placeholder="Enter your last name"
-                      value={lastName}
-                      onChange={handleLastNameChange}
+                      value={profile.last_name}
+                      onChange={() => handleChange("last_name", window.event)}
                     />
                   </FormControl>
                 </Grid>
@@ -367,8 +314,8 @@ const Profile = () => {
                   required="required"
                   label="Email"
                   placeholder="Enter email address"
-                  value={email}
-                  onChange={handleEmailChange}
+                  value={profile.email}
+                  onChange={() => handleChange("email", window.event)}
                 />
               </FormControl>
               <FormControl className={classes.formControl}>
@@ -379,8 +326,8 @@ const Profile = () => {
                   required="required"
                   label="Phone no"
                   placeholder="Enter your phone number"
-                  value={phone}
-                  onChange={handlePhoneChange}
+                  value={profile.phone_number}
+                  onChange={() => handleChange("phone_number", window.event)}
                 />
               </FormControl>
               <FormControl className={classes.formControl}>
@@ -391,8 +338,8 @@ const Profile = () => {
                   required="required"
                   label="Address"
                   placeholder="Enter your address"
-                  value={address}
-                  onChange={handleAddressChange}
+                  value={profile.address}
+                  onChange={() => handleChange("address", window.event)}
                 />
               </FormControl>
 
@@ -403,8 +350,10 @@ const Profile = () => {
                 <Select
                   labelId="bank-name"
                   id="bank-name"
-                  value={bankName}
-                  onChange={handleBankNameChange}
+                  value={profile.bank_name}
+                  onChange={(event) =>
+                    setProfile({ ...profile, bank_name: event.target.value })
+                  }
                   variant="outlined"
                   style={{ width: "100% !important" }}
                   // margin="dense"
@@ -414,6 +363,23 @@ const Profile = () => {
                   <MenuItem value="UBA">UBA</MenuItem>
                   <MenuItem value="GT Bank">GT Bank</MenuItem>
                   <MenuItem value="Zenith">Zenith</MenuItem>
+                  <MenuItem value="First Bank">First Bank</MenuItem>
+                  <MenuItem value="Keystone Bank">Keystone Bank</MenuItem>
+                  <MenuItem value="Access Bank">Access Bank</MenuItem>
+                  <MenuItem value="FCMB">FCMB</MenuItem>
+                  <MenuItem value="Fidelity">Fidelity</MenuItem>
+                  <MenuItem value="Polaris">Polaris</MenuItem>
+                  <MenuItem value="Eko Bank">Eko Bank</MenuItem>
+                  <MenuItem value="Wema Bank">Wema Bank</MenuItem>
+                  <MenuItem value="Heritage Bank">Heritage Bank</MenuItem>
+                  <MenuItem value="Sterling Bank">Sterling Bank</MenuItem>
+                  <MenuItem value="Standard Chartered Bank">
+                    Standard Chartered Bank
+                  </MenuItem>
+                  <MenuItem value="Stanbic IBTC">Stanbic IBTC Bank</MenuItem>
+                  <MenuItem value="Titan Bank">Titan Bank</MenuItem>
+                  <MenuItem value="Unity Bank">Unity Bank</MenuItem>
+                  <MenuItem value="Union Bank">Union Bank</MenuItem>
                 </Select>
               </FormControl>
               <FormControl className={classes.formControl}>
@@ -424,8 +390,8 @@ const Profile = () => {
                   required="required"
                   label="Account Name"
                   placeholder="Enter your account name"
-                  value={accountName}
-                  onChange={handleAccountNameChange}
+                  value={profile.account_name}
+                  onChange={() => handleChange("account_name", window.event)}
                 />
               </FormControl>
 
@@ -438,9 +404,11 @@ const Profile = () => {
                       name="account_number"
                       required="required"
                       label="Account Number"
-                      placeholder="Enter you account number"
-                      value={accountNumber}
-                      onChange={handleAccountNumberChange}
+                      placeholder="Enter your account number"
+                      value={profile.account_number}
+                      onChange={() =>
+                        handleChange("account_number", window.event)
+                      }
                     />
                   </FormControl>
                 </Grid>
@@ -449,8 +417,12 @@ const Profile = () => {
                     <Select
                       labelId="account-type"
                       id="acount-type"
-                      value={accountType}
-                      onChange={handleAccountTypeChange}
+                      value={profile.account_type}
+                      onChange={() => (event) =>
+                        setProfile({
+                          ...profile,
+                          account_type: event.target.value,
+                        })}
                       variant="outlined"
                       style={{ width: "100% !important" }}
                       // margin="dense"
@@ -463,43 +435,14 @@ const Profile = () => {
                   </FormControl>
                 </Grid>
               </Grid>
-              <Grid container spacing={3}>
-                <Grid item xs={6}>
-                  <FormControl className={classes.formControl}>
-                    <MyTextField
-                      id="password"
-                      type="password"
-                      name="password"
-                      required="required"
-                      label="Password"
-                      placeholder="Choose a password"
-                      value={password}
-                      onChange={handlePasswordChange}
-                    />
-                  </FormControl>
-                </Grid>
-                <Grid item xs={6}>
-                  <FormControl className={classes.formControl}>
-                    <MyTextField
-                      id="confirm-password"
-                      type="password"
-                      name="confirm_password"
-                      required="required"
-                      label="Confirm Password"
-                      placeholder="Please confirm your password"
-                      value={confirmPassword}
-                      onChange={handleConfirmPasswordChange}
-                    />
-                  </FormControl>
-                </Grid>
-              </Grid>
+
               <FormControl
                 className={clsx(classes.formControl, classes.recaptcha)}
               >
                 <ReCAPTCHA sitekey={recaptchaKey} onChange={onRecaptcha} />
               </FormControl>
               <MyButton onClick={handleSubmit} progress={progress}>
-                Sign up
+                Update
               </MyButton>
             </form>
           </Grid>

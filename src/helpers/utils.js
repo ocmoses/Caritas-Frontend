@@ -1,3 +1,5 @@
+import { baseUrl } from "../constants";
+
 const isAuthenticated = () => {
   let user = localStorage.getItem("user");
   return user !== null && user !== undefined;
@@ -34,6 +36,15 @@ const signout = () => {
   return true;
 };
 
+const processPhoto = (photo) => {
+  const result =
+    process.env.NODE_ENV === "development"
+      ? photo.replace(/^uploads\\/, baseUrl)
+      : "/" + photo;
+
+  return result;
+};
+
 export {
   isAuthenticated,
   getToken,
@@ -41,4 +52,5 @@ export {
   signout,
   userIsUser,
   userIsModerator,
+  processPhoto,
 };

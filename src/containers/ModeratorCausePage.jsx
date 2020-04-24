@@ -85,6 +85,7 @@ const moreStyles = makeStyles((theme) => ({
 const ModeratorCausePage = () => {
   const [tab, setTab] = useState(0);
   const [cause, setCause] = useState([]);
+  const [user, setUser] = useState({});
   const [allCauses, setAllCauses] = useState([]);
   const { id } = useParams();
 
@@ -107,8 +108,10 @@ const ModeratorCausePage = () => {
   useEffect(() => {
     async function setACause() {
       let returnedCause = await fetchCause(id);
-      if (returnedCause) setCause(returnedCause);
-      else setCause([]);
+      if (returnedCause) {
+        setCause(returnedCause[0]);
+        setUser(returnedCause[1]);
+      } else setCause([]);
     }
     async function setTheCauses() {
       let returnedCauses = await fetchAllCauses();
@@ -128,7 +131,7 @@ const ModeratorCausePage = () => {
         className={classes.appbar}
       ></PrimaryAppBar>
       <main className={classes.main}>
-        <ACauseHeader cause={cause} />
+        <ACauseHeader cause={cause} user={user} />
         <Container>
           <div style={{ paddingTop: "50px" }}>
             <Grid container spacing={5}>

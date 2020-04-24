@@ -4,7 +4,7 @@ import { Avatar } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Colors } from "../constants";
 import { Link } from "react-router-dom";
-import { signout } from "../helpers/utils";
+import { signout, processPhoto } from "../helpers/utils";
 import { useLocation } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
@@ -69,7 +69,7 @@ const LoggedInAvatar = (props) => {
         </p>
         <Avatar
           alt={props.user.first_name}
-          src={props.user.image}
+          src={processPhoto(props.user.photo)}
           style={{ WebKitTransform: "scale(1.5, 1.5)" }}
         />
 

@@ -32,6 +32,8 @@ const Routes = {
   verify_email: host + "users/confirm_email/", //the verification token must be appended
   forgot_password: host + "users/forgot_password",
   reset_password: host + "users/update_password/", //the reset password token must be appended
+  get_profile: host + "users/profile",
+  update_profile: host + "users/profile/update",
 };
 
 const Actions = {
