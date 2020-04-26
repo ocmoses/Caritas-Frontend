@@ -54,21 +54,21 @@ const approveACause = async (id) => {
     });
 };
 
-const rejectACause = async (reason) => {
+const rejectACause = async (id, reason) => {
   console.log("Moderator Rejecting a cause");
   return await axios({
     method: "put",
-    url: Routes.approveACause,
-    data: { isApproved: 0, reason_for_rejection: reason },
+    url: Routes.reject_cause + (id ? id : ""),
+    data: { reason_for_disapproval: reason },
     headers: { "x-auth-token": getToken() },
   })
     .then((res) => {
       console.log("Result of rejecting cause", res.data.data);
-      return res.data.data;
+      return res;
     })
     .catch((err) => {
       console.log("Moderator rejecting error", err.response);
-      return err;
+      return err.response;
     });
 };
 

@@ -28,6 +28,7 @@ const Routes = {
   get_cause: host + "cause/", //the cause id must be appended
   moderator_all_causes: host + "cause/approve_causes",
   approve_cause: host + "cause/approve/", //the cause id must be appended
+  reject_cause: host + "cause/disapprove/", //the caue id is appended
 
   verify_email: host + "users/confirm_email/", //the verification token must be appended
   forgot_password: host + "users/forgot_password",

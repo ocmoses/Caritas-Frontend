@@ -17,7 +17,7 @@ import {
 } from "react-share";
 import { userIsModerator, processPhoto } from "../../helpers/utils";
 import { approveACause, rejectACause } from "../../services/cause.service";
-import { MyDialog, MyConfirmationDialog } from "../../commons";
+import { MyDialog, MyConfirmationDialog, MyPromptDialog } from "../../commons";
 import * as moment from "moment";
 
 const moreStyles = makeStyles((theme) => ({
@@ -44,9 +44,10 @@ const moreStyles = makeStyles((theme) => ({
 
 const ACauseHeader = (props) => {
   const classes = useStyles();
-  let location = useLocation();
 
   let [confirmOpen, setConfirmOpen] = useState(false);
+  let [promptOpen, setPromptOpen] = useState(false);
+  let [rejectReason, setRejectReason] = useState("");
   let [dialogOpen, setDialogOpen] = useState(false);
   let [positive, setPositive] = useState(false);
   let [dialogTitle, setDialogTitle] = useState("");
@@ -89,7 +90,34 @@ const ACauseHeader = (props) => {
   };
 
   const rejectCause = () => {
-    alert("Rejecting cause");
+    setDialogTitle("Please tell us why you are rejecting this cause");
+
+    setPromptOpen(true);
+  };
+
+  const doReject = async (id, reason) => {
+    setPromptOpen(false);
+    let outcome = await rejectACause(id, reason);
+    // console.log("Rejection outcome", outcome);
+    if (outcome.status && outcome.status === 200) {
+      setDialogTitle("Success");
+      setDialogMessage("Cause was rejected successfully");
+      setPositive(true);
+      setDialogOpen(true);
+      setTimeout(function () {
+        window.location.reload();
+      }, 2000);
+    } else {
+      setDialogTitle("Failure");
+      setDialogMessage("Cause could not be rejected");
+      setPositive(false);
+      setDialogOpen(true);
+    }
+  };
+
+  const handleRejectReason = (reason) => {
+    setRejectReason(reason);
+    console.log("Reason given:", reason);
   };
 
   return (
@@ -110,6 +138,14 @@ const ACauseHeader = (props) => {
       >
         {dialogMessage}
       </MyDialog>
+      <MyPromptDialog
+        positiveDialog={positive}
+        openDialog={promptOpen}
+        onClose={() => setPromptOpen(false)}
+        title={dialogTitle}
+        onChange={handleRejectReason}
+        positive={() => doReject(causeId, rejectReason)}
+      />
       <Grid container spacing={4} style={{ marginBottom: "100px" }}>
         <Grid item xs={12} md={6} className={classes2.mainImage}>
           {props.cause.cause_photos && (
@@ -248,34 +284,35 @@ const ACauseHeader = (props) => {
                 </Grid>
               )}
 
-              {userIsModerator() && props.cause.isApproved === 0 && (
-                <Grid item xs={6}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    style={{
-                      color: "white",
-                      marginRight: "20px",
-                      borderRadius: "0px",
-                      width: "120px",
-                    }}
-                    onClick={approveCause}
-                  >
-                    Approve
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    style={{
-                      borderColor: "black",
-                      width: "120px",
-                      borderRadius: "0px",
-                    }}
-                    onClick={rejectCause}
-                  >
-                    Reject
-                  </Button>
-                </Grid>
-              )}
+              {userIsModerator() &&
+                props.cause.approved_or_disapproved_by === null && (
+                  <Grid item xs={6}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      style={{
+                        color: "white",
+                        marginRight: "20px",
+                        borderRadius: "0px",
+                        width: "120px",
+                      }}
+                      onClick={approveCause}
+                    >
+                      Approve
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      style={{
+                        borderColor: "black",
+                        width: "120px",
+                        borderRadius: "0px",
+                      }}
+                      onClick={rejectCause}
+                    >
+                      Reject
+                    </Button>
+                  </Grid>
+                )}
 
               {userIsModerator() && props.cause.isApproved === 1 && (
                 <Grid item xs={6}>
