@@ -275,11 +275,11 @@ const RecoverPassword = () => {
             </Grid>
           </Container>
         </div>
-        <div className={classes.copyright}>
+        {/* <div className={classes.copyright}>
           <Container>
             <p>Copyright &copy; 2020 | All Rights Reserved | Caritas.org</p>
           </Container>
-        </div>
+        </div> */}
       </Grid>
     </Fragment>
   );

@@ -231,13 +231,13 @@ const Signup = () => {
     setPhone(event.target.value.trim());
   };
   const handleAddressChange = (event) => {
-    setAddress(event.target.value.trim());
+    setAddress(event.target.value);
   };
   const handleAccountNumberChange = (event) => {
     setAccountNumber(event.target.value.trim());
   };
   const handleAccountNameChange = (event) => {
-    setAccountName(event.target.value.trim());
+    setAccountName(event.target.value);
   };
   const handleAccountTypeChange = (event) => {
     setAccountType(event.target.value);
