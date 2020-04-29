@@ -16,7 +16,7 @@ const isValidPassword = (password) => {
 };
 
 const isValidCauseTitle = (title) => {
-  return /^[\w\s]{5,}$/.test(title);
+  return /^.{5,}$/.test(title);
 };
 
 const isValidBriefDescription = (briefDescription) => {
