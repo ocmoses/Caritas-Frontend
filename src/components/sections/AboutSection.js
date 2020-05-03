@@ -34,8 +34,9 @@ const AboutSection = () => {
               get assistance for justified causes ranging from medical
               assistance, education support, food supplies to challenging
               circumstances like human rights advocacy. The initiative is
-              currently fully funded by InstiQ - A tech company that is
-              currently revolutionizing African tech space with solution
+              currently fully funded by{" "}
+              <a href="https://www.instiq.com">InstiQ</a> - A tech company that
+              is currently revolutionizing African tech space with solution
               presence in about twenty(20) African countries. The company is
               committed to using part of her revenue and encouraging other
               partners to join us to make significant impacts on people’s lives.
@@ -74,6 +75,7 @@ const AboutSection = () => {
 const Stat = (props) => {
   const theClasses = {
     root: {
+      flex: 1,
       color: "white",
       textAlign: "center",
       margin: "0px 10px",

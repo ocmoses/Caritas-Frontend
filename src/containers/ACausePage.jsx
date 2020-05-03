@@ -85,6 +85,7 @@ const moreStyles = makeStyles((theme) => ({
 const ACausePage = () => {
   const [tab, setTab] = useState(0);
   const [cause, setCause] = useState([]);
+  const [user, setUser] = useState(null);
   const [allCauses, setAllCauses] = useState([]);
   const { id } = useParams();
 
@@ -107,8 +108,10 @@ const ACausePage = () => {
   useEffect(() => {
     async function setACause() {
       let returnedCause = await fetchCause(id);
-      if (returnedCause) setCause(returnedCause[0]);
-      else setCause([]);
+      if (returnedCause) {
+        setCause(returnedCause[0]);
+        setUser(returnedCause[1]);
+      } else setCause([]);
     }
     async function setTheCauses() {
       let returnedCauses = await fetchAllCauses();
@@ -119,8 +122,6 @@ const ACausePage = () => {
     setACause();
   }, []);
 
-  console.log("The cause", cause);
-
   return (
     <Fragment>
       <PrimaryAppBar
@@ -128,7 +129,7 @@ const ACausePage = () => {
         className={classes.appbar}
       ></PrimaryAppBar>
       <main className={classes.main}>
-        <ACauseHeader cause={cause} />
+        <ACauseHeader cause={cause} user={user} />
         <Container>
           <Tabs
             value={tab}
@@ -153,7 +154,7 @@ const ACausePage = () => {
                 component="p"
                 style={{ paddingBottom: "50px" }}
               >
-                {cause.charity_information}
+                {cause ? cause.charity_information : ""}
               </Typography>
               <Grid container spacing={3} style={{ marginBottom: "100px" }}>
                 <Grid item xs={12} md={7}>
@@ -181,7 +182,7 @@ const ACausePage = () => {
                 component="p"
                 style={{ paddingBottom: "50px" }}
               >
-                {cause.additional_information}
+                {cause ? cause.additional_information : ""}
               </Typography>
               <Grid container spacing={3} style={{ marginBottom: "100px" }}>
                 <Grid item xs={12} md={7}>

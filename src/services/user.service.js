@@ -1,5 +1,6 @@
 import { Routes } from "../constants";
 import axios from "axios";
+import { getToken } from "../helpers/utils";
 
 const registerUser = async (user) => {
   return await axios
@@ -129,6 +130,23 @@ const updateProfile = async (token, profile) => {
     });
 };
 
+const createSuccessStory = async (cause_id, success_story) => {
+  return await axios({
+    method: "post",
+    data: { testimonial: success_story, cause_id: cause_id },
+    url: Routes.create_success_story,
+    headers: { "x-auth-token": getToken() },
+  })
+    .then((res) => {
+      console.log("response", res);
+      return res;
+    })
+    .catch((err) => {
+      console.log(err.response);
+      return err.response;
+    });
+};
+
 export {
   registerUser,
   signinUser,
@@ -137,4 +155,5 @@ export {
   resetPassword,
   getProfile,
   updateProfile,
+  createSuccessStory,
 };

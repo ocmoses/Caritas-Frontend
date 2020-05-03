@@ -154,11 +154,13 @@ const useStyles = makeStyles((theme) => ({
   corona: {
     paddingTop: "150px",
     width: "100%",
-    backgroundImage:
-      "url('/assets/images/corona-background1.png'), url('/assets/images/corona-background2.png')",
-    backgroundRepeat: "no-repeat, no-repeat",
-    backgroundPosition: "left 480px, right 520px",
-    backgroundSize: "250px, 250px",
+    [theme.breakpoints.up("md")]: {
+      backgroundImage:
+        "url('/assets/images/corona-background1.png'), url('/assets/images/corona-background2.png')",
+      backgroundRepeat: "no-repeat, no-repeat",
+      backgroundPosition: "left 480px, right 520px",
+      backgroundSize: "250px, 250px",
+    },
   },
 
   howItWorks: {

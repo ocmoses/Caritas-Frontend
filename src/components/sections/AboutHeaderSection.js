@@ -35,9 +35,12 @@ const AboutHeaderSection = () => {
               food items, financial support for families under quarantine and
               quality healthcare is only increasing as more communities become
               affected by COVID-19. We are here to help, please register and log
-              your cause and get speedy help from our Caritas team.
+              your cause and get speedy help from our QCare team.
             </Typography>
-            <FancyButton label="Sign Up to get Started" onClick={() => window.location = "/signup"}/>            
+            <FancyButton
+              label="Sign Up to get Started"
+              onClick={() => (window.location = "/signup")}
+            />
           </Grid>
         </Grid>
       </Container>

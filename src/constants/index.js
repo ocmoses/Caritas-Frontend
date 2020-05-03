@@ -35,6 +35,8 @@ const Routes = {
   reset_password: host + "users/update_password/", //the reset password token must be appended
   get_profile: host + "users/profile",
   update_profile: host + "users/profile/update",
+  moderator_all_users: host + "users",
+  create_success_story: host + "success_stories/create",
 };
 
 const Actions = {

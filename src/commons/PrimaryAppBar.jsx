@@ -353,7 +353,7 @@ export default function PrimarySearchAppBar() {
                   if (location.pathname !== "/") window.location = "/";
                 }}
               >
-                Caritas<span style={{ color: Colors.appRed }}>...</span>
+                QCare<span style={{ color: Colors.appRed }}>...</span>
               </Typography>
 
               <div className={classes.grow} />

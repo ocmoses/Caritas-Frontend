@@ -27,7 +27,15 @@ const userIsUser = () => {
 
 const userIsModerator = () => {
   const user = getAuthenticatedUser();
-  return user.role[0] === "Moderator";
+  //return user.role[0] === "Moderator";
+  return user.role.find((role) => role === "Moderator") != null;
+};
+
+const userIsAnAdmin = () => {
+  const user = getAuthenticatedUser();
+  return (
+    user.role.find((role) => role === "Admin" || role === "Super Admin") != null
+  );
 };
 
 const signout = () => {
@@ -53,4 +61,5 @@ export {
   userIsUser,
   userIsModerator,
   processPhoto,
+  userIsAnAdmin,
 };

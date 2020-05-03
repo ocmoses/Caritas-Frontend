@@ -21,7 +21,7 @@ const HowItWorksSection = () => {
             marginBottom: "50px",
           }}
         >
-          Here is how charity projects are vetted and Approved on Caritas.
+          Here is how charity projects are vetted and Approved on QCare.
           <br />
           <span style={{ color: Colors.appRed }}>Please note:</span> For food
           support during COVID-19 pandemic, the initiative is fully sponsored by

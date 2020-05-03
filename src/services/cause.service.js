@@ -36,6 +36,24 @@ const getAllCausesAsModerator = async () => {
     });
 };
 
+const getAllUsersAsModerator = async () => {
+  console.log("Moderator fetching users");
+  return await axios({
+    method: "get",
+    url: Routes.moderator_all_users,
+
+    headers: { "x-auth-token": getToken() },
+  })
+    .then((res) => {
+      console.log("All users gotten by moderator", res.data.data);
+      return res.data.data;
+    })
+    .catch((err) => {
+      console.log("Moderator fetching users error", err.response);
+      return err;
+    });
+};
+
 const approveACause = async (id) => {
   console.log("Moderator Approving cause");
   return await axios({
@@ -80,10 +98,11 @@ const getCause = async (id) => {
       { "Content-Type": "application/json" }
     )
     .then((res) => {
-      console.log("The cause gotten in getCase", res.data.data);
+      console.log("The cause gotten in getCause", res.data.data);
       return res.data.data;
     })
     .catch((err) => {
+      console.log("Error in getCause", err.response);
       return err;
     });
 };
@@ -149,6 +168,7 @@ export {
   createCause,
   getCause,
   getAllCausesAsModerator,
+  getAllUsersAsModerator,
   approveACause,
   rejectACause,
 };

@@ -366,7 +366,7 @@ const Signin = () => {
         </div>
         {/* <div className={classes.copyright}>
           <Container>
-            <p>Copyright &copy; 2020 | All Rights Reserved | Caritas.org</p>
+            <p>Copyright &copy; 2020 | All Rights Reserved | QCare.org</p>
           </Container>
         </div> */}
       </Grid>

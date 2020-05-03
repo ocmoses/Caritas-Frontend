@@ -15,8 +15,14 @@ import {
   TwitterShareButton,
   InstapaperShareButton,
 } from "react-share";
-import { userIsModerator, processPhoto } from "../../helpers/utils";
+import {
+  userIsModerator,
+  processPhoto,
+  isAuthenticated,
+  getAuthenticatedUser,
+} from "../../helpers/utils";
 import { approveACause, rejectACause } from "../../services/cause.service";
+import { createSuccessStory } from "../../services/user.service";
 import { MyDialog, MyConfirmationDialog, MyPromptDialog } from "../../commons";
 import * as moment from "moment";
 
@@ -52,6 +58,9 @@ const ACauseHeader = (props) => {
   let [positive, setPositive] = useState(false);
   let [dialogTitle, setDialogTitle] = useState("");
   let [dialogMessage, setDialogMessage] = useState("");
+  let [successPositive, setSuccessPositive] = useState(false);
+  let [promptSuccessOpen, setPromptSuccessOpen] = useState(false);
+  let [successStory, setSuccessStory] = useState("");
   const causeId = useParams().id;
 
   console.log("param id: ", causeId);
@@ -95,6 +104,12 @@ const ACauseHeader = (props) => {
     setPromptOpen(true);
   };
 
+  const writeSuccessStory = () => {
+    setDialogTitle("Please Enter your success story below.");
+
+    setPromptSuccessOpen(true);
+  };
+
   const doReject = async (id, reason) => {
     setPromptOpen(false);
     let outcome = await rejectACause(id, reason);
@@ -115,9 +130,34 @@ const ACauseHeader = (props) => {
     }
   };
 
+  const doWriteSuccessStory = async (id, story) => {
+    setPromptSuccessOpen(false);
+    let outcome = await createSuccessStory(id, story);
+    if (outcome.status && outcome.status === 200) {
+      setDialogTitle("Success");
+      setDialogMessage("Success story added successfully");
+      setPositive(true);
+      setDialogOpen(true);
+      setTimeout(function () {
+        window.location.reload();
+      }, 2000);
+    } else {
+      setDialogTitle("Failure");
+      setDialogMessage(
+        "Could not add success story. " + outcome.response.message
+      );
+      setPositive(false);
+      setDialogOpen(true);
+    }
+  };
+
   const handleRejectReason = (reason) => {
     setRejectReason(reason);
     console.log("Reason given:", reason);
+  };
+
+  const handleWriteSuccessStory = (event) => {
+    setSuccessStory(event.target.value);
   };
 
   return (
@@ -146,11 +186,19 @@ const ACauseHeader = (props) => {
         onChange={handleRejectReason}
         positive={() => doReject(causeId, rejectReason)}
       />
+      <MyPromptDialog
+        positiveDialog={successPositive}
+        openDialog={promptSuccessOpen}
+        onClose={() => setPromptSuccessOpen(false)}
+        title={dialogTitle}
+        onChange={handleWriteSuccessStory.bind(this, window.event)}
+        positive={() => doWriteSuccessStory(causeId, successStory)}
+      />
       <Grid container spacing={4} style={{ marginBottom: "100px" }}>
         <Grid item xs={12} md={6} className={classes2.mainImage}>
           {props.cause.cause_photos && (
             <img
-              src={processPhoto(props.cause.cause_photos[0])}
+              src={processPhoto(props.cause ? props.cause.cause_photos[0] : "")}
               alt=""
               style={{ width: "100%", height: "100%" }}
             />
@@ -181,7 +229,7 @@ const ACauseHeader = (props) => {
           </Typography>
 
           <div className={classes.root}>
-            {!userIsModerator() && (
+            {isAuthenticated() && !userIsModerator() && (
               <>
                 <Slider
                   value={props.cause.amount_donated || 0}
@@ -223,7 +271,7 @@ const ACauseHeader = (props) => {
                 </Grid>
               </>
             )}
-            {userIsModerator() && (
+            {isAuthenticated() && userIsModerator() && (
               <>
                 <Typography variant="body1" component="p">
                   <b>Name: </b>
@@ -257,34 +305,37 @@ const ACauseHeader = (props) => {
               </>
             )}
             <Grid container style={{ position: "absolute", bottom: "0px" }}>
-              {!userIsModerator() && (
-                <Grid item xs={6}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    style={{
-                      color: "white",
-                      marginRight: "20px",
-                      borderRadius: "0px",
-                      width: "120px",
-                    }}
-                  >
-                    Donate
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    style={{
-                      borderColor: "black",
-                      width: "120px",
-                      borderRadius: "0px",
-                    }}
-                  >
-                    Watch
-                  </Button>
-                </Grid>
-              )}
+              {props.cause.isResolved === 0 &&
+                ((isAuthenticated() && !userIsModerator()) ||
+                  !isAuthenticated()) && (
+                  <Grid item xs={6}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      style={{
+                        color: "white",
+                        marginRight: "20px",
+                        borderRadius: "0px",
+                        width: "120px",
+                      }}
+                    >
+                      Donate
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      style={{
+                        borderColor: "black",
+                        width: "120px",
+                        borderRadius: "0px",
+                      }}
+                    >
+                      Watch
+                    </Button>
+                  </Grid>
+                )}
 
-              {userIsModerator() &&
+              {isAuthenticated() &&
+                userIsModerator() &&
                 props.cause.approved_or_disapproved_by === null && (
                   <Grid item xs={6}>
                     <Button
@@ -314,25 +365,48 @@ const ACauseHeader = (props) => {
                   </Grid>
                 )}
 
-              {userIsModerator() && props.cause.isApproved === 1 && (
-                <Grid item xs={6}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    style={{
-                      color: "white",
-                      marginRight: "20px",
-                      borderRadius: "0px",
-                      width: "120px",
-                    }}
-                    disabled
-                  >
-                    Approved
-                  </Button>
-                </Grid>
-              )}
+              {isAuthenticated() &&
+                userIsModerator() &&
+                props.cause.isApproved === 1 && (
+                  <Grid item xs={6}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      style={{
+                        color: "white",
+                        marginRight: "20px",
+                        borderRadius: "0px",
+                        width: "120px",
+                      }}
+                      disabled
+                    >
+                      Approved
+                    </Button>
+                  </Grid>
+                )}
 
-              {props.cause.share_on_social_media && !userIsModerator() && (
+              {isAuthenticated() &&
+                props.user !== null &&
+                props.user._id == getAuthenticatedUser()._id &&
+                props.cause.isResolved === 1 && (
+                  <Grid item xs={6}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      style={{
+                        color: "white",
+                        marginRight: "20px",
+                        borderRadius: "0px",
+                        width: "250px",
+                      }}
+                      onClick={writeSuccessStory}
+                    >
+                      Write Success Story
+                    </Button>
+                  </Grid>
+                )}
+
+              {props.cause.share_on_social_media && (
                 <Grid item xs={6} style={{ textAlign: "right" }}>
                   {/* <img
                     src="/assets/images/icons/facebook-red.png"

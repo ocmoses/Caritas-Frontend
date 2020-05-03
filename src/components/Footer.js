@@ -37,7 +37,7 @@ const Footer = (props) => {
               component="h4"
               className={classes.sectionHead}
             >
-              Caritas...
+              QCare...
             </Typography>
             <Typography
               variant="body1"
@@ -110,7 +110,7 @@ const Footer = (props) => {
               component="p"
               style={{ fontSize: "10px" }}
             >
-              Copyright &copy; 2020 | All Rights Reserved | Caritas.org
+              Copyright &copy; 2020 | All Rights Reserved | qcare.ng
             </Typography>
           </Grid>
           <Grid item xs={4} style={{ color: "white" }}></Grid>

@@ -279,7 +279,7 @@ const AddCause = () => {
                     fullWidth
                   >
                     <MenuItem value="Food">Food</MenuItem>
-                    <MenuItem value="Human Rights">Human Rights</MenuItem>
+                    <MenuItem value="Human Right">Human Rights</MenuItem>
                     <MenuItem value="Education">Education</MenuItem>
                     <MenuItem value="Health">Health</MenuItem>
                   </Select>

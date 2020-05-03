@@ -13,7 +13,7 @@ import {
   FormControlLabel,
 } from "@material-ui/core";
 import { useStyles } from "../helpers";
-import { userIsUser, userIsModerator } from "../helpers/utils";
+import { userIsUser, userIsModerator, userIsAnAdmin } from "../helpers/utils";
 
 import { Colors } from "../constants";
 import { useLocation, useHistory, Link } from "react-router-dom";
@@ -31,7 +31,7 @@ import {
   getAllCauses,
   getAllCausesAsModerator,
 } from "../services/cause.service";
-import { CausesTable } from "../components";
+import { CausesTable, UsersTable } from "../components";
 
 const moreStyles = makeStyles((theme) => ({
   sectionHead: {
@@ -209,6 +209,25 @@ const Summary = () => {
           </Typography>
           <Grid container spacing={5}>
             <CausesTable />
+          </Grid>
+        </>
+      )}
+      {userIsAnAdmin() && (
+        <>
+          <Typography
+            variant="h6"
+            component="h6"
+            style={{
+              color: Colors.appRed,
+              fontWeight: "bold",
+              marginBottom: "30px",
+              marginTop: "50px",
+            }}
+          >
+            Users
+          </Typography>
+          <Grid container spacing={5}>
+            <UsersTable />
           </Grid>
         </>
       )}

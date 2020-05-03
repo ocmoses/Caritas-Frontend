@@ -22,7 +22,7 @@ const HomeHeaderSection = () => {
                 component="h6"
                 className={classes.sectionTitle}
               >
-                Welcome to Caritas
+                Welcome to QCare
               </Typography>
               <Typography
                 variant="h4"
@@ -59,6 +59,7 @@ const HomeHeaderSection = () => {
                     color: Colors.appOrange,
                     cursor: "pointer",
                     fontWeight: "bold",
+                    textAlign: "center",
                   }}
                 >
                   Food
@@ -70,6 +71,7 @@ const HomeHeaderSection = () => {
                     color: Colors.appRed,
                     cursor: "pointer",
                     fontWeight: "bold",
+                    textAlign: "center",
                   }}
                 >
                   Health
@@ -81,6 +83,7 @@ const HomeHeaderSection = () => {
                     color: Colors.appBlue,
                     cursor: "pointer",
                     fontWeight: "bold",
+                    textAlign: "right",
                   }}
                 >
                   Human Rights

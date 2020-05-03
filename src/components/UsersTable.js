@@ -23,9 +23,9 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import DeleteIcon from "@material-ui/icons/Delete";
 import FilterListIcon from "@material-ui/icons/FilterList";
-import { Select } from "@material-ui/core";
+import { Select, Avatar } from "@material-ui/core";
 import { Colors, baseUrl } from "../constants";
-import { getAllCausesAsModerator } from "../services/cause.service";
+import { getAllUsersAsModerator } from "../services/cause.service";
 import * as moment from "moment";
 import { processPhoto } from "../helpers/utils";
 
@@ -59,42 +59,49 @@ const headCells = [
   { id: "checked", numeric: false, disablePadding: false, label: "" },
   { id: "thumbnail", numeric: false, disablePadding: false, label: "" },
   {
-    id: "title",
+    id: "first_name",
     numeric: false,
     disablePadding: false,
-    label: "Cause title",
+    label: "First name",
   },
   {
-    id: "amount_required",
+    id: "last_name",
     numeric: false,
     disablePadding: false,
-    label: "Amount Required",
+    label: "Last name",
   },
   {
-    id: "amount_donated",
+    id: "email",
     numeric: false,
     disablePadding: false,
-    label: "Amount Donated",
+    label: "Email",
   },
+  {
+    id: "phone",
+    numeric: false,
+    disablePadding: false,
+    label: "Phone no",
+  },
+  {
+    id: "roles",
+    numeric: false,
+    disablePadding: false,
+    label: "Role(s)",
+  },
+  {
+    id: "active",
+    numeric: false,
+    disablePadding: false,
+    label: "Account status",
+  },
+
   {
     id: "date",
     numeric: false,
     disablePadding: false,
-    label: "Date",
-  },
-  {
-    id: "approved",
-    numeric: false,
-    disablePadding: false,
-    label: "Approved",
+    label: "Added",
   },
 
-  {
-    id: "resolved",
-    numeric: false,
-    disablePadding: false,
-    label: "",
-  },
   {
     id: "view",
     numeric: false,
@@ -204,7 +211,7 @@ const EnhancedTableToolbar = (props) => {
         </Typography>
       ) : (
         <Typography className={classes.title} variant="h6" id="tableTitle">
-          All Causes
+          Users
         </Typography>
       )}
 
@@ -239,8 +246,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
   },
   table: {
-    width: "100%",
-    maxHeight: "200px",
+    minHeight: 200,
   },
   visuallyHidden: {
     border: 0,
@@ -255,7 +261,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function CausesTable(props) {
+export default function UsersTable(props) {
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
@@ -263,7 +269,7 @@ export default function CausesTable(props) {
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  let [allCauses, setAllCauses] = React.useState([]);
+  let [allUsers, setAllUsers] = React.useState([]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -273,7 +279,7 @@ export default function CausesTable(props) {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = allCauses.map((n) => n._id);
+      const newSelecteds = allUsers.map((n) => n._id);
       setSelected(newSelecteds);
       return;
     }
@@ -316,19 +322,19 @@ export default function CausesTable(props) {
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
   const emptyRows =
-    rowsPerPage - Math.min(rowsPerPage, allCauses.length - page * rowsPerPage);
+    rowsPerPage - Math.min(rowsPerPage, allUsers.length - page * rowsPerPage);
 
-  const moderatorFetchAllCauses = async () => {
-    return await getAllCausesAsModerator();
+  const moderatorFetchAllUsers = async () => {
+    return await getAllUsersAsModerator();
   };
 
   useEffect(() => {
-    async function setTheCauses() {
-      let returnedCauses = await moderatorFetchAllCauses();
-      if (Array.isArray(returnedCauses)) setAllCauses(returnedCauses);
-      else setAllCauses([]);
+    async function setTheUsers() {
+      let returnedUsers = await moderatorFetchAllUsers();
+      if (Array.isArray(returnedUsers)) setAllUsers(returnedUsers);
+      else setAllUsers([]);
     }
-    setTheCauses();
+    setTheUsers();
   }, []);
 
   return (
@@ -338,7 +344,7 @@ export default function CausesTable(props) {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25, 30]}
           component="div"
-          count={allCauses.length}
+          count={allUsers.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onChangePage={handleChangePage}
@@ -358,20 +364,20 @@ export default function CausesTable(props) {
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={allCauses.length}
+              rowCount={allUsers.length}
             />
 
             <TableBody>
-              {stableSort(allCauses, getComparator(order, orderBy))
+              {stableSort(allUsers, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((aCause, index) => {
-                  const isItemSelected = isSelected(aCause._id);
+                .map((aUser, index) => {
+                  const isItemSelected = isSelected(aUser._id);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, aCause._id)}
+                      onClick={(event) => handleClick(event, aUser._id)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
@@ -380,7 +386,7 @@ export default function CausesTable(props) {
                     >
                       <TableCell align="left">
                         <Checkbox
-                          checked={isSelected(aCause._id)}
+                          checked={isSelected(aUser._id)}
                           onChange={() => {}}
                           name=""
                           color="primary"
@@ -392,60 +398,36 @@ export default function CausesTable(props) {
                         scope="row"
                         align="left"
                       >
-                        <img
-                          src={processPhoto(aCause.cause_photos[0])}
+                        <Avatar
+                          src={processPhoto(aUser.photo)}
                           alt=""
                           style={{ height: "40px" }}
                         />
                       </TableCell>
-                      <TableCell align="left">{aCause.cause_title}</TableCell>
+                      <TableCell align="left">{aUser.first_name}</TableCell>
+                      <TableCell align="left">{aUser.last_name}</TableCell>
+                      <TableCell align="left">{aUser.email}</TableCell>
+                      <TableCell align="left">{aUser.phone_number}</TableCell>
                       <TableCell align="left">
-                        {aCause.amount_required}
+                        {aUser.role.map((role) => (
+                          <>
+                            <span>{role}</span>
+                            <br />
+                          </>
+                        ))}
                       </TableCell>
                       <TableCell align="left">
-                        {aCause.amount_donated}
+                        {aUser.isEmailVerified ? "Active" : "Unverified"}
                       </TableCell>
                       <TableCell align="left">
-                        {moment(aCause.created_at).format("ddd, MMM Do, hh:mm")}
+                        {moment(aUser.created_at).format("ddd, MMM Do, hh:mm")}
                       </TableCell>
-                      <TableCell align="left">
-                        {aCause.isApproved == 1 && "Approved"}
-                        {aCause.reason_for_disapproval != null && "Rejected"}
-                        {aCause.reason_for_disapproval == null &&
-                          aCause.isApproved == 0 &&
-                          "Pending"}
-                      </TableCell>
-                      <TableCell align="left">
-                        {aCause.isResolved == 1 && "resolved"}
-                        {aCause.reason_for_disapproval != null && (
-                          <Button
-                            margin="dense"
-                            color="primary"
-                            variant="contained"
-                            onClick={() => {}}
-                            style={{ color: "white" }}
-                            disabled
-                          >
-                            Resolve
-                          </Button>
-                        )}
-                        {aCause.isApproved == 1 && aCause.resolved == 0 && (
-                          <Button
-                            margin="dense"
-                            color="primary"
-                            variant="contained"
-                            onClick={() => {}}
-                            style={{ color: "white" }}
-                          >
-                            Resolve
-                          </Button>
-                        )}
-                      </TableCell>
+
                       <TableCell align="left">
                         <Button
                           margin="dense"
                           onClick={() => {
-                            window.location = `/dashboard/cause/${aCause._id}`;
+                            window.location = `/dashboard/user/${aUser._id}`;
                           }}
                         >
                           View
