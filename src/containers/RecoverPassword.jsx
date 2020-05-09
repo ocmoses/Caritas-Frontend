@@ -259,7 +259,7 @@ const RecoverPassword = () => {
                       display: "inline",
                     }}
                   >
-                    Sign In instead
+                    Sign In
                   </Link>
                 </p>
               </Grid>
