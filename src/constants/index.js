@@ -1,11 +1,11 @@
 const host =
   process.env.NODE_ENV == "development"
     ? "http://localhost:5000/api/"
-    : "http://157.245.247.105/api/";
+    : "https://www.qcare.ng/api/";
 const baseUrl =
   process.env.NODE_ENV == "development"
     ? "http://localhost:5000/"
-    : "http://157.245.247.105/";
+    : "https://www.qcare.ng/";
 const recaptchaKey = "6LcZFewUAAAAADBST21gzdTFt-BBdFdlDk2H5UEY"; //shouldn't be here
 const recaptchaSecret = "6LcZFewUAAAAAEMwQ7Q4eCOm5L2NyFsG-ij2CR3w"; //this too
 const Colors = {
