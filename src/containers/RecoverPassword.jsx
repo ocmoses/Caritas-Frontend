@@ -250,7 +250,7 @@ const RecoverPassword = () => {
                   }}
                   className={classes.alternate}
                 >
-                  I remember my details,{" "}
+                  I remember my details now,{" "}
                   <Link
                     to="/signin"
                     style={{
