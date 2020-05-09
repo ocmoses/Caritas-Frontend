@@ -348,7 +348,7 @@ const Signin = () => {
                       display: "inline",
                     }}
                   >
-                    Signup now
+                    Sign up
                   </Link>
                 </p>
               </Grid>
