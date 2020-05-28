@@ -140,32 +140,33 @@ const HomeHeaderSection = () => {
             <Grid item xs={6}>
               <Zoom in={true} timeout={1000} mountOnEnter>
                 <img
-                  src="/assets/images/kids.png"
+                  src="/assets/images/top_left.png"
                   alt=""
                   className={classes.heroImage}
                 />
               </Zoom>
               <Zoom in={true} timeout={2000} mountOnEnter>
                 <img
-                  src="/assets/images/doctor.png"
+                  src="/assets/images/bottom_left.png"
                   alt=""
                   className={classes.heroImage}
                 />
               </Zoom>
             </Grid>
-            <Grid item xs={6} style={{ paddingTop: "32px" }}>
+            <Grid item xs={6} style={{ paddingTop: "20px" }}>
               <Zoom in={true} timeout={2000} mountOnEnter>
                 <img
-                  src="/assets/images/sign-post.png"
+                  src="/assets/images/top_right.png"
                   alt=""
                   className={classes.heroImage}
                 />
               </Zoom>
               <Zoom in={true} timeout={1000} mountOnEnter>
                 <img
-                  src="/assets/images/water.png"
+                  src="/assets/images/bottom_right.png"
                   alt=""
                   className={classes.heroImage}
+                  // style={{ boxShadow: "2px 2px 5px rgb(0,0,0,.5)" }}
                 />
               </Zoom>
             </Grid>

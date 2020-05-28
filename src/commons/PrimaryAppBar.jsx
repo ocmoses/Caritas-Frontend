@@ -34,13 +34,13 @@ const useStyles = makeStyles((theme) => ({
   appbar: {
     backgroundColor: "rgba(0,0,0,.0) !important",
     boxShadow: "none",
-    padding: "20px 0px",
+    padding: "10px 0px 0px 0px",
   },
   appbarScrolling: {
     backgroundColor: "white !important",
     color: "black",
     boxShadow: "0px 1px 3px rgba(0, 0, 0, 0.5)",
-    padding: "20px 0px",
+    padding: "10px 0px 0px 0px",
   },
 
   logo: {
@@ -353,7 +353,12 @@ export default function PrimarySearchAppBar() {
                   if (location.pathname !== "/") window.location = "/";
                 }}
               >
-                QCare<span style={{ color: Colors.appRed }}>...</span>
+                {/* QCare<span style={{ color: Colors.appRed }}>...</span> */}
+                <img
+                  src="/logo512.png"
+                  alt=""
+                  style={{ height: "80px", marginLeft: "-16px" }}
+                />
               </Typography>
 
               <div className={classes.grow} />

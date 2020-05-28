@@ -9,7 +9,7 @@ const AboutSection = () => {
       <Container style={{ position: "relative" }}>
         <Slide in={true} direction="up" timeout={2000} mountOnEnter>
           <img
-            src="/assets/images/smiling-kid.png"
+            src="/assets/images/young_mother.jpeg"
             alt=""
             className={classes.aboutImage}
             id="aboutImage"

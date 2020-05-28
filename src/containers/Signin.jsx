@@ -49,12 +49,14 @@ const useStyles = makeStyles((theme) => ({
   },
   formSubheader: {
     marginBottom: 50,
+    textAlign: "center",
     [theme.breakpoints.down("md")]: {
       textAlign: "center",
     },
   },
   formByLine: {
     marginLeft: "30px",
+    textAlign: "center",
   },
   textField: {
     width: "100% !important",
@@ -108,10 +110,10 @@ const useStyles = makeStyles((theme) => ({
   },
   form: {
     width: "400px !important",
+    display: "block",
+    margin: "auto",
     [theme.breakpoints.down("md")]: {
       width: "100% !important",
-      display: "block",
-      margin: "auto",
     },
   },
 }));
@@ -221,7 +223,6 @@ const Signin = () => {
 
   return (
     <Fragment>
-      <PrimaryAppBar />
       <MyDialog
         title={dialogTitle}
         openDialog={openDialog}
@@ -230,146 +231,129 @@ const Signin = () => {
       >
         {dialogMessage}
       </MyDialog>
-      <Grid container className={classes.authPage}>
-        <Grid item xs={12} md={6} className={classes.left}></Grid>
-        <Grid item xs={12} md={6} className={classes.right}></Grid>
-        <div
-          style={{
-            position: "absolute",
-            width: "100%",
-            top: 200,
-          }}
-        >
-          <Container>
-            <Grid container>
-              <Grid item xs={12} md={6} className={classes.authLeft}>
-                <Typography
-                  variant="h5"
-                  component="h5"
-                  className={classes.formHeader}
-                >
-                  Welcome back...
-                </Typography>
-                <Typography
-                  variant="body1"
-                  component="p"
-                  className={classes.formSubheader}
-                >
-                  Signin to continue
-                </Typography>
-                <form action={"#"} method="POST" className={classes.form}>
-                  <div
-                    style={{ color: "red", textAlign: "center", margin: 16 }}
-                  >
-                    {errorMessage}
-                  </div>
-                  {successMessage && (
-                    <div
-                      style={{
-                        borderRadius: 10,
-                        color: "white",
-                        backgroundColor: Colors.appRed,
-                        textAlign: "center",
-                        margin: "16px 0px",
-                        padding: 15,
-                      }}
-                    >
-                      Login Successful...
-                    </div>
-                  )}
-                  <FormControl className={classes.formControl}>
-                    <MyTextField
-                      id="email"
-                      type="email"
-                      name="username"
-                      required="required"
-                      label="Username"
-                      placeholder="Enter your username"
-                      value={email}
-                      onChange={handleEmailChange}
-                    />
-                  </FormControl>
 
-                  <FormControl className={classes.formControl}>
-                    <MyTextField
-                      id="password"
-                      type="password"
-                      name="password"
-                      required="required"
-                      label="Password"
-                      placeholder="Enter your password"
-                      value={password}
-                      onChange={handlePasswordChange}
-                    />
-                  </FormControl>
+      <Container>
+        <img
+          src="/logo512.png"
+          alt=""
+          style={{ display: "block", margin: "100px auto 50px auto" }}
+        />
 
-                  <FormControl
-                    style={{
-                      width: "100%",
-                      textAlign: "right",
-                      marginBottom: 10,
-                    }}
-                  >
-                    <Link
-                      to="/recover-password"
-                      style={{
-                        float: "right",
-                        marginBottom: "15px",
-                        fontSize: "12px",
-                      }}
-                    >
-                      Forgot password
-                    </Link>
-                  </FormControl>
+        <div style={{ textAlign: "center" }}>
+          <Typography
+            variant="h5"
+            component="h5"
+            className={classes.formHeader}
+          >
+            Welcome back...
+          </Typography>
+          <Typography
+            variant="body1"
+            component="p"
+            className={classes.formSubheader}
+          >
+            Signin to continue
+          </Typography>
+          <form action={"#"} method="POST" className={classes.form}>
+            <div style={{ color: "red", textAlign: "center", margin: 16 }}>
+              {errorMessage}
+            </div>
+            {successMessage && (
+              <div
+                style={{
+                  borderRadius: 10,
+                  color: "white",
+                  backgroundColor: Colors.appRed,
+                  textAlign: "center",
+                  margin: "16px 0px",
+                  padding: 15,
+                }}
+              >
+                Login Successful...
+              </div>
+            )}
+            <FormControl className={classes.formControl}>
+              <MyTextField
+                id="email"
+                type="text"
+                name="username"
+                required="required"
+                label="Email address/Phone number"
+                placeholder="Enter email address or phone number"
+                value={email}
+                onChange={handleEmailChange}
+              />
+            </FormControl>
 
-                  <FormControl
-                    className={clsx(classes.formControl, classes.recaptcha)}
-                  >
-                    <ReCAPTCHA sitekey={recaptchaKey} onChange={onRecaptcha} />
-                  </FormControl>
+            <FormControl className={classes.formControl}>
+              <MyTextField
+                id="password"
+                type="password"
+                name="password"
+                required="required"
+                label="Password"
+                placeholder="Enter your password"
+                value={password}
+                onChange={handlePasswordChange}
+              />
+            </FormControl>
 
-                  <MyButton processing={false} onClick={handleSubmit}>
-                    Sign in
-                  </MyButton>
-                </form>
-                <p
-                  style={{
-                    color: Colors.appBlack,
-                    marginTop: "50px",
-                  }}
-                  className={classes.alternate}
-                >
-                  Don't have an account?{" "}
-                  <Link
-                    to="/signup"
-                    style={{
-                      color: Colors.appRed,
-                      fontWeight: "bold",
-                      display: "inline",
-                    }}
-                  >
-                    Sign up
-                  </Link>
-                </p>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <Zoom in={true} timeout={2000}>
-                  <img
-                    src="/assets/images/signin.png"
-                    alt=""
-                    className={classes.authImage}
-                  />
-                </Zoom>
-              </Grid>
-            </Grid>
-          </Container>
+            <FormControl
+              style={{
+                width: "100%",
+                textAlign: "right",
+                marginBottom: 10,
+              }}
+            >
+              <Link
+                to="/recover-password"
+                style={{
+                  float: "right",
+                  marginBottom: "15px",
+                  fontSize: "12px",
+                }}
+              >
+                Forgot password
+              </Link>
+            </FormControl>
+
+            <FormControl
+              className={clsx(classes.formControl, classes.recaptcha)}
+            >
+              <ReCAPTCHA sitekey={recaptchaKey} onChange={onRecaptcha} />
+            </FormControl>
+
+            <MyButton processing={false} onClick={handleSubmit}>
+              Sign in
+            </MyButton>
+          </form>
+          <p
+            style={{
+              color: Colors.appBlack,
+              marginTop: "50px",
+            }}
+            className={classes.alternate}
+          >
+            Don't have an account?{" "}
+            <Link
+              to="/signup"
+              style={{
+                color: Colors.appRed,
+                fontWeight: "bold",
+                display: "inline",
+              }}
+            >
+              Sign up
+            </Link>
+          </p>
         </div>
-        {/* <div className={classes.copyright}>
+      </Container>
+
+      {/* <div className={classes.copyright}>
           <Container>
             <p>Copyright &copy; 2020 | All Rights Reserved | QCare.org</p>
           </Container>
         </div> */}
-      </Grid>
     </Fragment>
   );
 };

@@ -4,7 +4,7 @@ import { Colors } from "../constants";
 import { makeStyles } from "@material-ui/core/styles";
 // import "../add_cause.module.css";
 import { Avatar } from "@material-ui/core";
-import { getAuthenticatedUser } from "../helpers/utils";
+import { isAuthenticated, getAuthenticatedUser } from "../helpers/utils";
 
 const styles = {
   item: {
@@ -23,6 +23,7 @@ const styles = {
     marginLeft: "auto",
     marginTop: "30px",
     marginRight: "auto",
+    cursor: "pointer",
   },
   "item:hover": {
     //   boxShadow: "0px 0px 10px 15px rgba(255, 0, 0, .9) !important",
@@ -44,14 +45,14 @@ const styles = {
     marginTop: "0px",
   },
   profileAvatar: {
-    width: 200,
-    height: 200,
-    position: "absolute",
+    width: "100%",
+    height: "100%",
+    // position: "absolute",
     zIndex: 200,
   },
   profileAvatarMobile: {
-    width: 200,
-    height: 200,
+    width: "100%",
+    height: "100%",
     display: "block",
     margin: "auto",
     textAlign: "center",
@@ -78,6 +79,7 @@ class AddProfileImage extends Component {
     const TheFile = event.target.files[0];
     console.log("Chosen Image", TheFile);
     this.props.setImage(TheFile);
+    // this.props.file = TheFile;
 
     if (TheFile) {
       var reader = new FileReader();
@@ -94,6 +96,7 @@ class AddProfileImage extends Component {
 
   render() {
     const { item, title, text, img } = styles;
+    console.log("The Image", this.state.image);
     return (
       <div
         style={{
@@ -103,18 +106,36 @@ class AddProfileImage extends Component {
           backgoundSize: "cover",
           backgroundRepeat: "no-repeat",
           overflow: "hidden",
+          position: "relative",
         }}
         onClick={this.handleClick}
       >
-        <Avatar
+        <img
           src={this.state.image}
-          alt={getAuthenticatedUser().first_name}
+          alt={isAuthenticated() ? getAuthenticatedUser().first_name : ""}
           style={
             window.innerWidth > 768
               ? styles.profileAvatar
               : styles.profileAvatarMobile
           }
         />
+
+        {(this.state.image == "/assets/images/icons/upload-image.png" ||
+          this.state.image == undefined) && (
+          <p
+            style={{
+              position: "absolute",
+              left: "0px",
+              top: "45%",
+              width: "100%",
+              color: "#787878",
+              textAlign: "center",
+              fontWeight: "bold",
+            }}
+          >
+            Add photo
+          </p>
+        )}
         <input
           type="file"
           name={this.props.filename}

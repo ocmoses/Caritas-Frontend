@@ -68,8 +68,10 @@ const useStyles = makeStyles((theme) => ({
   },
 
   heroImage: {
-    width: "100%",
+    width: "calc(100% - 10px)",
     display: "block",
+    marginLeft: "10px",
+    marginBottom: "10px",
   },
 
   aboutImage: {

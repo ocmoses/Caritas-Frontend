@@ -108,10 +108,10 @@ const useStyles = makeStyles((theme) => ({
   },
   form: {
     width: "400px !important",
+    display: "block",
+    margin: "auto",
     [theme.breakpoints.down("md")]: {
       width: "100% !important",
-      display: "block",
-      margin: "auto",
     },
   },
 }));
@@ -179,108 +179,92 @@ const RecoverPassword = () => {
 
   return (
     <Fragment>
-      <PrimaryAppBar />
-      <Grid container className={classes.authPage}>
-        <Grid item xs={12} md={6} className={classes.left}></Grid>
-        <Grid item xs={12} md={6} className={classes.right}></Grid>
-        <div
-          style={{
-            position: "absolute",
-            width: "100%",
-            top: 200,
+      <Container>
+        <img
+          src="/logo512.png"
+          alt=""
+          style={{ display: "block", margin: "100px auto 50px auto" }}
+        />
+
+        <MyDialog
+          title={dialogTitle}
+          positiveDialog={positiveDialog}
+          openDialog={openDialog}
+          onClose={() => {
+            setOpenDialog(false);
           }}
         >
-          <Container>
-            <MyDialog
-              title={dialogTitle}
-              positiveDialog={positiveDialog}
-              openDialog={openDialog}
-              onClose={() => {
-                setOpenDialog(false);
+          {dialogMessage}
+        </MyDialog>
+
+        <div style={{ textAlign: "center" }}>
+          <Typography
+            variant="h5"
+            component="h5"
+            className={classes.formHeader}
+          >
+            Reset your password here...
+          </Typography>
+          <Typography
+            variant="body1"
+            component="p"
+            className={classes.formSubheader}
+          >
+            Enter email to reset your password
+          </Typography>
+          <form action={"#"} method="POST" className={classes.form}>
+            <FormControl className={classes.formControl}>
+              <MyTextField
+                id="email"
+                type="email"
+                name="email"
+                required="required"
+                label="Enter email"
+                placeholder="Enter your email"
+                onChange={handleEmailChange}
+              />
+            </FormControl>
+            <FormControl
+              className={clsx(classes.formControl, classes.recaptcha)}
+            >
+              <ReCAPTCHA sitekey={recaptchaKey} onChange={onRecaptcha} />
+            </FormControl>
+            <Button
+              variant="contained"
+              color="primary"
+              className={classes.loginButton}
+              onClick={handleSubmit}
+            >
+              Send Recovery Link
+            </Button>
+          </form>
+          <p
+            style={{
+              color: Colors.appBlack,
+              marginTop: "50px",
+            }}
+            className={classes.alternate}
+          >
+            I remember my credentials,{" "}
+            <Link
+              to="/signin"
+              style={{
+                color: Colors.appRed,
+                fontWeight: "bold",
+                display: "inline",
               }}
             >
-              {dialogMessage}
-            </MyDialog>
-            <Grid container>
-              <Grid item xs={12} md={6} className={classes.authLeft}>
-                <Typography
-                  variant="h5"
-                  component="h5"
-                  className={classes.formHeader}
-                >
-                  Reset your password here...
-                </Typography>
-                <Typography
-                  variant="body1"
-                  component="p"
-                  className={classes.formSubheader}
-                >
-                  Enter email to reset your password
-                </Typography>
-                <form action={"#"} method="POST" className={classes.form}>
-                  <FormControl className={classes.formControl}>
-                    <MyTextField
-                      id="email"
-                      type="email"
-                      name="email"
-                      required="required"
-                      label="Enter email"
-                      placeholder="Enter your email"
-                      onChange={handleEmailChange}
-                    />
-                  </FormControl>
-                  <FormControl
-                    className={clsx(classes.formControl, classes.recaptcha)}
-                  >
-                    <ReCAPTCHA sitekey={recaptchaKey} onChange={onRecaptcha} />
-                  </FormControl>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    className={classes.loginButton}
-                    onClick={handleSubmit}
-                  >
-                    Send Recovery Link
-                  </Button>
-                </form>
-                <p
-                  style={{
-                    color: Colors.appBlack,
-                    marginTop: "50px",
-                  }}
-                  className={classes.alternate}
-                >
-                  I remember my credentials,{" "}
-                  <Link
-                    to="/signin"
-                    style={{
-                      color: Colors.appRed,
-                      fontWeight: "bold",
-                      display: "inline",
-                    }}
-                  >
-                    Sign In Instead
-                  </Link>
-                </p>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <Zoom in={true} timeout={2000}>
-                  <img
-                    src="/assets/images/nurse.png"
-                    alt=""
-                    className={classes.authImage}
-                  />
-                </Zoom>
-              </Grid>
-            </Grid>
-          </Container>
+              Sign In Instead
+            </Link>
+          </p>
         </div>
-        {/* <div className={classes.copyright}>
+      </Container>
+
+      {/* <div className={classes.copyright}>
           <Container>
             <p>Copyright &copy; 2020 | All Rights Reserved | QCare.org</p>
           </Container>
         </div> */}
-      </Grid>
     </Fragment>
   );
 };
