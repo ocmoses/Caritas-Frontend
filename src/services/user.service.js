@@ -2,25 +2,26 @@ import { Routes } from "../constants";
 import axios from "axios";
 import { getToken } from "../helpers/utils";
 
-const registerUser = async (user) => {
-  return await axios
-    .post(
-      Routes.register,
-      {
-        first_name: user.first_name,
-        last_name: user.last_name,
-        email: user.email,
-        phone_number: user.phone,
-        password: user.password,
-        role: user.role,
-        address: user.address,
-        bank_name: user.bankName,
-        account_number: user.accountNumber,
-        account_name: user.accountName,
-        account_type: user.accountType,
-      },
-      { "Content-Type": "application/json" }
-    )
+const registerUser = async (user, image, role, token) => {
+  var formData = new FormData();
+
+  formData.append("reg_credential", user.email !== "" ? user.email : user.phone);
+  formData.append("first_name", user.firstName);
+  formData.append("last_name", user.lastName);
+  formData.append("email", user.email);
+  formData.append("phone_number", user.phone);
+  formData.append("password", user.password);
+  formData.append("role", role);
+  formData.append("address", user.address);
+  formData.append("title", user.title);
+  formData.append("photo", image);
+
+  return await axios({
+    method: "post",
+    data: formData,
+    url: Routes.register,
+    headers: {"x-auth-token": token}
+  })
     .then((res) => {
       console.log(res.data);
       return res;

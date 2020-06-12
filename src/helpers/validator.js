@@ -27,6 +27,10 @@ const isValidFunds = (funds) => {
   return /^[\d]{4,}$/.test(funds);
 };
 
+const isValidPhoneNumber = (phone) => {
+  return /^(\+234)?(0)?[\d]{10}|(234)?(0)?[\d]{10}|[0][\d]{10}$/.test(phone);
+};
+
 export {
   isValidFirstName,
   isValidLastName,
@@ -35,4 +39,5 @@ export {
   isValidCauseTitle,
   isValidBriefDescription,
   isValidFunds,
+  isValidPhoneNumber
 };

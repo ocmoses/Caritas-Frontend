@@ -22,10 +22,12 @@ import {
   isValidLastName,
   isValidEmail,
   isValidPassword,
+  isValidPhoneNumber
 } from "../helpers/validator";
 import { MyButton, MyDialog } from "../components";
 import ReCAPTCHA from "react-google-recaptcha";
 import { AddProfileImage } from "../components";
+import { getToken } from "../helpers/utils";
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -144,8 +146,6 @@ const useStyles = makeStyles((theme) => ({
 
 const Signup = () => {
   const classes = useStyles();
-  let [gender, setGender] = useState("Select Gender");
-  let [title, setTitle] = useState("Select Title");
   let [user, setUser] = useState({
     firstName: "",
     middleName: "",
@@ -159,6 +159,9 @@ const Signup = () => {
     accountNumber: "",
     password: "",
     confirmPassword: "",
+    dateOfBirth: "",
+    title: "Select Title",
+    gender: "Select Gender"
   });
 
   let [partner, setPartner] = useState({
@@ -214,6 +217,8 @@ const Signup = () => {
   });
 
   const handleSubmit = async (event) => {
+
+   
     if (event) event.preventDefault();
 
     progress === false ? setProgress(true) : setProgress(progress);
@@ -221,34 +226,23 @@ const Signup = () => {
     if (validateSignup()) {
       //Here we submit shit...
 
-      if (!verified) {
-        setDialogTitle("Hold on!");
-        setDialogMessage("Please verify you are human");
+      // if (!verified) {
+      //   setDialogTitle("Hold on!");
+      //   setDialogMessage("Please verify you are human");
 
-        setPositiveDialog(false);
+      //   setPositiveDialog(false);
 
-        setOpenDialog(true);
+      //   setOpenDialog(true);
 
-        return;
-      }
+      //   return;
+      // }
+      console.log("Sending...");
 
-      let outcome = await registerUser({
-        first_name: user.firstName,
-        middle_name: user.middleName,
-        last_name: user.lastName,
-        email: user.email,
-        phone: user.phone,
-        password: user.password,
-        address: user.address,
-        bankName: user.bankName,
-        accountNumber: user.accountNumber,
-        accountName: user.accountName,
-        accountType: user.accountType,
-      });
+      let outcome = await registerUser(user, uploadFiles.image, selectedType, getToken());
 
       setProgress(false);
 
-      console.log(outcome);
+      console.log("Outcome", outcome);
 
       if (outcome && outcome.data) {
         setErrorMessage("");
@@ -258,9 +252,7 @@ const Signup = () => {
           lastName: "",
           email: "",
           phone: "",
-          accountType: "",
           address: "",
-          bankName: "",
           accountName: "",
           accountNumber: "",
           password: "",
@@ -277,6 +269,8 @@ const Signup = () => {
           state: "",
           lga: "",
         });
+
+        setUploadFiles({image: null});
 
         setDialogTitle("Registration Successful");
         setDialogMessage("Please check your email for verification");
@@ -396,21 +390,21 @@ const Signup = () => {
       setProgress(false);
       return;
     }
-    if (user.bankName === "Select Bank") {
-      setErrorMessage("Please select your bank");
-      setProgress(false);
-      return;
-    }
-    if (user.accountName === "") {
-      setErrorMessage("Your account name is empty");
-      setProgress(false);
-      return;
-    }
-    if (user.accountNumber === "") {
-      setErrorMessage("Your account number is empty");
-      setProgress(false);
-      return;
-    }
+    // if (user.bankName === "Select Bank") {
+    //   setErrorMessage("Please select your bank");
+    //   setProgress(false);
+    //   return;
+    // }
+    // if (user.accountName === "") {
+    //   setErrorMessage("Your account name is empty");
+    //   setProgress(false);
+    //   return;
+    // }
+    // if (user.accountNumber === "") {
+    //   setErrorMessage("Your account number is empty");
+    //   setProgress(false);
+    //   return;
+    // }
     if (!isValidEmail(user.email)) {
       setErrorMessage("Ïnvalid email address");
       setProgress(false);
@@ -438,6 +432,49 @@ const Signup = () => {
     }
     return true;
   };
+
+  const handlePage1Click = () => {
+    // alert("Page 1 clicked");
+
+    setProgress(true);
+
+    if (user.email.trim() != "" && !isValidEmail(user.email)) {
+      setErrorMessage("Invalid email address");
+      setProgress(false);
+      return;
+    }
+
+    if (user.phone.trim() != "" && !isValidPhoneNumber(user.phone)) {
+      setErrorMessage("Invalid phone number");
+      setProgress(false);
+      return;
+    }
+
+    if(user.email.trim() == "" && user.phone.trim() == ""){
+      setErrorMessage("You must provide a valid phone number if you don't have an email address");
+      setProgress(false);
+      return;
+    }
+
+    if (!isValidPassword(user.password.trim())) {
+      setErrorMessage("Ïnvalid password");
+      setProgress(false);
+      return;
+    }
+
+    if(user.password.trim() != user.confirmPassword.trim()){
+      setErrorMessage("Passwords don't match");
+      setProgress(false);
+      return;
+    }
+
+    setErrorMessage("");
+    setProgress(false);
+    console.log("User", user);
+
+    //next page please
+    setPage(2);
+  }
 
   const TypeSelection = (props) => {
     const useStyles = makeStyles((theme) => ({
@@ -706,7 +743,7 @@ const Signup = () => {
               >
                 <ReCAPTCHA sitekey={recaptchaKey} onChange={onRecaptcha} />
               </FormControl> */}
-              <MyButton onClick={() => setPage(2)} progress={progress}>
+              <MyButton onClick={handlePage1Click} progress={progress}>
                 Sign up
               </MyButton>
             </form>
@@ -872,7 +909,7 @@ const Signup = () => {
                   <Select
                     labelId="gender-type"
                     id="gender"
-                    value={gender}
+                    value={user.gender}
                     onChange={handleGenderChange}
                     variant="outlined"
                     style={{ width: "100% !important" }}
@@ -893,7 +930,7 @@ const Signup = () => {
                   <Select
                     labelId="title-type"
                     id="title"
-                    value={title}
+                    value={user.title}
                     onChange={handleTitleChange}
                     variant="outlined"
                     style={{ width: "100% !important" }}
@@ -969,7 +1006,7 @@ const Signup = () => {
                     Back
                   </Button>
                   <Button
-                    onClick={() => {}}
+                    onClick={() => handleSubmit(window.event)}
                     variant="contained"
                     color="primary"
                     style={{
@@ -1117,7 +1154,7 @@ const Signup = () => {
                   <Select
                     labelId="title-type"
                     id="title"
-                    value={title}
+                    value={user.title}
                     onChange={handleTitleChange}
                     variant="outlined"
                     style={{ width: "100% !important" }}
@@ -1528,7 +1565,7 @@ const Signup = () => {
                     <Select
                       labelId="gender-type"
                       id="gender"
-                      value={gender}
+                      value={user.gender}
                       onChange={handleGenderChange}
                       variant="outlined"
                       style={{ width: "100% !important" }}
@@ -1549,7 +1586,7 @@ const Signup = () => {
                     <Select
                       labelId="title-type"
                       id="title"
-                      value={title}
+                      value={user.title}
                       onChange={handleTitleChange}
                       variant="outlined"
                       style={{ width: "100% !important" }}
@@ -1625,7 +1662,7 @@ const Signup = () => {
                       Back
                     </Button>
                     <Button
-                      onClick={() => {}}
+                      onClick={() => alert("I wan submit")}
                       variant="contained"
                       color="primary"
                       style={{
@@ -1776,7 +1813,7 @@ const Signup = () => {
                     <Select
                       labelId="title-type"
                       id="title"
-                      value={title}
+                      value={user.title}
                       onChange={handleTitleChange}
                       variant="outlined"
                       style={{ width: "100% !important" }}

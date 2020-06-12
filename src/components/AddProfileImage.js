@@ -96,7 +96,7 @@ class AddProfileImage extends Component {
 
   render() {
     const { item, title, text, img } = styles;
-    console.log("The Image", this.state.image);
+    // console.log("The Image", this.state.image);
     return (
       <div
         style={{
