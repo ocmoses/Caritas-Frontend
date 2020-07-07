@@ -32,6 +32,7 @@ import {
   getAllCausesAsModerator,
 } from "../services/cause.service";
 import { CausesTable, UsersTable } from "../components";
+import {PieChart, Pie} from 'recharts';
 
 const moreStyles = makeStyles((theme) => ({
   sectionHead: {
@@ -78,6 +79,19 @@ const moreStyles = makeStyles((theme) => ({
       margin: "auto",
     },
   },
+  summaryCard:{
+    height: "100px",
+    display: 'flex',
+    flexDirection: "column",
+    alignItems: 'center',
+    paddingTop: '30px',    
+    elevation: 5,
+    backgroundColor: "white",
+    color: Colors.appRed,
+    width: '100%',
+    boxShadow: '2px 2px 5px rgba(0,0,0,.2)'
+    
+  }
 }));
 
 const Dashboard = (props) => {
@@ -89,6 +103,9 @@ const Dashboard = (props) => {
 
   const classes = moreStyles();
   let [page, setPage] = useState(props.page ? props.page : 0);
+
+  
+  
 
   return (
     <>
@@ -107,6 +124,14 @@ const Summary = () => {
     return await getAllCauses();
   };
 
+  const data = [
+    {
+      "name": "Cause countdown",
+      "value": 5
+    },
+    
+  ];
+
   useEffect(() => {
     async function setTheCauses() {
       let returnedCauses = await fetchAllCauses();
@@ -119,79 +144,138 @@ const Summary = () => {
   return (
     <Container style={{ marginTop: 200 }}>
       {userIsUser() && (
-        <Grid container spacing={10}>
-          <Grid item xs={12} md={6}>
-            <Typography
-              variant="h4"
-              component="h4"
-              className={classes.sectionHead}
-            >
-              Your Causes
-            </Typography>
-            <Typography
-              variant="body1"
-              component="p"
-              className={classes.sectionSubhead}
-            >
-              Here are the causes pioneered by you.
-            </Typography>
-            <SlideableGridList
-              causes={allCauses}
-              label="Glad you are here. Create a new cause."
-              cols={2}
-            />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Typography
-              variant="h4"
-              component="h4"
-              className={classes.sectionHead}
-            >
-              Trending
-            </Typography>
-            <Typography
-              variant="body1"
-              component="p"
-              className={classes.sectionSubhead}
-            >
-              Here are the causes making the most impressions
-            </Typography>
-            <SlideableGridList
-              causes={allCauses}
-              label="There are no trending causes yet"
-              cols={2}
-            />
-          </Grid>
-          <Grid item xs={12} md={9}>
-            <Typography
-              variant="h4"
-              component="h4"
-              className={classes.sectionHead}
-            >
-              Causes you follow
-            </Typography>
-            <Typography
-              variant="body1"
-              component="p"
-              className={classes.sectionSubhead}
-            >
-              Here are the causes you have shown interest in
-            </Typography>
-            <SlideableGridList
-              causes={allCauses}
-              label="You are not following Any cause at the moment"
-              cols={3}
-            />
-          </Grid>
+        // <Grid container spacing={10}>
+        //   <Grid item xs={12} md={6}>
+        //     <Typography
+        //       variant="h4"
+        //       component="h4"
+        //       className={classes.sectionHead}
+        //     >
+        //       Your Causes
+        //     </Typography>
+        //     <Typography
+        //       variant="body1"
+        //       component="p"
+        //       className={classes.sectionSubhead}
+        //     >
+        //       Here are the causes pioneered by you.
+        //     </Typography>
+        //     <SlideableGridList
+        //       causes={allCauses}
+        //       label="Glad you are here. Create a new cause."
+        //       cols={2}
+        //     />
+        //   </Grid>
+        //   <Grid item xs={12} md={6}>
+        //     <Typography
+        //       variant="h4"
+        //       component="h4"
+        //       className={classes.sectionHead}
+        //     >
+        //       Trending
+        //     </Typography>
+        //     <Typography
+        //       variant="body1"
+        //       component="p"
+        //       className={classes.sectionSubhead}
+        //     >
+        //       Here are the causes making the most impressions
+        //     </Typography>
+        //     <SlideableGridList
+        //       causes={allCauses}
+        //       label="There are no trending causes yet"
+        //       cols={2}
+        //     />
+        //   </Grid>
+        //   <Grid item xs={12} md={9}>
+        //     <Typography
+        //       variant="h4"
+        //       component="h4"
+        //       className={classes.sectionHead}
+        //     >
+        //       Causes you follow
+        //     </Typography>
+        //     <Typography
+        //       variant="body1"
+        //       component="p"
+        //       className={classes.sectionSubhead}
+        //     >
+        //       Here are the causes you have shown interest in
+        //     </Typography>
+        //     <SlideableGridList
+        //       causes={allCauses}
+        //       label="You are not following Any cause at the moment"
+        //       cols={3}
+        //     />
+        //   </Grid>
 
-          <Grid
-            item
-            xs={12}
-            md={3}
-            className={classes.coronalink}
-            onClick={() => (window.location = "/about")}
-          ></Grid>
+        //   <Grid
+        //     item
+        //     xs={12}
+        //     md={3}
+        //     className={classes.coronalink}
+        //     onClick={() => (window.location = "/about")}
+        //   ></Grid>
+        // </Grid>
+
+        <>
+        <Grid container spacing={10}>
+           <Grid item xs={12}>
+
+             <Typography
+               variant="h4"
+               component="h4"
+               className={classes.sectionHead}
+             >
+               Activity Summary
+             </Typography>
+                          
+           </Grid>
+           <Grid item xs={6} md={3}>
+              <SummaryCard title="Total Causes" value="0" />
+           </Grid>
+           <Grid item xs={6} md={3}>
+              <SummaryCard title="Pending Causes" value="0" />
+           </Grid>
+           <Grid item xs={6} md={3}>
+              <SummaryCard title="Approved Causes" value="0" />
+           </Grid>
+           <Grid item xs={6} md={3}>
+              <SummaryPie title="Cause counddown" data={data} />
+           </Grid>
+
         </Grid>
+
+        <Grid container spacing={10}>
+           
+          <Grid item xs={12}>
+
+             <Typography
+               variant="h4"
+               component="h4"
+               className={classes.sectionHead}
+             >
+               Ongoing  Causes
+             </Typography>
+             <Typography
+               variant="body1"
+               component="p"
+               className={classes.sectionSubhead}
+             >
+               Here are the causes pioneered by you
+             </Typography>
+                                       
+           </Grid>
+
+           <Grid item xs={12}>
+             <SlideableGridList
+               causes={allCauses}
+               label="Glad you are here. Create a new cause."
+               cols={4}
+             />
+           </Grid>
+        </Grid>
+        </>
       )}
 
       {userIsModerator() && (
@@ -234,5 +318,36 @@ const Summary = () => {
     </Container>
   );
 };
+
+const SummaryCard = (props) => {
+
+  const classes = moreStyles();
+
+  return (
+    <Paper className={classes.summaryCard}>
+        <Typography component="h6" variant="h6" style={{fontSize: '12px', color: 'black', marginBottom: "10px"}}>{props.title}</Typography>
+        <Typography component="h4" variant="h4" style={{fontWeight:  'bold'}}>{props.value}</Typography>
+    </Paper>
+  )
+
+}
+
+const SummaryPie = (props) => {
+
+  const classes = moreStyles();
+
+  return (
+    <Paper className={classes.summaryCard} style={{height: "250px", position: 'relative'}} >
+        <Typography component="h6" variant="h6" style={{fontSize: '12px', color: 'black'}}>{props.title}</Typography>
+        <PieChart width={200} height={200}>
+          
+          <Pie data={props.data} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={60} outerRadius={80} fill={Colors.appRed} label />
+        
+        </PieChart>
+        <Typography component="h3" variant="h3" style={{fontSize: '20px', fontWeight: 'bold',  color: Colors.appRed, alignSelf: 'center', position: 'absolute', top: '50%'}}>0</Typography>
+    </Paper>
+  )
+
+}
 
 export default Dashboard;
