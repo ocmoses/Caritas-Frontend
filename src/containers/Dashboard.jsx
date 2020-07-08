@@ -267,13 +267,13 @@ const Summary = () => {
                                        
            </Grid>
 
-           <Grid item xs={12}>
+          
              <SlideableGridList
                causes={allCauses}
                label="Glad you are here. Create a new cause."
                cols={4}
              />
-           </Grid>
+           
         </Grid>
         </>
       )}

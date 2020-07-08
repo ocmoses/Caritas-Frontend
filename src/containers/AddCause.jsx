@@ -20,7 +20,7 @@ import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 import { PrimaryAppBar, MyTextField } from "../commons";
 import { yourCauses, trendingCauses, followedCauses, user } from "../mock";
-import { SlideableGridList, AddImage, AddVideo } from "../components";
+import { SlideableGridList, AddImage, AddCauseImage, AddVideo } from "../components";
 import {
   isValidCauseTitle,
   isValidFunds,
@@ -28,6 +28,7 @@ import {
 } from "../helpers/validator";
 import { createCause } from "../services/cause.service";
 import { MyDialog, MyButton } from "../components";
+import {getAuthenticatedUser} from "../helpers/utils";
 
 const moreStyles = makeStyles((theme) => ({
   sectionHead: {
@@ -81,6 +82,20 @@ const moreStyles = makeStyles((theme) => ({
       margin: "auto",
     },
   },
+  
+  causeCreation:{
+    marginTop: "50px", 
+    backgroundColor: "white", 
+    display: "block", 
+    margin: "auto", 
+    padding: "30px", 
+    maxWidth: "600px",
+
+    [theme.breakpoints.down('md')]:{
+      width: "95% !important",
+
+    }
+  }
 }));
 
 const AddCause = () => {
@@ -103,6 +118,7 @@ const AddCause = () => {
     enableWatching: true,
     fundStatus: true,
     socialMediaSharing: true,
+    agreeToTandC: false,
   });
   let [uploadFiles, setUploadFiles] = useState({
     image1: null,
@@ -121,6 +137,8 @@ const AddCause = () => {
   let [dialogTitle, setDialogTitle] = useState("");
   let [positiveDialog, setPositiveDialog] = useState(false);
   let [terms, setTerms] = useState(false);
+  let [selectedType, setSelectedType] = useState("Food");
+  let [selectedOwner, setSelectedOwner] = useState("Self");
 
   const handleCategoryChange = (event) => {
     setCategory(event.target.value);
@@ -229,6 +247,90 @@ const AddCause = () => {
     fileInput.click();
   };
 
+  const CauseSelection = (props) => {
+    const useStyles = makeStyles((theme) => ({
+      root: {
+        display: "flex",
+        flexDirection: "column",
+        padding: "20px",
+        alignItems: "center",
+        cursor: "pointer",
+        boxShadow:
+          props.type == selectedType
+            ? "0px 0px 20px rgba(252, 99, 107, 0.7)"
+            : "none",
+        backgroundColor:
+          props.type == selectedType
+            ? "rgba(255,255,255,.7)"
+            : "transparent",
+
+        "&:hover": {
+          boxShadow: "0px 0px 30px rgba(252, 99, 107, 0.7)",
+          backgroundColor: "rgba(255,255,255,.7)",
+        },
+      },
+
+      active: {
+        boxShadow: "0px 0px 30px rgba(252, 99, 107, 0.7)",
+      },
+    }));
+
+    const classes2 = useStyles();
+    return (
+      <div
+        className={clsx(classes2.root)}
+        onClick={() => {
+          setSelectedType(props.type);
+        }}
+      >
+        <img src={props.image} alt="" style={{ height: "80px" }} />
+        <p style={{ textAlign: "center" }}>{props.type}</p>
+      </div>
+    );
+  };
+
+  const CauseOwnerSelection = (props) => {
+    const useStyles = makeStyles((theme) => ({
+      root: {
+        display: "flex",
+        flexDirection: "column",
+        padding: "20px",
+        alignItems: "center",
+        cursor: "pointer",
+        boxShadow:
+          props.type == selectedOwner
+            ? "0px 0px 20px rgba(252, 99, 107, 0.7)"
+            : "none",
+        backgroundColor:
+          props.type == selectedOwner
+            ? "rgba(255,255,255,.7)"
+            : "transparent",
+
+        "&:hover": {
+          boxShadow: "0px 0px 30px rgba(252, 99, 107, 0.7)",
+          backgroundColor: "rgba(255,255,255,.7)",
+        },
+      },
+
+      active: {
+        boxShadow: "0px 0px 30px rgba(252, 99, 107, 0.7)",
+      },
+    }));
+
+    const classes2 = useStyles();
+    return (
+      <div
+        className={clsx(classes2.root)}
+        onClick={() => {
+          setSelectedOwner(props.type);
+        }}
+      >
+        <img src={props.image} alt="" style={{ height: "80px" }} />
+        <p style={{ textAlign: "center" }}>{props.type}</p>
+      </div>
+    );
+  };
+
   return (
     <>
       <PrimaryAppBar />
@@ -241,243 +343,326 @@ const AddCause = () => {
         {dialogMessage}
       </MyDialog>
       {page === 1 && (
-        <Container style={{ marginTop: 200 }}>
-          <form action={"#"} method="POST" className={classes.form}>
-            <div style={{ color: "red", textAlign: "center", margin: 16 }}>
-              {errorMessage}
+        <Container style={{ marginTop: 150 }}>
+        <Typography variant="h4" component="h4" className={classes.sectionHead} style={{textAlign: "center"}}>
+          Good going, {getAuthenticatedUser().first_name}. 
+        </Typography>
+        <Typography variant="body1" component="p" className={classes.sectionSubhead} style={{textAlign: "center"}}>
+          Start the process of adding a new cause
+        </Typography>
+
+        <Paper elevation={0} className={classes.causeCreation} style={{marginBottom: "100px"}}>
+          <Typography variant="h6" component="h6" style={{textAlign: "center", fontWeight: "bold"}}>
+            Who is this cause for?
+          </Typography>
+          <Grid container spacing={5} style={{marginTop: "30px"}}>
+            <Grid item sm={6}>
+              <CauseOwnerSelection type="Self" image={'/assets/images/icons/user-type.png'} />
+            </Grid>
+            <Grid item sm={6}>
+              <CauseOwnerSelection type="Third Party" image={'/assets/images/icons/third-party-icon.png'} />
+            </Grid>
+            
+            <div style={{textAlign: "center", width: "100%"}} >
+              <Button
+                  onClick={() => setPage(2)}
+                  variant="contained"
+                  color="primary"
+                  style={{
+                    margin: "30px auto",
+                    color: "white",
+                    paddingLeft: "30px",
+                    paddingRight: "30px"                    
+                  }}
+                >
+                  Next
+              </Button>
             </div>
-            <Grid container spacing={10}>
-              <Grid item xs={12} md={6}>
-                <Typography
-                  variant="h4"
-                  component="h4"
-                  className={classes.sectionHead}
-                >
-                  Great work, {user.first_name}
-                </Typography>
-                <Typography
-                  variant="body1"
-                  component="p"
-                  className={classes.sectionSubhead}
-                >
-                  Now let’s begin creating this new cause of yours.
-                </Typography>
-              </Grid>
-            </Grid>
-
-            <Grid container spacing={10} style={{ marginTop: "50px" }}>
-              <Grid item xs={12} md={6}>
-                <FormControl className={classes.formControl}>
-                  <Select
-                    labelId="category"
-                    id="category"
-                    value={category}
-                    onChange={handleCategoryChange}
-                    variant="outlined"
-                    style={{ width: "100% !important" }}
-                    // margin="dense"
-                    fullWidth
-                  >
-                    <MenuItem value="Food">Food</MenuItem>
-                    <MenuItem value="Human Right">Human Rights</MenuItem>
-                    <MenuItem value="Education">Education</MenuItem>
-                    <MenuItem value="Health">Health</MenuItem>
-                  </Select>
-                </FormControl>
-
-                <FormControl className={classes.formControl}>
-                  <MyTextField
-                    id="cause_title"
-                    type="text"
-                    name="cause_title"
-                    required="required"
-                    label="Title of your Cause"
-                    placeholder="Provide a Title for your cause"
-                    value={causeTitle}
-                    onChange={handleCauseTitleChange}
-                  />
-                </FormControl>
-
-                <FormControl className={classes.formControl}>
-                  <MyTextField
-                    id="required_funds"
-                    type="text"
-                    name="required_funds"
-                    required="required"
-                    label="Required Funds"
-                    placeholder="Provide the expected value that this charity needs to succeed"
-                    value={amountRequired}
-                    onChange={handleAmountRequiredChange}
-                  />
-                </FormControl>
-
-                <FormControl className={classes.formControl}>
-                  <MyTextField
-                    id="description"
-                    type="text"
-                    name="description"
-                    required="required"
-                    label="Brief description"
-                    placeholder="Provide a brief description for the  Cause"
-                    multiline={true}
-                    rows={3}
-                    value={briefDescription}
-                    onChange={handleBriefDescriptionChange}
-                  />
-                </FormControl>
-
-                <FormControl className={classes.formControl}>
-                  <MyTextField
-                    id="charity_info"
-                    type="text"
-                    name="charity_info"
-                    label="Charity Information"
-                    placeholder="You can be more detailed here about the cause you are publishing"
-                    multiline={true}
-                    rows={3}
-                    value={charityInformation}
-                    onChange={handleCharityInformationChange}
-                  />
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <FormControl className={classes.formControl}>
-                  <MyTextField
-                    id="additional_info"
-                    type="text"
-                    name="additional_info"
-                    label="Additional Information"
-                    placeholder="Provide any additional information you would require"
-                    multiline={true}
-                    rows={5}
-                    value={additionalInformation}
-                    onChange={handleAdditionalInformationChange}
-                  />
-                </FormControl>
-                <Grid item xs={12}>
-                  <Typography
-                    variant="h4"
-                    component="h4"
-                    className={classes.sectionHead}
-                  >
-                    Cause settings
-                  </Typography>
-                  <Typography
-                    variant="body1"
-                    component="p"
-                    className={classes.sectionSubhead}
-                  >
-                    Set up some basic settings unique to this cause
-                  </Typography>
-                  <FormControlLabel
-                    className={classes.checkbox}
-                    style={{ marginTop: "20px" }}
-                    control={
-                      <Checkbox
-                        checked={causeOptions.enableComments}
-                        // onChange={handleChange}
-                        name="enableComments"
-                        onChange={handleCheck}
-                      />
-                    }
-                    label="Enable comments and reviews"
-                  />
-                  <FormControlLabel
-                    className={classes.checkbox}
-                    control={
-                      <Checkbox
-                        checked={causeOptions.enableWatching}
-                        // onChange={handleChange}
-                        name="enableWatching"
-                        onChange={handleCheck}
-                      />
-                    }
-                    label="Enable Watching of Cause"
-                  />
-                  <FormControlLabel
-                    className={classes.checkbox}
-                    control={
-                      <Checkbox
-                        checked={causeOptions.fundStatus}
-                        // onChange={handleChange}
-                        name="fundStatus"
-                        onChange={handleCheck}
-                      />
-                    }
-                    label="Make cause fund status public"
-                  />
-                  <FormControlLabel
-                    className={classes.checkbox}
-                    control={
-                      <Checkbox
-                        checked={causeOptions.socialMediaSharing}
-                        //onChange={handleChange}
-                        name="socialMediaSharing"
-                        onChange={handleCheck}
-                      />
-                    }
-                    label="Enable social media and link sharing"
-                  />
-
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    style={{
-                      width: "100%",
-                      height: "50px",
-                      borderRadius: "10px",
-                      marginTop: "40px",
-                      borderWidth: "2px",
-                      textTransform: "none",
-                      marginRight: "0px",
-                    }}
-                    onClick={validateEntries}
-                  >
-                    Proceed
-                  </Button>
-                </Grid>
-              </Grid>
-            </Grid>
-          </form>
-        </Container>
+          </Grid>
+          
+        </Paper>
+      </Container>
       )}
       {page === 2 && (
-        <Container style={{ marginTop: 200 }}>
-          <Button
-            variant="outlined"
-            color="primary"
-            style={{ marginBottom: "30px" }}
-            onClick={() => setPage(1)}
-          >
-            Back
-          </Button>
-          <Grid container spacing={10}>
-            <Grid item xs={12} md={4}>
-              <Typography
-                variant="h4"
-                component="h4"
-                className={classes.sectionHead}
-              >
-                Upload Media.
-              </Typography>
-              <Typography
-                variant="body1"
-                component="p"
-                className={classes.sectionSubhead}
-              >
-                Kindly provide, pictures and videos to showcase this cause.
-                Please note that a maximum of one video is allowed, and *
-                uploads are important others are optional.
-              </Typography>
-            </Grid>
+        // <Container style={{ marginTop: 200 }}>
+        //   <form action={"#"} method="POST" className={classes.form}>
+        //     <div style={{ color: "red", textAlign: "center", margin: 16 }}>
+        //       {errorMessage}
+        //     </div>
+        //     <Grid container spacing={10}>
+        //       <Grid item xs={12} md={6}>
+        //         <Typography
+        //           variant="h4"
+        //           component="h4"
+        //           className={classes.sectionHead}
+        //         >
+        //           Great work, {user.first_name}
+        //         </Typography>
+        //         <Typography
+        //           variant="body1"
+        //           component="p"
+        //           className={classes.sectionSubhead}
+        //         >
+        //           Now let’s begin creating this new cause of yours.
+        //         </Typography>
+        //       </Grid>
+        //     </Grid>
 
-            <Grid item xs={12}>
-              <Grid container spacing={5}>
-                <Grid item xs={6} md={3}>
-                  <AddImage
-                    image="/assets/images/icons/upload-image.png"
-                    title="Banner Picture *"
-                    text="This is image that will portray the cause."
+        //     <Grid container spacing={10} style={{ marginTop: "50px" }}>
+        //       <Grid item xs={12} md={6}>
+        //         <FormControl className={classes.formControl}>
+        //           <Select
+        //             labelId="category"
+        //             id="category"
+        //             value={category}
+        //             onChange={handleCategoryChange}
+        //             variant="outlined"
+        //             style={{ width: "100% !important" }}
+        //             // margin="dense"
+        //             fullWidth
+        //           >
+        //             <MenuItem value="Food">Food</MenuItem>
+        //             <MenuItem value="Human Right">Human Rights</MenuItem>
+        //             <MenuItem value="Education">Education</MenuItem>
+        //             <MenuItem value="Health">Health</MenuItem>
+        //           </Select>
+        //         </FormControl>
+
+        //         <FormControl className={classes.formControl}>
+        //           <MyTextField
+        //             id="cause_title"
+        //             type="text"
+        //             name="cause_title"
+        //             required="required"
+        //             label="Title of your Cause"
+        //             placeholder="Provide a Title for your cause"
+        //             value={causeTitle}
+        //             onChange={handleCauseTitleChange}
+        //           />
+        //         </FormControl>
+
+        //         <FormControl className={classes.formControl}>
+        //           <MyTextField
+        //             id="required_funds"
+        //             type="text"
+        //             name="required_funds"
+        //             required="required"
+        //             label="Required Funds"
+        //             placeholder="Provide the expected value that this charity needs to succeed"
+        //             value={amountRequired}
+        //             onChange={handleAmountRequiredChange}
+        //           />
+        //         </FormControl>
+
+        //         <FormControl className={classes.formControl}>
+        //           <MyTextField
+        //             id="description"
+        //             type="text"
+        //             name="description"
+        //             required="required"
+        //             label="Brief description"
+        //             placeholder="Provide a brief description for the  Cause"
+        //             multiline={true}
+        //             rows={3}
+        //             value={briefDescription}
+        //             onChange={handleBriefDescriptionChange}
+        //           />
+        //         </FormControl>
+
+        //         <FormControl className={classes.formControl}>
+        //           <MyTextField
+        //             id="charity_info"
+        //             type="text"
+        //             name="charity_info"
+        //             label="Charity Information"
+        //             placeholder="You can be more detailed here about the cause you are publishing"
+        //             multiline={true}
+        //             rows={3}
+        //             value={charityInformation}
+        //             onChange={handleCharityInformationChange}
+        //           />
+        //         </FormControl>
+        //       </Grid>
+        //       <Grid item xs={12} md={6}>
+        //         <FormControl className={classes.formControl}>
+        //           <MyTextField
+        //             id="additional_info"
+        //             type="text"
+        //             name="additional_info"
+        //             label="Additional Information"
+        //             placeholder="Provide any additional information you would require"
+        //             multiline={true}
+        //             rows={5}
+        //             value={additionalInformation}
+        //             onChange={handleAdditionalInformationChange}
+        //           />
+        //         </FormControl>
+        //         <Grid item xs={12}>
+        //           <Typography
+        //             variant="h4"
+        //             component="h4"
+        //             className={classes.sectionHead}
+        //           >
+        //             Cause settings
+        //           </Typography>
+        //           <Typography
+        //             variant="body1"
+        //             component="p"
+        //             className={classes.sectionSubhead}
+        //           >
+        //             Set up some basic settings unique to this cause
+        //           </Typography>
+        //           <FormControlLabel
+        //             className={classes.checkbox}
+        //             style={{ marginTop: "20px" }}
+        //             control={
+        //               <Checkbox
+        //                 checked={causeOptions.enableComments}
+        //                 // onChange={handleChange}
+        //                 name="enableComments"
+        //                 onChange={handleCheck}
+        //               />
+        //             }
+        //             label="Enable comments and reviews"
+        //           />
+        //           <FormControlLabel
+        //             className={classes.checkbox}
+        //             control={
+        //               <Checkbox
+        //                 checked={causeOptions.enableWatching}
+        //                 // onChange={handleChange}
+        //                 name="enableWatching"
+        //                 onChange={handleCheck}
+        //               />
+        //             }
+        //             label="Enable Watching of Cause"
+        //           />
+        //           <FormControlLabel
+        //             className={classes.checkbox}
+        //             control={
+        //               <Checkbox
+        //                 checked={causeOptions.fundStatus}
+        //                 // onChange={handleChange}
+        //                 name="fundStatus"
+        //                 onChange={handleCheck}
+        //               />
+        //             }
+        //             label="Make cause fund status public"
+        //           />
+        //           <FormControlLabel
+        //             className={classes.checkbox}
+        //             control={
+        //               <Checkbox
+        //                 checked={causeOptions.socialMediaSharing}
+        //                 //onChange={handleChange}
+        //                 name="socialMediaSharing"
+        //                 onChange={handleCheck}
+        //               />
+        //             }
+        //             label="Enable social media and link sharing"
+        //           />
+
+        //           <Button
+        //             variant="outlined"
+        //             color="primary"
+        //             style={{
+        //               width: "100%",
+        //               height: "50px",
+        //               borderRadius: "10px",
+        //               marginTop: "40px",
+        //               borderWidth: "2px",
+        //               textTransform: "none",
+        //               marginRight: "0px",
+        //             }}
+        //             onClick={validateEntries}
+        //           >
+        //             Proceed
+        //           </Button>
+        //         </Grid>
+        //       </Grid>
+        //     </Grid>
+        //   </form>
+        // </Container>
+
+        <Container style={{ marginTop: 150 }}>
+          <Typography variant="h4" component="h4" className={classes.sectionHead} style={{textAlign: "center"}}>
+            Good going, {getAuthenticatedUser().first_name}. 
+          </Typography>
+          <Typography variant="body1" component="p" className={classes.sectionSubhead} style={{textAlign: "center"}}>
+            Start the process of adding a new cause
+          </Typography>
+
+          <Paper elevation={0} className={classes.causeCreation} style={{marginBottom: "100px"}}>
+            <Typography variant="h6" component="h6" style={{textAlign: "center", fontWeight: "bold"}}>
+              What help are you requesting for?
+            </Typography>
+            <Grid container spacing={5} style={{marginTop: "30px"}}>
+              <Grid item sm={6} md={3}>
+                <CauseSelection type="Food" image={'/assets/images/icons/food-help.png'} />
+              </Grid>
+              <Grid item sm={6} md={3}>
+                <CauseSelection type="Education" image={'/assets/images/icons/education-help.png'} />
+              </Grid>
+              <Grid item sm={6} md={3}>
+                <CauseSelection type="Health" image={'/assets/images/icons/health-help.png'} />
+              </Grid>
+              <Grid item sm={6} md={3}>
+                <CauseSelection type="Human Rights" image={'/assets/images/icons/human-rights-help.png'} />
+              </Grid>
+
+              <div style={{
+                    marginTop: "30px",
+                    marginBottom: "30px",
+                    width: "100%"
+                  }}>
+                <Button
+                  onClick={() => setPage(1)}
+                  variant="contained"
+                  color="default"
+                  
+                >
+                  Back
+                </Button>
+                <Button
+                  onClick={() => setPage(3)}
+                  variant="contained"
+                  color="primary"
+                  style={{
+                    marginLeft: "auto",
+                    color: "white",
+                    float: "right",
+                  }}
+                >
+                  Continue
+                </Button>
+              </div>
+
+            </Grid>
+            
+          </Paper>
+        </Container>
+      )}
+      {page === 3 && (
+
+        <Container style={{ marginTop: 150 }}>
+          <Typography variant="h4" component="h4" className={classes.sectionHead} style={{textAlign: "center"}}>
+            Good going, {getAuthenticatedUser().first_name}. 
+          </Typography>
+          <Typography variant="body1" component="p" className={classes.sectionSubhead} style={{textAlign: "center"}}>
+            Start the process of adding a new cause
+          </Typography>
+
+          <Paper elevation={0} className={classes.causeCreation} style={{marginBottom: "100px"}}>
+            <Typography variant="h6" component="h6" style={{textAlign: "center", fontWeight: "bold"}}>
+              Upload Media Content
+            </Typography>
+            
+              
+              <div style={{width: "100%", textAlign: "center", marginTop: "30px"}} >
+                  <AddCauseImage
+                    image="/assets/images/icons/upload.png"
+                    title="Upload image or photo"
+                    text="Max file size (1MB)"
                     style={{ alignSelf: "flex-start" }}
                     filename="image1"
                     onClick={handleAddImageClick}
@@ -489,157 +674,327 @@ const AddCause = () => {
                       });
                     }}
                   />
-                </Grid>
-                <Grid item xs={6} md={3}>
-                  <AddVideo
-                    image="/assets/images/icons/upload_video.png"
-                    title="Cause Video"
-                    text="This Video appears on the causes page."
-                    filename="video1"
-                    onClick={handleAddImageClick}
-                    backgroundImage={uploadFiles.video1}
-                    setImage={(file) => {
-                      setUploadFiles({
-                        ...uploadFiles,
-                        video1: file,
-                      });
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={6} md={3}>
-                  <AddImage
-                    image="/assets/images/icons/upload-image.png"
-                    title="Cause Image - 1 *"
-                    text="This Image appears on the causes page."
-                    filename="image2"
-                    onClick={handleAddImageClick}
-                    backgroundImage={uploadFiles.image2}
-                    setImage={(file) => {
-                      setUploadFiles({
-                        ...uploadFiles,
-                        image2: file,
-                      });
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={6} md={3}>
-                  <AddImage
-                    image="/assets/images/icons/upload-image.png"
-                    title="Cause Image - 2"
-                    text="This image appears on the causes page."
-                    filename="image3"
-                    onClick={handleAddImageClick}
-                    backgroundImage={uploadFiles.image3}
-                    setImage={(file) => {
-                      setUploadFiles({
-                        ...uploadFiles,
-                        image3: file,
-                      });
-                    }}
-                  />
-                </Grid>
-              </Grid>
-              <Grid
-                container
-                spacing={5}
-                style={{
-                  marginTop: "100px",
-                  marginBottom: "100px",
-                }}
-              >
-                <Grid item xs={6} md={3}>
-                  <AddImage
-                    image="/assets/images/icons/upload-image.png"
-                    title="More Info Image - 1 *"
-                    text="This image appears on the more Info tab."
-                    filename="image4"
-                    onClick={handleAddImageClick}
-                    backgroundImage={uploadFiles.image4}
-                    setImage={(file) => {
-                      setUploadFiles({
-                        ...uploadFiles,
-                        image4: file,
-                      });
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={6} md={3}>
-                  <AddImage
-                    image="/assets/images/icons/upload-image.png"
-                    title="More Info Image - 2*"
-                    text="This image appears on the more Info tab."
-                    filename="image5"
-                    onClick={handleAddImageClick}
-                    backgroundImage={uploadFiles.image5}
-                    setImage={(file) => {
-                      setUploadFiles({
-                        ...uploadFiles,
-                        image5: file,
-                      });
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={6} md={3}>
-                  <AddImage
-                    image="/assets/images/icons/upload-image.png"
-                    title="More Info Image - 3"
-                    text="This image appears on the more Info tab."
-                    filename="image6"
-                    onClick={handleAddImageClick}
-                    backgroundImage={uploadFiles.image6}
-                    setImage={(file) => {
-                      setUploadFiles({
-                        ...uploadFiles,
-                        image6: file,
-                      });
-                    }}
-                  />
-                </Grid>
+              </div>
 
-                <Grid item xs={12} md={3}>
-                  <FormControlLabel
-                    className={clsx(classes.checkbox, classes.t_and_c)}
+              <div style={{
+                    marginTop: "30px",
+                    marginBottom: "30px",
+                  }}>
+                <Button
+                  onClick={() => setPage(2)}
+                  variant="contained"
+                  color="default"
+                  
+                >
+                  Back
+                </Button>
+                <Button
+                  onClick={() => setPage(4)}
+                  variant="contained"
+                  color="primary"
+                  style={{
+                    marginLeft: "auto",
+                    color: "white",
+                    float: "right",
+                  }}
+                >
+                  Continue
+                </Button>
+              </div>
+                      
+          </Paper>
+        </Container>
+
+        // <Container style={{ marginTop: 200 }}>
+        //   <Button
+        //     variant="outlined"
+        //     color="primary"
+        //     style={{ marginBottom: "30px" }}
+        //     onClick={() => setPage(1)}
+        //   >
+        //     Back
+        //   </Button>
+        //   <Grid container spacing={10}>
+        //     <Grid item xs={12} md={4}>
+        //       <Typography
+        //         variant="h4"
+        //         component="h4"
+        //         className={classes.sectionHead}
+        //       >
+        //         Upload Media.
+        //       </Typography>
+        //       <Typography
+        //         variant="body1"
+        //         component="p"
+        //         className={classes.sectionSubhead}
+        //       >
+        //         Kindly provide, pictures and videos to showcase this cause.
+        //         Please note that a maximum of one video is allowed, and *
+        //         uploads are important others are optional.
+        //       </Typography>
+        //     </Grid>
+
+        //     <Grid item xs={12}>
+        //       <Grid container spacing={5}>
+        //         <Grid item xs={6} md={3}>
+        //           <AddImage
+        //             image="/assets/images/icons/upload-image.png"
+        //             title="Banner Picture *"
+        //             text="This is image that will portray the cause."
+        //             style={{ alignSelf: "flex-start" }}
+        //             filename="image1"
+        //             onClick={handleAddImageClick}
+        //             backgroundImage={uploadFiles.image1}
+        //             setImage={(file) => {
+        //               setUploadFiles({
+        //                 ...uploadFiles,
+        //                 image1: file,
+        //               });
+        //             }}
+        //           />
+        //         </Grid>
+        //         <Grid item xs={6} md={3}>
+        //           <AddVideo
+        //             image="/assets/images/icons/upload_video.png"
+        //             title="Cause Video"
+        //             text="This Video appears on the causes page."
+        //             filename="video1"
+        //             onClick={handleAddImageClick}
+        //             backgroundImage={uploadFiles.video1}
+        //             setImage={(file) => {
+        //               setUploadFiles({
+        //                 ...uploadFiles,
+        //                 video1: file,
+        //               });
+        //             }}
+        //           />
+        //         </Grid>
+        //         <Grid item xs={6} md={3}>
+        //           <AddImage
+        //             image="/assets/images/icons/upload-image.png"
+        //             title="Cause Image - 1 *"
+        //             text="This Image appears on the causes page."
+        //             filename="image2"
+        //             onClick={handleAddImageClick}
+        //             backgroundImage={uploadFiles.image2}
+        //             setImage={(file) => {
+        //               setUploadFiles({
+        //                 ...uploadFiles,
+        //                 image2: file,
+        //               });
+        //             }}
+        //           />
+        //         </Grid>
+        //         <Grid item xs={6} md={3}>
+        //           <AddImage
+        //             image="/assets/images/icons/upload-image.png"
+        //             title="Cause Image - 2"
+        //             text="This image appears on the causes page."
+        //             filename="image3"
+        //             onClick={handleAddImageClick}
+        //             backgroundImage={uploadFiles.image3}
+        //             setImage={(file) => {
+        //               setUploadFiles({
+        //                 ...uploadFiles,
+        //                 image3: file,
+        //               });
+        //             }}
+        //           />
+        //         </Grid>
+        //       </Grid>
+        //       <Grid
+        //         container
+        //         spacing={5}
+        //         style={{
+        //           marginTop: "100px",
+        //           marginBottom: "100px",
+        //         }}
+        //       >
+        //         <Grid item xs={6} md={3}>
+        //           <AddImage
+        //             image="/assets/images/icons/upload-image.png"
+        //             title="More Info Image - 1 *"
+        //             text="This image appears on the more Info tab."
+        //             filename="image4"
+        //             onClick={handleAddImageClick}
+        //             backgroundImage={uploadFiles.image4}
+        //             setImage={(file) => {
+        //               setUploadFiles({
+        //                 ...uploadFiles,
+        //                 image4: file,
+        //               });
+        //             }}
+        //           />
+        //         </Grid>
+        //         <Grid item xs={6} md={3}>
+        //           <AddImage
+        //             image="/assets/images/icons/upload-image.png"
+        //             title="More Info Image - 2*"
+        //             text="This image appears on the more Info tab."
+        //             filename="image5"
+        //             onClick={handleAddImageClick}
+        //             backgroundImage={uploadFiles.image5}
+        //             setImage={(file) => {
+        //               setUploadFiles({
+        //                 ...uploadFiles,
+        //                 image5: file,
+        //               });
+        //             }}
+        //           />
+        //         </Grid>
+        //         <Grid item xs={6} md={3}>
+        //           <AddImage
+        //             image="/assets/images/icons/upload-image.png"
+        //             title="More Info Image - 3"
+        //             text="This image appears on the more Info tab."
+        //             filename="image6"
+        //             onClick={handleAddImageClick}
+        //             backgroundImage={uploadFiles.image6}
+        //             setImage={(file) => {
+        //               setUploadFiles({
+        //                 ...uploadFiles,
+        //                 image6: file,
+        //               });
+        //             }}
+        //           />
+        //         </Grid>
+
+        //         <Grid item xs={12} md={3}>
+        //           <FormControlLabel
+        //             className={clsx(classes.checkbox, classes.t_and_c)}
+        //             control={
+        //               <Checkbox
+        //                 checked={terms}
+        //                 //onChange={handleChange}
+        //                 name="t_and_c"
+        //                 onChange={() => setTerms(!terms)}
+        //               />
+        //             }
+        //           />
+
+        //           <p style={{ fontSize: "10px", display: "inline" }}>
+        //             I Hereby agree to the terms and conditions governing the
+        //             caritas platform. Lorem ipsum dolor sit amet, consetetur
+        //             sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
+        //             labore et dolore magna aliquyam erat, sed diam voluptua. At
+        //             vero
+        //           </p>
+
+        //           <Button
+        //             variant="outlined"
+        //             color="primary"
+        //             style={{
+        //               width: "100%",
+        //               height: "50px",
+        //               borderRadius: "10px",
+        //               marginTop: "20px",
+        //               borderWidth: "2px",
+        //               textTransform: "none",
+        //               marginRight: "0px",
+        //             }}
+        //             onClick={handleSubmit}
+        //           >
+        //             Upload Cause
+        //           </Button>
+        //         </Grid>
+        //       </Grid>
+        //     </Grid>
+        //   </Grid>
+        // </Container>
+      )}
+      {page === 4 && (
+        <Container style={{ marginTop: 150 }}>
+        <Typography variant="h4" component="h4" className={classes.sectionHead} style={{textAlign: "center"}}>
+          Good going, {getAuthenticatedUser().first_name}. 
+        </Typography>
+        <Typography variant="body1" component="p" className={classes.sectionSubhead} style={{textAlign: "center"}}>
+          Start the process of adding a new cause
+        </Typography>
+
+        <Paper elevation={0} className={classes.causeCreation} style={{marginBottom: "100px"}}>
+          <Typography variant="h6" component="h6" style={{textAlign: "center", fontWeight: "bold"}}>
+            Finalize Your Cause Details
+          </Typography>          
+            
+            <div style={{width: "100%", textAlign: "center", marginTop: "30px"}} >
+
+              <form action="#" method="POST" className={classes.form}>
+                  <FormControl className={classes.formControl}>
+                   <MyTextField
+                     id="cause_title"
+                     type="text"
+                     name="cause_title"
+                     required="required"
+                     label="Title of your Cause"
+                     placeholder="Provide a Title for your cause"
+                     value={causeTitle}
+                     onChange={handleCauseTitleChange}
+                   />
+                 </FormControl>
+
+                 <FormControl className={classes.formControl}>
+                   <MyTextField
+                     id="description"
+                     type="text"
+                     name="description"
+                     required="required"
+                     label="Brief description"
+                     placeholder="Provide a brief description for the  Cause"
+                     multiline={true}
+                     rows={3}
+                     value={briefDescription}
+                     onChange={handleBriefDescriptionChange}
+                   />
+                 </FormControl>
+                 <FormControlLabel
+                    className={classes.checkbox}
+                    style={{ marginTop: "20px" }}
                     control={
                       <Checkbox
-                        checked={terms}
-                        //onChange={handleChange}
-                        name="t_and_c"
-                        onChange={() => setTerms(!terms)}
+                        checked={causeOptions.agreeToTandC}
+                        // onChange={handleChange}
+                        name="agreeToTandC"
+                        onChange={handleCheck}
                       />
                     }
+                    label={`I agree to the terms and conditions.`}
                   />
+                  <p style={{textAlign: "center", color: Colors.appRed}}><a href="#" 
+                    style={{color: "inherit", fontWeight: "bold", fontSize: 14}}>Read full T&amp;C’s</a></p>
+              </form>
+                  
+            </div>
 
-                  <p style={{ fontSize: "10px", display: "inline" }}>
-                    I Hereby agree to the terms and conditions governing the
-                    caritas platform. Lorem ipsum dolor sit amet, consetetur
-                    sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
-                    labore et dolore magna aliquyam erat, sed diam voluptua. At
-                    vero
-                  </p>
-
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    style={{
-                      width: "100%",
-                      height: "50px",
-                      borderRadius: "10px",
-                      marginTop: "20px",
-                      borderWidth: "2px",
-                      textTransform: "none",
-                      marginRight: "0px",
-                    }}
-                    onClick={handleSubmit}
-                  >
-                    Upload Cause
-                  </Button>
-                </Grid>
-              </Grid>
-            </Grid>
-          </Grid>
+            <div style={{
+                  marginTop: "30px",
+                  marginBottom: "30px",
+                }}>
+              <Button
+                onClick={() => setPage(3)}
+                variant="contained"
+                color="default"
+                
+              >
+                Back
+              </Button>
+              <Button
+                onClick={() => setPage(5)}
+                variant="contained"
+                color="primary"
+                style={{
+                  marginLeft: "auto",
+                  color: "white",
+                  float: "right",
+                }}
+              >
+                Submit
+              </Button>
+            </div>
+                    
+        </Paper>
         </Container>
       )}
-      {page === 3 && <SuccessUpload />}
+      {page === 5 && <SuccessUpload />}
     </>
   );
 };
@@ -655,8 +1010,9 @@ const SuccessUpload = () => {
         </Typography>
         <Link to="/dashboard">
           <u>
-            Cause will be displayed once it has been approved. Return to your
-            dashboard and await approval.
+            {/* Cause will be displayed once it has been approved. Return to your
+            dashboard and await approval. */}
+            Return to your dashboard and await approval
           </u>
         </Link>
       </Paper>

@@ -6,6 +6,7 @@ import LoggedInAvatar from "./LoggedInAvatar";
 import SlideableGridList from "./SlideableGridList";
 import AddItem from "./AddItem";
 import AddImage from "./AddImage";
+import AddCauseImage from "./AddCauseImage";
 import MyButton from "../commons/MyButton";
 import MyDialog from "../commons/MyDialog";
 import CausesTable from "./CausesTable";
@@ -28,4 +29,5 @@ export {
   UsersTable,
   AddVideo,
   AddProfileImage,
+  AddCauseImage
 };
