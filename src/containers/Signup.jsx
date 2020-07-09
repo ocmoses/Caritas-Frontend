@@ -161,7 +161,8 @@ const Signup = () => {
     confirmPassword: "",
     dateOfBirth: "",
     title: "Select Title",
-    gender: "Select Gender"
+    gender: "Select Gender",
+    dob: ""
   });
 
   let [partner, setPartner] = useState({
@@ -238,7 +239,7 @@ const Signup = () => {
       // }
       console.log("Sending...");
 
-      let outcome = await registerUser(user, uploadFiles.image, selectedType, getToken());
+      let outcome = await registerUser(user, uploadFiles.image, selectedType);
 
       setProgress(false);
 
@@ -257,6 +258,7 @@ const Signup = () => {
           accountNumber: "",
           password: "",
           confirmPassword: "",
+          dob: ""
         });
         setInstitution({
           name: "",
@@ -311,6 +313,9 @@ const Signup = () => {
   };
   const handleAddressChange = (event) => {
     setUser({ ...user, address: event.target.value });
+  };
+  const handleDOBChange = (event) => {
+    setUser({ ...user, dob: event.target.value });
   };
   const handleAccountNumberChange = (event) => {
     setUser({ ...user, accountName: event.target.value.trim() });
@@ -533,9 +538,9 @@ const Signup = () => {
       {page === 1 && (
         <Container>
           <img
-            src="/logo512.png"
+            src="/logo-dark.svg"
             alt=""
-            style={{ display: "block", margin: "100px auto 50px auto" }}
+            style={{ display: "block", margin: "100px auto 50px auto", width: "80px" }}
           />
 
           <div style={{ textAlign: "center" }}>
@@ -983,6 +988,19 @@ const Signup = () => {
                     placeholder="Enter your address"
                     value={user.address}
                     onChange={handleAddressChange}
+                  />
+                </FormControl>
+
+                <FormControl className={classes.formControl}>
+                  <MyTextField
+                    id="dob"
+                    type="date"
+                    name="dob"
+                    required="required"
+                    label="Date of birth"
+                    placeholder="Enter your date of birth"
+                    value={user.dob}
+                    onChange={handleDOBChange}
                   />
                 </FormControl>
               </Grid>

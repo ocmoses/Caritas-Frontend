@@ -2,7 +2,7 @@ import { Routes } from "../constants";
 import axios from "axios";
 import { getToken } from "../helpers/utils";
 
-const registerUser = async (user, image, role, token) => {
+const registerUser = async (user, image, role) => {
   var formData = new FormData();
 
   formData.append("reg_credential", user.email !== "" ? user.email : user.phone);
@@ -15,12 +15,13 @@ const registerUser = async (user, image, role, token) => {
   formData.append("address", user.address);
   formData.append("title", user.title);
   formData.append("photo", image);
+  formData.append("date_of_birth", user.dob);
 
   return await axios({
     method: "post",
     data: formData,
     url: Routes.register,
-    headers: {"x-auth-token": token}
+    // headers: {"x-auth-token": token}
   })
     .then((res) => {
       console.log(res.data);

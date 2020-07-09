@@ -181,9 +181,9 @@ const RecoverPassword = () => {
     <Fragment>
       <Container>
         <img
-          src="/logo512.png"
+          src="/logo-dark.svg"
           alt=""
-          style={{ display: "block", margin: "100px auto 50px auto" }}
+          style={{ display: "block", margin: "100px auto 50px auto", width: "80px" }}
         />
 
         <MyDialog

@@ -355,7 +355,7 @@ export default function PrimarySearchAppBar() {
               >
                 {/* QCare<span style={{ color: Colors.appRed }}>...</span> */}
                 <img
-                  src="/logo512.png"
+                  src="/logo-dark.svg"
                   alt=""
                   style={{ height: "80px", marginLeft: "-16px" }}
                 />

@@ -112,8 +112,8 @@ const createCause = async (cause) => {
   formData.append("cause_title", cause.causeTitle);
   formData.append("amount_required", parseInt(cause.amountRequired));
   formData.append("brief_description", cause.briefDescription);
-  formData.append("charity_information", cause.charityInformation);
-  formData.append("additional_information", cause.additionalInformation);
+  // formData.append("charity_information", cause.charityInformation);
+  // formData.append("additional_information", cause.additionalInformation);
   formData.append("category", cause.category);
   formData.append("cause_photos", cause.uploadFiles.image1);
   if (cause.uploadFiles.image2) {
@@ -132,22 +132,22 @@ const createCause = async (cause) => {
     formData.append("cause_photos", cause.uploadFiles.image6);
   }
 
-  formData.append("cause_video", cause.uploadFiles.video1);
-  formData.append("account_number", 1000000000);
-  formData.append(
-    "accept_comments_and_reviews",
-    cause.causeOptions.enableComments
-  );
-  formData.append("watch_cause", cause.causeOptions.enableWatching);
-  formData.append("cause_fund_visibility", cause.causeOptions.fundStatus);
-  formData.append(
-    "share_on_social_media",
-    cause.causeOptions.socialMediaSharing
-  );
+  // formData.append("cause_video", cause.uploadFiles.video1);
+  // formData.append("account_number", 1000000000);
+  // formData.append(
+  //   "accept_comments_and_reviews",
+  //   cause.causeOptions.enableComments
+  // );
+  // formData.append("watch_cause", cause.causeOptions.enableWatching);
+  // formData.append("cause_fund_visibility", cause.causeOptions.fundStatus);
+  // formData.append(
+  //   "share_on_social_media",
+  //   cause.causeOptions.socialMediaSharing
+  // );
 
   return await axios({
     method: "post",
-    url: Routes.ceate_cause,
+    url: Routes.create_cause,
     data: formData,
     headers: {
       "Content-Type": "multipart/formdata",

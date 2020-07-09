@@ -23,7 +23,7 @@ const Routes = {
   register: host + "users/register",
   login: host + "users/login",
 
-  ceate_cause: host + "cause/create",
+  create_cause: host + "cause/create",
   all_causes: host + "cause",
   get_cause: host + "cause/", //the cause id must be appended
   moderator_all_causes: host + "cause/approve_causes",

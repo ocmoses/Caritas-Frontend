@@ -109,7 +109,7 @@ const AddCause = () => {
   let [page, setPage] = useState(1);
 
   let [causeTitle, setCauseTitle] = useState("");
-  let [amountRequired, setAmountRequired] = useState("");
+  let [amountRequired, setAmountRequired] = useState("0");
   let [briefDescription, setBriefDescription] = useState("");
   let [charityInformation, setCharityInformation] = useState("");
   let [additionalInformation, setAdditionalInformation] = useState("");
@@ -130,7 +130,7 @@ const AddCause = () => {
     video1: null,
   });
 
-  let [category, setCategory] = useState("Food");
+  // let [category, setCategory] = useState("Food");
   let [errorMessage, setErrorMessage] = useState("");
   let [openDialog, setOpenDialog] = useState(false);
   let [dialogMessage, setDialogMessage] = useState("");
@@ -140,9 +140,9 @@ const AddCause = () => {
   let [selectedType, setSelectedType] = useState("Food");
   let [selectedOwner, setSelectedOwner] = useState("Self");
 
-  const handleCategoryChange = (event) => {
-    setCategory(event.target.value);
-  };
+  // const handleCategoryChange = (event) => {
+  //   setCategory(event.target.value);
+  // };
 
   const handleCauseTitleChange = (event) => {
     setCauseTitle(event.target.value);
@@ -191,19 +191,51 @@ const AddCause = () => {
     setPage(2);
   };
 
+  const checkImageUpload = () => {
+    if (uploadFiles.image1 == null) {
+      setPositiveDialog(false);
+      setDialogTitle("Wait a minute");
+      setDialogMessage(`You must upload at least one image for your cause`);
+      setOpenDialog(true);
+      return;
+    }else
+      setPage(4);
+  }
+
   const handleSubmit = async () => {
     // setPage(3);
-    if (!terms) {
+    if (!causeOptions.agreeToTandC) {
       setPositiveDialog(false);
       setDialogTitle("Terms and Conditions");
       setDialogMessage(
-        `To be able to upload this cause, you must agree to our terms aand conditions`
+        `To be able to upload this cause, you must agree to the terms and conditions`
       );
       setOpenDialog(true);
       return;
     }
+
+    if(causeTitle == ''){
+      setPositiveDialog(false);
+      setDialogTitle("Hold on!");
+      setDialogMessage(
+        `The cause title cannot be empty`
+      );
+      setOpenDialog(true);
+      return;
+    }
+
+    if(briefDescription == ''){
+      setPositiveDialog(false);
+      setDialogTitle("Hold on!");
+      setDialogMessage(
+        `Please enter a brief description for your cause to continue.`
+      );
+      setOpenDialog(true);
+      return;
+    }
+
     let cause = {};
-    cause.category = category;
+    cause.category = selectedType;
     cause.causeTitle = causeTitle;
     cause.amountRequired = amountRequired;
     cause.briefDescription = briefDescription;
@@ -219,11 +251,12 @@ const AddCause = () => {
       setOpenDialog(true);
       return;
     }
+    
 
     let outcome = await createCause(cause);
 
     if (outcome.status === 200) {
-      setPage(3);
+      setPage(5);
     } else {
       setPositiveDialog(false);
       setDialogTitle("Upload Failure");
@@ -654,7 +687,7 @@ const AddCause = () => {
 
           <Paper elevation={0} className={classes.causeCreation} style={{marginBottom: "100px"}}>
             <Typography variant="h6" component="h6" style={{textAlign: "center", fontWeight: "bold"}}>
-              Upload Media Content
+              Upload Cause Photo
             </Typography>
             
               
@@ -689,7 +722,7 @@ const AddCause = () => {
                   Back
                 </Button>
                 <Button
-                  onClick={() => setPage(4)}
+                  onClick={checkImageUpload}
                   variant="contained"
                   color="primary"
                   style={{
@@ -978,7 +1011,7 @@ const AddCause = () => {
                 Back
               </Button>
               <Button
-                onClick={() => setPage(5)}
+                onClick={handleSubmit}
                 variant="contained"
                 color="primary"
                 style={{
