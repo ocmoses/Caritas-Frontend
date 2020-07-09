@@ -264,7 +264,7 @@ const AddCause = () => {
         `There was an error uploading your cause ${
           outcome.response.data.message
             ? "," + outcome.response.data.message
-            : ""
+            : "Image file too large"
         }`
       );
       setOpenDialog(true);
